@@ -1,4 +1,5 @@
 import 'package:e_stock/core/constants/app_color.dart';
+import 'package:e_stock/views/owner/navigation_screen.dart';
 import 'package:e_stock/views/owner/owner_dashboard_screen.dart';
 import 'package:e_stock/views/widget/custom_Textfield.dart';
 import 'package:e_stock/views/widget/custom_button.dart';
@@ -101,14 +102,18 @@ class _OwnerFormState extends State<OwnerForm> {
           ),
         ),
         SizedBox(height: 20),
-        CustomButton(title: 'Sign in',loading: loading, onTap: () {
+        CustomButton(title: 'Sign in',loading: loading, onTap: () async{
+          if(!formKey.currentState!.validate()){
+            return ;
+          }
           setState(() {
             loading = true;
           });
-          if(formKey.currentState!.validate());
-          // Navigator.push(context, MaterialPageRoute(builder: (context)=>OwnerDashboardScreen()));
+          await Future.delayed(Duration(seconds: 2));
+          Navigator.push(context, MaterialPageRoute(builder: (context)=>NavigationScreen()));
+
           setState(() {
-            loading = false;
+            loading = false ;
           });
 
         }),

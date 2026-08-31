@@ -1,4 +1,5 @@
 import 'package:e_stock/core/constants/app_color.dart';
+import 'package:e_stock/views/owner/navigation_screen.dart';
 import 'package:e_stock/views/widget/custom_Textfield.dart';
 import 'package:e_stock/views/widget/custom_button.dart';
 import 'package:flutter/material.dart';
@@ -14,6 +15,7 @@ class _SalemanFormState extends State<SalemanForm> {
   var salemanEmailController = TextEditingController();
   var salemanpasswordController = TextEditingController();
   bool showPassword = false;
+  bool loading = false;
   final formKey = GlobalKey<FormState>();
 
   @override
@@ -41,6 +43,15 @@ class _SalemanFormState extends State<SalemanForm> {
                 controller: salemanEmailController,
                 prefixIcon: Icon(Icons.email_outlined),
                 hintText: 'Saleman@gmail.com',
+                validator: (value){
+                  if(value!.isEmpty){
+                    return ' please Enter Email';
+                  } else if (!value.contains('@')){
+                    return 'Enter a valid Email';
+                  }else {
+                    return null;
+                  }
+                },
               ),
               SizedBox(height: 14),
               Text(
@@ -70,14 +81,31 @@ class _SalemanFormState extends State<SalemanForm> {
                         : Icons.visibility_off_outlined,
                   ),
                 ),
+                validator: (value){
+                  if(value!.isEmpty){
+                    return 'Enter a password';
+                  }else {
+                    return null;
+                  }
+                },
               ),
             ],
           ),
         ),
         SizedBox(height: 20),
         // Sign in Button
-        CustomButton(title: 'Sign In', onTap: () {
-
+        CustomButton(title: 'Sign In',loading: loading, onTap: () async{
+          if(!formKey.currentState!.validate()){
+            return;
+          }
+          setState(() {
+                loading = true;
+          });
+          await Future.delayed(Duration(seconds: 2));
+          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>NavigationScreen()));
+          setState(() {
+             loading =false;
+          });
         }),
         SizedBox(height: 20),
         Container(
