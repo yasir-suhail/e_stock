@@ -23,10 +23,12 @@ class _SignupScreenState extends State<SignupScreen> {
   var emailController = TextEditingController();
   var phoneController = TextEditingController();
   var passwordController = TextEditingController();
+
   // boolean operation for show and hide password
   bool showPassword = false;
+
   //  boolean for the circular progress indicator
-  bool loading= false;
+  bool loading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -85,6 +87,7 @@ class _SignupScreenState extends State<SignupScreen> {
                   crossAxisAlignment: .start,
                   children: [
                     SizedBox(height: 15),
+                    // create owner account text
                     Container(
                       height: 22,
                       // width: screenWidth-300,
@@ -122,11 +125,11 @@ class _SignupScreenState extends State<SignupScreen> {
                             ),
                           ),
                           // Full name text form field
-                      CustomTextfield(
+                          CustomTextfield(
                             controller: fullNameController,
                             hintText: ' Full name',
-                            validator: (value){
-                              if(value!.isEmpty){
+                            validator: (value) {
+                              if (value!.isEmpty) {
                                 return ' please Enter a full name ';
                               }
                             },
@@ -144,8 +147,8 @@ class _SignupScreenState extends State<SignupScreen> {
                           CustomTextfield(
                             controller: factoryNameController,
                             hintText: 'Factory name ',
-                            validator: (value){
-                              if(value!.isEmpty){
+                            validator: (value) {
+                              if (value!.isEmpty) {
                                 return ' please Enter a factory name ';
                               }
                             },
@@ -165,11 +168,10 @@ class _SignupScreenState extends State<SignupScreen> {
                             keyboardtype: .emailAddress,
                             prefixIcon: Icon(Icons.email_outlined),
                             hintText: 'Enter a valid email',
-                            validator:
-                                (value){
-                              if(value!.isEmpty){
+                            validator: (value) {
+                              if (value!.isEmpty) {
                                 return 'please Enter email';
-                              } else if(!value.contains('@')){
+                              } else if (!value.contains('@')) {
                                 return 'Enter a valid email';
                               }
                             },
@@ -183,13 +185,13 @@ class _SignupScreenState extends State<SignupScreen> {
                               color: AppColors.textLabels,
                             ),
                           ),
-                      // phone number text form field
+                          // phone number text form field
                           CustomTextfield(
                             keyboardtype: .phone,
                             controller: phoneController,
                             hintText: 'Phone number',
-                            validator: (value){
-                              if(value!.isEmpty){
+                            validator: (value) {
+                              if (value!.isEmpty) {
                                 return ' Enter a phone number';
                               }
                             },
@@ -211,7 +213,7 @@ class _SignupScreenState extends State<SignupScreen> {
                             suffixIcon: IconButton(
                               onPressed: () {
                                 setState(() {
-                                  showPassword =!showPassword;
+                                  showPassword = !showPassword;
                                 });
                               },
                               icon: Icon(
@@ -221,8 +223,8 @@ class _SignupScreenState extends State<SignupScreen> {
                               ),
                             ),
                             hintText: 'Create a strong password ',
-                            validator: (value){
-                              if(value!.isEmpty){
+                            validator: (value) {
+                              if (value!.isEmpty) {
                                 return 'please Enter password';
                               }
                             },
@@ -230,30 +232,56 @@ class _SignupScreenState extends State<SignupScreen> {
                         ],
                       ),
                     ),
-                    SizedBox(height: 25,),
+                    SizedBox(height: 15),
                     CustomButton(
-                        title: 'Register Owner Account', loading: loading, onTap: () async{
-
-                          if(!formKey.currentState!.validate()){
-                            return ;
-                          }
-                          setState(() {
-                            loading = true;
-                          });
-                          await Future.delayed(Duration(seconds: 2));
-                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Register Successfully')));
-                          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>LoginScreen()));
-                    }
+                      title: 'Register Owner Account',
+                      loading: loading,
+                      onTap: () async {
+                        if (!formKey.currentState!.validate()) {
+                          return;
+                        }
+                        setState(() {
+                          loading = true;
+                        });
+                        await Future.delayed(Duration(seconds: 2));
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text('Register Successfully')),
+                        );
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => LoginScreen(),
+                          ),
+                        );
+                      },
                     ),
-                    SizedBox(height: 19,),
+                    SizedBox(height: 10),
                     Row(
                       mainAxisAlignment: .center,
                       children: [
-                        Text('Already registered?'),
-                        SizedBox(width: 5,),
-                        Text('Sign In Here')
+                        Text(
+                          'Already registered?',
+                          style: TextStyle(
+                            color: AppColors.textMuted,
+                            fontSize: 14,
+                            fontWeight: .w400,
+                          ),
+                        ),
+                        TextButton(
+                          onPressed: () {
+                            Navigator.push(context, MaterialPageRoute(builder: (context)=>LoginScreen()));
+                          },
+                          child: Text(
+                            'Sign In',
+                            style: TextStyle(
+                              color: AppColors.primaryBlue,
+                              fontWeight: .bold,
+                              fontSize: 14,
+                            ),
+                          ),
+                        ),
                       ],
-                    )
+                    ),
                   ],
                 ),
               ),

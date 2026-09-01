@@ -26,21 +26,28 @@ class _LoginScreenState extends State<LoginScreen> {
             Container(
               height: 100,
               width: screenWidth,
-              decoration:  BoxDecoration(
-                  color: AppColors.headerNavy),
-              child:  Padding(
+              decoration: BoxDecoration(color: AppColors.headerNavy),
+              child: Padding(
                 padding: EdgeInsets.only(left: 24, top: 34),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                       'E Khata Portal',
-                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
                     ),
                     SizedBox(height: 6),
                     Text(
                       'Select role or log into your account',
-                      style: TextStyle(fontSize: 12, fontWeight: FontWeight.w400, color: AppColors.textMuted),
+                      style: TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.w400,
+                        color: AppColors.textMuted,
+                      ),
                     ),
                   ],
                 ),
@@ -49,7 +56,7 @@ class _LoginScreenState extends State<LoginScreen> {
             const SizedBox(height: 20),
             // A containner
             Container(
-              width: screenWidth-32,
+              width: screenWidth - 32,
               height: 500,
               decoration: BoxDecoration(
                 border: Border.all(color: AppColors.inputBorder),
@@ -57,18 +64,19 @@ class _LoginScreenState extends State<LoginScreen> {
                 color: Colors.white,
               ),
               child: Padding(
-                padding:  EdgeInsets.symmetric(horizontal: 16),
+                padding: EdgeInsets.symmetric(horizontal: 16),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                     SizedBox(height: 20),
+                    SizedBox(height: 20),
                     Center(
+                      //A container for the owner and salman button
                       child: Container(
                         height: 56,
                         width: 298,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10),
-                          color:  Color(0xffF1F5F9),
+                          color: AppColors.inputBorder,
                         ),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -78,7 +86,8 @@ class _LoginScreenState extends State<LoginScreen> {
                               child: GestureDetector(
                                 onTap: () {
                                   setState(() {
-                                    selectedTabIndex = 0; // Changes to Owner tab index
+                                    selectedTabIndex =
+                                        0; // Changes to Owner tab index
                                   });
                                 },
                                 child: Container(
@@ -86,7 +95,9 @@ class _LoginScreenState extends State<LoginScreen> {
                                     color: selectedTabIndex == 0
                                         // ?  Color(0xff2563EB)
                                         ? AppColors.primaryBlue
-                                        : Colors.transparent,
+                                        // : Colors.transparent,
+                                        : AppColors.inputBorder,
+
                                     borderRadius: BorderRadius.circular(10),
                                   ),
                                   child: Center(
@@ -109,19 +120,22 @@ class _LoginScreenState extends State<LoginScreen> {
                               child: GestureDetector(
                                 onTap: () {
                                   setState(() {
-                                    selectedTabIndex = 1; // Changes to Salesman tab index
+                                    selectedTabIndex =
+                                        1; // Changes to Salesman tab index
                                   });
                                 },
                                 child: Container(
                                   decoration: BoxDecoration(
                                     color: selectedTabIndex == 1
                                         ? AppColors.primaryBlue
-                                        : Colors.transparent,
+                                        :
+                                          // : Colors.transparent,
+                                          AppColors.inputBorder,
                                     borderRadius: BorderRadius.circular(10),
                                   ),
                                   child: Center(
                                     child: Text(
-                                      'Saleman Portal',
+                                      'Salesman Portal',
                                       style: TextStyle(
                                         color: selectedTabIndex == 1
                                             ? Colors.white
@@ -138,14 +152,14 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                       ),
                     ),
-                     SizedBox(height: 20),
+                    SizedBox(height: 20),
 
                     //  with IndexedStack to keep both forms in memory
                     Expanded(
                       child: IndexedStack(
                         index: selectedTabIndex,
-                        children:  [
-                          OwnerForm(),   // Index 0
+                        children: [
+                          OwnerForm(), // Index 0
                           SalemanForm(), // Index 1
                         ],
                       ),

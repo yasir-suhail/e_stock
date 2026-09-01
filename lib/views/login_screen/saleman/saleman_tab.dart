@@ -24,8 +24,28 @@ class _SalemanFormState extends State<SalemanForm> {
     return Column(
       crossAxisAlignment: .start,
       children: [
+        Container(
+          height: 22,
+          // width: screenWidth-300,
+          width: 100,
+          decoration: BoxDecoration(
+            color: Color(0xffEFF6FF),
+            borderRadius: BorderRadius.circular(5),
+          ),
+          child: Center(
+            child: Text(
+              'SALESMAN LOGIN',
+              style: TextStyle(
+                fontSize: 10,
+                fontWeight: .bold,
+                color: AppColors.primaryBlue,
+              ),
+            ),
+          ),
+        ),
+        SizedBox(height: 15,),
         Text(
-          'SALESMAN EMAIL / LOGIN ID',
+          'Salesman Email / Login id',
           style: TextStyle(
             fontSize: 14,
             fontWeight: .bold,
@@ -42,6 +62,7 @@ class _SalemanFormState extends State<SalemanForm> {
               // email Text form field
               CustomTextfield(
                 controller: salemanEmailController,
+                keyboardtype: .emailAddress,
                 prefixIcon: Icon(Icons.email_outlined),
                 hintText: 'Saleman@gmail.com',
                 validator: (value){
@@ -111,24 +132,27 @@ class _SalemanFormState extends State<SalemanForm> {
         SizedBox(height: 20),
         Container(
           width: .infinity,
-          height: 50,
+          height: 55,
           color: Color(0xffEFF6FF),
-          child: Column(
-            crossAxisAlignment: .start,
-            children: [
-              Text(
-                "Don't have an account?",
-                style: TextStyle(
-                  fontWeight: .bold,
-                  fontSize: 11,
-                  color: AppColors.primaryBlue,
+          child: Padding(
+            padding: const EdgeInsets.only(left: 10,top: 5),
+            child: Column(
+              crossAxisAlignment: .start,
+              children: [
+                Text(
+                  "Don't have an account?",
+                  style: TextStyle(
+                    fontWeight: .bold,
+                    fontSize: 11,
+                    color: AppColors.primaryBlue,
+                  ),
                 ),
-              ),
-              Text(
-                'Ask your Factory Owner to create your account from their profile.',
-                style: TextStyle(fontSize: 11, fontWeight: .w400),
-              ),
-            ],
+                Text(
+                  'Ask your Factory Owner to create your account from their profile.',
+                  style: TextStyle(fontSize: 11, fontWeight: .w400),
+                ),
+              ],
+            ),
           ),
         ),
       ],

@@ -33,6 +33,26 @@ class _OwnerFormState extends State<OwnerForm> {
     return Column(
       crossAxisAlignment: .start,
       children: [
+        Container(
+          height: 22,
+          // width: screenWidth-300,
+          width: 100,
+          decoration: BoxDecoration(
+            color: Color(0xffEFF6FF),
+            borderRadius: BorderRadius.circular(5),
+          ),
+          child: Center(
+            child: Text(
+              'OWNER LOGIN',
+              style: TextStyle(
+                fontSize: 10,
+                fontWeight: .bold,
+                color: AppColors.primaryBlue,
+              ),
+            ),
+          ),
+        ),
+        SizedBox(height: 15,),
         Text(
           'Owner Email Address',
           style: TextStyle(
@@ -51,10 +71,11 @@ class _OwnerFormState extends State<OwnerForm> {
               // email Text form field
               CustomTextfield(
                 controller: ownerEmailController,
+                keyboardtype: .emailAddress,
                 hintText: 'owner@gmail.com',
                 prefixIcon: Icon(Icons.email_outlined),
                 validator: (value) {
-                  if (value!.isEmpty) {
+                  if ( value == null||value.isEmpty) {
                     return 'please Enter Email';
                   } else if (!value.contains('@')) {
                     return ' please Enter a valid Email';
@@ -92,7 +113,7 @@ class _OwnerFormState extends State<OwnerForm> {
                   ),
                 ),
                 validator: (value) {
-                  if (value!.isEmpty) {
+                  if ( value == null||value.isEmpty) {
                     return 'please Enter password';
                   } else {
                     return null;
@@ -126,7 +147,7 @@ class _OwnerFormState extends State<OwnerForm> {
               'Dont have an account?',
               style: TextStyle(
                 color: AppColors.textMuted,
-                fontSize: 16,
+                fontSize: 14,
                 fontWeight: .w400,
               ),
             ),
@@ -139,7 +160,7 @@ class _OwnerFormState extends State<OwnerForm> {
                 style: TextStyle(
                   fontWeight: .bold,
                   color: AppColors.primaryBlue,
-                  fontSize: 16,
+                  fontSize: 14,
                 ),
               ),
             ),
