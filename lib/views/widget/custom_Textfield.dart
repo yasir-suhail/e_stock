@@ -29,7 +29,7 @@ class CustomTextfield extends StatelessWidget {
       validator: validator,
       keyboardType: keyboardtype,
       decoration: InputDecoration(
-        hintText: hintText,hintStyle:TextStyle(fontWeight: .w400,fontSize: 13,color: AppColors.textPrimary),
+        hintText: hintText,hintStyle:TextStyle(fontWeight: .w400,fontSize: 13,color: AppColors.textMuted),
         prefixIcon: prefixIcon,prefixIconColor: AppColors.textMuted,
         suffixIcon: suffixIcon,suffixIconColor: AppColors.textMuted,
         enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(10),

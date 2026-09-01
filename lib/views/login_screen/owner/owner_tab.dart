@@ -1,6 +1,7 @@
 import 'package:e_stock/core/constants/app_color.dart';
 import 'package:e_stock/views/owner/navigation_screen.dart';
 import 'package:e_stock/views/owner/owner_dashboard_screen.dart';
+import 'package:e_stock/views/owner/signup_screen.dart';
 import 'package:e_stock/views/widget/custom_Textfield.dart';
 import 'package:e_stock/views/widget/custom_button.dart';
 import 'package:flutter/material.dart';
@@ -110,7 +111,7 @@ class _OwnerFormState extends State<OwnerForm> {
             loading = true;
           });
           await Future.delayed(Duration(seconds: 2));
-          Navigator.push(context, MaterialPageRoute(builder: (context)=>NavigationScreen()));
+          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>NavigationScreen()));
 
           setState(() {
             loading = false ;
@@ -130,7 +131,9 @@ class _OwnerFormState extends State<OwnerForm> {
               ),
             ),
             TextButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context)=>SignupScreen()));
+              },
               child: Text(
                 'Sign up',
                 style: TextStyle(

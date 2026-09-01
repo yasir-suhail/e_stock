@@ -16,10 +16,11 @@ class CustomButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.sizeOf(context).width;
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        width: 311,
+        width: screenWidth-32,
         height: 44,
         decoration: BoxDecoration(
           color: AppColors.primaryBlue,

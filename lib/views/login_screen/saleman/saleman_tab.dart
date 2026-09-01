@@ -20,6 +20,7 @@ class _SalemanFormState extends State<SalemanForm> {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.sizeOf(context).width;
     return Column(
       crossAxisAlignment: .start,
       children: [
@@ -93,7 +94,7 @@ class _SalemanFormState extends State<SalemanForm> {
           ),
         ),
         SizedBox(height: 20),
-        // Sign in Button
+        // Sign in  custom Button
         CustomButton(title: 'Sign In',loading: loading, onTap: () async{
           if(!formKey.currentState!.validate()){
             return;
@@ -109,7 +110,7 @@ class _SalemanFormState extends State<SalemanForm> {
         }),
         SizedBox(height: 20),
         Container(
-          width: 311,
+          width: .infinity,
           height: 50,
           color: Color(0xffEFF6FF),
           child: Column(

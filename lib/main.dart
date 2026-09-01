@@ -3,6 +3,7 @@ import 'package:e_stock/views/login_screen/login_screen.dart';
 import 'package:e_stock/views/owner/navigation_screen.dart';
 import 'package:e_stock/views/owner/owner_dashboard_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 
 void main() {
@@ -18,7 +19,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        colorScheme: .fromSeed(seedColor: Colors.deepPurple),
+        // colorScheme: .fromSeed(seedColor: Colors.deepPurple),
+        fontFamily: 'Inter'
       ),
       // home:LoadVanScreen(isOwnerView: true)
       home: LoginScreen(),

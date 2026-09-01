@@ -1,3 +1,4 @@
+import 'package:e_stock/core/constants/app_color.dart';
 import 'package:e_stock/views/owner/logs_screen.dart';
 import 'package:e_stock/views/owner/owner_dashboard_screen.dart';
 import 'package:e_stock/views/owner/owner_profile_Screen.dart';
@@ -9,8 +10,8 @@ class NavigationScreen extends StatefulWidget {
   @override
   State<NavigationScreen> createState() => _NavigationScreenState();
 }
-final selectedIconColor =Color(0xff2563EB);// selcted color of icon+text
-final unselectedIconsColor =Color(0xffB5BCC7);// unselected icon+text color
+final selectedIconColor =AppColors.primaryBlue;// selcted color of icon+text
+final unselectedIconsColor =Color(0xff64748B);// unselected icon+text color
 class _NavigationScreenState extends State<NavigationScreen> {
   int selectIndex = 0;
   final List<Widget> Screens = [
@@ -27,10 +28,10 @@ class _NavigationScreenState extends State<NavigationScreen> {
         padding: const EdgeInsets.all(10),
         child: Container(
           width: 362,
-          height: 88,
+          height: 75,
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(20),
-            border: Border.all(color: Colors.black),
+            borderRadius: BorderRadius.circular(10),
+            border: Border.all(color: AppColors.inputBorder),
           ),
           child: Row(
             mainAxisAlignment: .spaceEvenly,
