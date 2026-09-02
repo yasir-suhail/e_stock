@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget {
         fontFamily: 'Inter'
       ),
       // home:LoadVanScreen(isOwnerView: true)
-      home: LoginScreen(),
+      home: NavigationScreen(),
     );
   }
 }

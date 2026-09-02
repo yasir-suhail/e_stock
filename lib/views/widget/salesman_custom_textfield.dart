@@ -1,33 +1,33 @@
-import 'package:e_stock/core/constants/app_color.dart';
 import 'package:flutter/material.dart';
 
-class CustomTextfield extends StatelessWidget {
+import '../../core/constants/app_color.dart';
+
+class SalesmanCustomTextfield extends StatelessWidget {
   final String hintText;
   final TextEditingController? controller;
-  final bool obscureText;
+  bool obscureText;
   final Widget? prefixIcon;
   final Widget? suffixIcon;
-  final String? Function(String?)? validator;
   final TextInputType? keyboardtype;
+  final String? Function(String?)? validator;
 
-  const CustomTextfield({
+   SalesmanCustomTextfield({
     required this.hintText,
-    this.controller,
-    this.obscureText = false,
-    this.validator,
-    this.keyboardtype,
-    this.prefixIcon,
     this.suffixIcon,
-    super.key,
-  });
+    this.prefixIcon,
+    this.validator,
+    this.obscureText=false,
+    this.controller,
+    this.keyboardtype,
+    super.key});
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-      controller: controller,
-      obscureText: obscureText,
       validator: validator,
+      controller: controller,
       keyboardType: keyboardtype,
+      obscureText: obscureText,
       decoration: InputDecoration(
         hintText: hintText,hintStyle:TextStyle(fontWeight: .w400,fontSize: 13,color: AppColors.textMuted),
         prefixIcon: prefixIcon,prefixIconColor: AppColors.textMuted,
@@ -37,14 +37,8 @@ class CustomTextfield extends StatelessWidget {
         ),
         focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10),
-            borderSide: BorderSide(color: AppColors.primaryBlue)
+            borderSide: BorderSide(color: AppColors.vanAmber)
         ),
-
-        // errorBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.red),
-        // borderRadius: BorderRadius.circular(10),
-        // ),
-        //   focusedErrorBorder:OutlineInputBorder(borderSide: BorderSide(color: Colors.red),
-        //   borderRadius: BorderRadius.circular(10)),
       ),
     );
   }

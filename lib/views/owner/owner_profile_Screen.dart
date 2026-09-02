@@ -1,5 +1,6 @@
 import 'package:e_stock/core/constants/app_color.dart';
 import 'package:e_stock/views/login_screen/login_screen.dart';
+import 'package:e_stock/views/owner/add_saleman_Screen.dart';
 import 'package:e_stock/views/widget/custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -163,7 +164,9 @@ class _OwnerProfileScreenState extends State<OwnerProfileScreen> {
                     SizedBox(height: 15),
                     // add salesman button
                     GestureDetector(
-                      onTap: () {},
+                      onTap: () {
+                        Navigator.push(context, MaterialPageRoute(builder: (context)=>AddSalesmanScreen()));
+                      },
                       child: Container(
                         width: screenWidth - 32,
                         height: 44,
