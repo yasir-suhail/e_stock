@@ -10,10 +10,13 @@ class NavigationScreen extends StatefulWidget {
   @override
   State<NavigationScreen> createState() => _NavigationScreenState();
 }
-final selectedIconColor =AppColors.primaryBlue;// selcted color of icon+text
+final selectedIconColor =AppColors.primaryBlue;// selected color of icon+text
 final unselectedIconsColor =Color(0xff64748B);// unselected icon+text color
 class _NavigationScreenState extends State<NavigationScreen> {
+  // Bottom navigation index
   int selectIndex = 0;
+  //
+  @override
   final List<Widget> Screens = [
     OwnerDashboardScreen(),
     LogsScreen(),

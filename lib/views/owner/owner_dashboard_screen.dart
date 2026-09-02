@@ -9,6 +9,8 @@ class OwnerDashboardScreen extends StatefulWidget {
 }
 
 class _OwnerDashboardScreenState extends State<OwnerDashboardScreen> {
+  int selectCard = 0;
+
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.sizeOf(context).width;
@@ -124,7 +126,7 @@ class _OwnerDashboardScreenState extends State<OwnerDashboardScreen> {
               ],
             ),
             SizedBox(height: 15),
-            // Row
+            // Row for  factory stock  and the van stock
             Row(
               mainAxisAlignment: .center,
               children: [
@@ -174,37 +176,54 @@ class _OwnerDashboardScreenState extends State<OwnerDashboardScreen> {
                     ),
                   ),
                   SizedBox(height: 9),
-                  // inventory actions of the load van and the unload van
+                  //  1 Row  inventory actions of the load van and the unload van
                   Row(
                     children: [
-                      // left side column of the inventory action
-                      Column(
-                        children: [
-                          Container(
-                            width: screenWidth / 2 - 15,
-                            height: 80,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              border: Border.all(color: AppColors.inputBorder),
-                              color: Colors.white,
-                            ),
+                      // left side of the first Row  of the inventory action
+                      //load van container
+                      InkWell(
+                        borderRadius: BorderRadius.circular(10),
+                        onTap: () {
+                          setState(() {
+                            selectCard = 0;
+                          });
+                        },
+                        child: Container(
+                          width: screenWidth / 2 - 15,
+                          height: 80,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+
+                            border: Border.all(color: AppColors.inputBorder),
+                            color: selectCard == 0
+                                ? AppColors.primaryBlue
+                                : Colors.white,
                           ),
-                        ],
+                          child: Center(child: Text('🚚 Load Van',style: TextStyle(fontWeight: .bold,fontSize: 14,color: selectCard==0?Colors.white:AppColors.textPrimary),),),
+                        ),
                       ),
                       SizedBox(width: 10),
-                      // right side column of the inventory action
-                      Column(
-                        children: [
-                          Container(
-                            width: screenWidth / 2 - 15,
-                            height: 80,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              border: Border.all(color: AppColors.inputBorder),
-                              color: Colors.white,
-                            ),
+                      // right side of the first Row of the inventory action
+                      // unload van container
+                      InkWell(
+                        borderRadius: BorderRadius.circular(10),
+                        onTap: () {
+                          setState(() {
+                            selectCard = 1;
+                          });
+                        },
+                        child: Container(
+                          width: screenWidth / 2 - 15,
+                          height: 80,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            border: Border.all(color: AppColors.inputBorder),
+                            color: selectCard == 1
+                                ? AppColors.primaryBlue
+                                : Colors.white,
                           ),
-                        ],
+                          child: Center(child: Text('🔄 Unload Van',style: TextStyle(fontWeight: .bold,fontSize: 14,color: selectCard==1?Colors.white:AppColors.textPrimary),),),
+                        ),
                       ),
                     ],
                   ),
@@ -212,40 +231,55 @@ class _OwnerDashboardScreenState extends State<OwnerDashboardScreen> {
                   // inventory action of the factory sale  van sale
                   Row(
                     children: [
-                      // left side column of the inventory action
-                      Column(
-                        children: [
-                          Container(
-                            width: screenWidth / 2 - 15,
-                            height: 80,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              border: Border.all(color: AppColors.inputBorder),
-                              color: Colors.white,
-                            ),
+                      // left side of the second Row  of the inventory action
+                      // factory sale container
+                      InkWell(
+                        borderRadius: BorderRadius.circular(10),
+                        onTap: () {
+                          setState(() {
+                            selectCard = 2;
+                          });
+                        },
+                        child: Container(
+                          width: screenWidth / 2 - 15,
+                          height: 80,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            border: Border.all(color: AppColors.inputBorder),
+                            color: selectCard == 2
+                                ? AppColors.primaryBlue
+                                : Colors.white,
                           ),
-                        ],
+                          child: Center(child: Text('🏭 Factory Sale',style: TextStyle(fontWeight: .bold,fontSize: 14,color: selectCard==2?Colors.white:AppColors.textPrimary),),),
+
+                        ),
                       ),
                       SizedBox(width: 10),
-                      // right side column of the inventory action
-                      Column(
-                        children: [
-                          Container(
-                            width: screenWidth / 2 - 15,
-                            height: 80,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              border: Border.all(color: AppColors.inputBorder),
-                              color: Colors.white,
-                            ),
+                      // right side of the second Row  of the inventory action
+                      // van sale container
+                      InkWell(
+                        borderRadius: BorderRadius.circular(10),
+                        onTap: () {
+                          setState(() {
+                            selectCard = 3;
+                          });
+                        },
+                        child: Container(
+                          width: screenWidth / 2 - 15,
+                          height: 80,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            border: Border.all(color: AppColors.inputBorder),
+                            color: selectCard==3?AppColors.primaryBlue:Colors.white
                           ),
-                        ],
+                          child: Center(child: Text('🛒 Van Sale',style: TextStyle(fontWeight: .bold,fontSize: 14,color: selectCard==3?Colors.white:AppColors.textPrimary),),),
+                        ),
                       ),
                     ],
                   ),
                   SizedBox(height: 12),
                   GestureDetector(
-                    onTap: (){},
+                    onTap: () {},
                     child: Container(
                       width: screenWidth - 20,
                       height: 50,

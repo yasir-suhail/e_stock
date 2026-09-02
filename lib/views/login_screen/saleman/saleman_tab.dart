@@ -124,7 +124,7 @@ class _SalemanFormState extends State<SalemanForm> {
                 loading = true;
           });
           await Future.delayed(Duration(seconds: 2));
-          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>NavigationScreen()));
+          Navigator.push(context, MaterialPageRoute(builder: (context)=>NavigationScreen()));
           setState(() {
              loading =false;
           });
