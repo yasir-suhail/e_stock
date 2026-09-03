@@ -2,7 +2,6 @@ import 'package:e_stock/core/constants/app_color.dart';
 import 'package:flutter/material.dart';
 
 class OwnerDashboardScreen extends StatefulWidget {
-
   // These callbacks are functions received from the parent NavigationScreen.
   // When a card is tapped, these functions tell the parent
   // which screen should be displayed.
@@ -11,13 +10,15 @@ class OwnerDashboardScreen extends StatefulWidget {
   final VoidCallback onFactorySale;
   final VoidCallback onVanSale;
   final VoidCallback onAddProduction;
+
   const OwnerDashboardScreen({
     required this.onLoadVan,
     required this.onUnloadVan,
     required this.onFactorySale,
     required this.onVanSale,
     required this.onAddProduction,
-    super.key});
+    super.key,
+  });
 
   @override
   State<OwnerDashboardScreen> createState() => _OwnerDashboardScreenState();
@@ -25,7 +26,6 @@ class OwnerDashboardScreen extends StatefulWidget {
 
 class _OwnerDashboardScreenState extends State<OwnerDashboardScreen> {
   String selectProduct = 'Red Chili Powder 200g';
-
 
   // Selects which inventory card is active.
   // 0 = Load Van
@@ -39,41 +39,37 @@ class _OwnerDashboardScreenState extends State<OwnerDashboardScreen> {
     final screenWidth = MediaQuery.sizeOf(context).width;
     return Scaffold(
       backgroundColor: AppColors.backgroundCanvas,
+      resizeToAvoidBottomInset: false,
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        backgroundColor: AppColors.headerNavy,
+        title: Column(
+          crossAxisAlignment: .start,
+          children: [
+            Text(
+              'Dashboard',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 18,
+                fontWeight: .bold,
+              ),
+            ),
+            SizedBox(height: 6),
+            Text(
+              'Global Stock Overview & Operations',
+              style: TextStyle(
+                color: AppColors.textMuted,
+                fontSize: 12,
+                fontWeight: .w400,
+              ),
+            ),
+          ],
+        ),
+      ),
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: .start,
           children: [
-            //A dashboard Header
-            Container(
-              width: screenWidth,
-              height: 100,
-              decoration: BoxDecoration(color: AppColors.headerNavy),
-              child: Padding(
-                padding: const EdgeInsets.only(top: 34, left: 24),
-                child: Column(
-                  crossAxisAlignment: .start,
-                  children: [
-                    Text(
-                      'Dashboard',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 18,
-                        fontWeight: .bold,
-                      ),
-                    ),
-                    SizedBox(height: 6),
-                    Text(
-                      'Global Stock Overview & Operations',
-                      style: TextStyle(
-                        color: AppColors.textMuted,
-                        fontSize: 12,
-                        fontWeight: .w400,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
             SizedBox(height: 20),
             // Active products
             // Stack(
@@ -149,65 +145,65 @@ class _OwnerDashboardScreenState extends State<OwnerDashboardScreen> {
             //     ),
             //   ],
             // ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10),
-                child: Container(
-                    padding: EdgeInsets.symmetric(horizontal: 10),
-                    width: screenWidth-20,
-                    height: 80,
-                    decoration: BoxDecoration(
-                      color: Color(0xffF1F5F9),
-                      border: Border.all(color: AppColors.inputBorder),
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    // drop down menu
-                    child: Column(
-                        crossAxisAlignment: .start,
-                        children: [
-
-                          Padding(
-                            padding: const EdgeInsets.only(top:8),
-                            child: Text('GLOBAL ACTIVE PRODUCT',style: TextStyle(
-                              fontSize: 11,
-                              fontWeight: .bold,
-                              color: AppColors.primaryBlue,
-                            ),
-                            ),
-                          ),
-                          DropdownButtonHideUnderline(
-                            child: DropdownButton<String>(
-                              isExpanded: true,
-                              value: selectProduct,
-                              style: TextStyle(
-                                fontSize: 18,
-                                fontWeight: .bold,
-                                color: AppColors.textPrimary,
-                              ),
-                              items:
-                              [
-                                'Red Chili Powder 200g',
-                                'Coriander Powder 250g',
-                                'Turmeric Powder 100g',
-                              ]
-                                  .map(
-                                    (product) => DropdownMenuItem(
-                                  value: product,
-                                  child: Text(product),
-                                ),
-                              )
-                                  .toList(),
-                              onChanged: (value) {
-                                setState(() {
-                                  selectProduct = value!;
-                                });
-                              },
-                            ),
-                          ),
-                        ],
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              child: Container(
+                padding: EdgeInsets.symmetric(horizontal: 10),
+                width: screenWidth - 20,
+                height: 80,
+                decoration: BoxDecoration(
+                  color: Color(0xffF1F5F9),
+                  border: Border.all(color: AppColors.inputBorder),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                // drop down menu
+                child: Column(
+                  crossAxisAlignment: .start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(top: 8),
+                      child: Text(
+                        'GLOBAL ACTIVE PRODUCT',
+                        style: TextStyle(
+                          fontSize: 11,
+                          fontWeight: .bold,
+                          color: AppColors.primaryBlue,
+                        ),
                       ),
-                  ),
+                    ),
+                    DropdownButtonHideUnderline(
+                      child: DropdownButton<String>(
+                        isExpanded: true,
+                        value: selectProduct,
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: .bold,
+                          color: AppColors.textPrimary,
+                        ),
+                        items:
+                            [
+                                  'Red Chili Powder 200g',
+                                  'Coriander Powder 250g',
+                                  'Turmeric Powder 100g',
+                                ]
+                                .map(
+                                  (product) => DropdownMenuItem(
+                                    value: product,
+                                    child: Text(product),
+                                  ),
+                                )
+                                .toList(),
+                        onChanged: (value) {
+                          setState(() {
+                            selectProduct = value!;
+                          });
+                        },
+                      ),
+                    ),
+                  ],
+                ),
               ),
-
+            ),
 
             SizedBox(height: 15),
             // factory stock  and the van stock
@@ -240,7 +236,14 @@ class _OwnerDashboardScreenState extends State<OwnerDashboardScreen> {
                               ),
                             ),
                             SizedBox(height: 7),
-                            Text('1,400 Packs',style: TextStyle(color: AppColors.productionGreen,fontSize: 18,fontWeight: .bold),),
+                            Text(
+                              '1,400 Packs',
+                              style: TextStyle(
+                                color: AppColors.productionGreen,
+                                fontSize: 18,
+                                fontWeight: .bold,
+                              ),
+                            ),
                           ],
                         ),
                       ),
@@ -274,7 +277,14 @@ class _OwnerDashboardScreenState extends State<OwnerDashboardScreen> {
                               ),
                             ),
                             SizedBox(height: 7),
-                            Text('50 Packs',style: TextStyle(color: AppColors.vanAmber,fontSize: 18,fontWeight: .bold),),
+                            Text(
+                              '50 Packs',
+                              style: TextStyle(
+                                color: AppColors.vanAmber,
+                                fontSize: 18,
+                                fontWeight: .bold,
+                              ),
+                            ),
                           ],
                         ),
                       ),
@@ -332,7 +342,18 @@ class _OwnerDashboardScreenState extends State<OwnerDashboardScreen> {
                                 ? AppColors.primaryBlue
                                 : Colors.white,
                           ),
-                          child: Center(child: Text('🚚 Load Van',style: TextStyle(fontWeight: .bold,fontSize: 14,color: selectCard==0?Colors.white:AppColors.textPrimary),),),
+                          child: Center(
+                            child: Text(
+                              '🚚 Load Van',
+                              style: TextStyle(
+                                fontWeight: .bold,
+                                fontSize: 14,
+                                color: selectCard == 0
+                                    ? Colors.white
+                                    : AppColors.textPrimary,
+                              ),
+                            ),
+                          ),
                         ),
                       ),
                       SizedBox(width: 10),
@@ -365,7 +386,18 @@ class _OwnerDashboardScreenState extends State<OwnerDashboardScreen> {
                                 ? AppColors.primaryBlue
                                 : Colors.white,
                           ),
-                          child: Center(child: Text('🔄 Unload Van',style: TextStyle(fontWeight: .bold,fontSize: 14,color: selectCard==1?Colors.white:AppColors.textPrimary),),),
+                          child: Center(
+                            child: Text(
+                              '🔄 Unload Van',
+                              style: TextStyle(
+                                fontWeight: .bold,
+                                fontSize: 14,
+                                color: selectCard == 1
+                                    ? Colors.white
+                                    : AppColors.textPrimary,
+                              ),
+                            ),
+                          ),
                         ),
                       ),
                     ],
@@ -403,8 +435,18 @@ class _OwnerDashboardScreenState extends State<OwnerDashboardScreen> {
                                 ? AppColors.primaryBlue
                                 : Colors.white,
                           ),
-                          child: Center(child: Text('🏭 Factory Sale',style: TextStyle(fontWeight: .bold,fontSize: 14,color: selectCard==2?Colors.white:AppColors.textPrimary),),),
-
+                          child: Center(
+                            child: Text(
+                              '🏭 Factory Sale',
+                              style: TextStyle(
+                                fontWeight: .bold,
+                                fontSize: 14,
+                                color: selectCard == 2
+                                    ? Colors.white
+                                    : AppColors.textPrimary,
+                              ),
+                            ),
+                          ),
                         ),
                       ),
                       SizedBox(width: 10),
@@ -433,9 +475,22 @@ class _OwnerDashboardScreenState extends State<OwnerDashboardScreen> {
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10),
                             border: Border.all(color: AppColors.inputBorder),
-                            color: selectCard==3?AppColors.primaryBlue:Colors.white
+                            color: selectCard == 3
+                                ? AppColors.primaryBlue
+                                : Colors.white,
                           ),
-                          child: Center(child: Text('🛒 Van Sale',style: TextStyle(fontWeight: .bold,fontSize: 14,color: selectCard==3?Colors.white:AppColors.textPrimary),),),
+                          child: Center(
+                            child: Text(
+                              '🛒 Van Sale',
+                              style: TextStyle(
+                                fontWeight: .bold,
+                                fontSize: 14,
+                                color: selectCard == 3
+                                    ? Colors.white
+                                    : AppColors.textPrimary,
+                              ),
+                            ),
+                          ),
                         ),
                       ),
                     ],

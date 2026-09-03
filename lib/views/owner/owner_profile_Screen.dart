@@ -191,7 +191,7 @@ class _OwnerProfileScreenState extends State<OwnerProfileScreen> {
                     // log out Button
                     GestureDetector(
                       onTap: () {
-                        Navigator.push(context, MaterialPageRoute(builder: (context)=>LoginScreen()));
+                        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>LoginScreen()));
                       },
                       child: Container(
                         width: screenWidth - 32,

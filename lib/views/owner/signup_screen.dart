@@ -36,40 +36,35 @@ class _SignupScreenState extends State<SignupScreen> {
     return Scaffold(
       resizeToAvoidBottomInset: true,
       backgroundColor: AppColors.backgroundCanvas,
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        backgroundColor: AppColors.headerNavy,
+        title: Column(
+          crossAxisAlignment: .start,
+          children: [
+            Text(
+              'Owner Registration',
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: .bold,
+                color: Colors.white,
+              ),
+            ),
+            SizedBox(height: 6),
+            Text(
+              'Register main warehouse & factory account',
+              style: TextStyle(
+                color: AppColors.textMuted,
+                fontSize: 12,
+                fontWeight: .w400,
+              ),
+            ),
+          ],
+        ),
+      ),
       body: SingleChildScrollView(
         child: Column(
           children: [
-            // the top container of owner registration
-            Container(
-              width: screenWidth,
-              height: 100,
-              color: AppColors.headerNavy,
-              child: Padding(
-                padding: const EdgeInsets.only(top: 34, left: 24),
-                child: Column(
-                  crossAxisAlignment: .start,
-                  children: [
-                    Text(
-                      'Owner Registration',
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: .bold,
-                        color: Colors.white,
-                      ),
-                    ),
-                    SizedBox(height: 6),
-                    Text(
-                      'Register main warehouse & factory account',
-                      style: TextStyle(
-                        color: AppColors.textMuted,
-                        fontSize: 12,
-                        fontWeight: .w400,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
             SizedBox(height: 20),
             // the whole big containner
             Container(

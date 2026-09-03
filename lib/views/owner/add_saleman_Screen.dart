@@ -31,40 +31,35 @@ class _AddSalesmanScreenState extends State<AddSalesmanScreen> {
     return Scaffold(
       resizeToAvoidBottomInset: true,
       backgroundColor: AppColors.backgroundCanvas,
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        backgroundColor: AppColors.headerNavy,
+        title: Column(
+          crossAxisAlignment: .start,
+          children: [
+            Text(
+              'Add New Salesman',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 18,
+                fontWeight: .bold,
+              ),
+            ),
+            SizedBox(height: 6),
+            Text(
+              'Create sales driver login for mobile van',
+              style: TextStyle(
+                color: AppColors.textMuted,
+                fontSize: 12,
+                fontWeight: .w400,
+              ),
+            ),
+          ],
+        ),
+      ),
       body: SingleChildScrollView(
         child: Column(
           children: [
-            // A top containner
-            Container(
-              width: screenWidth,
-              height: 100,
-              decoration: BoxDecoration(color: AppColors.headerNavy),
-              child: Padding(
-                padding: const EdgeInsets.only(left: 24, top: 34),
-                child: Column(
-                  crossAxisAlignment: .start,
-                  children: [
-                    Text(
-                      'Add New Salesman',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 18,
-                        fontWeight: .bold,
-                      ),
-                    ),
-                    SizedBox(height: 6),
-                    Text(
-                      'Create sales driver login for mobile van',
-                      style: TextStyle(
-                        color: AppColors.textMuted,
-                        fontSize: 12,
-                        fontWeight: .w400,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
             SizedBox(height: 20),
             // A main containner
             Container(

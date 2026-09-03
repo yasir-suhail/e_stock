@@ -24,56 +24,44 @@ class _FactorySaleScreenState extends State<FactorySaleScreen> {
     return Scaffold(
       backgroundColor: AppColors.backgroundCanvas,
       resizeToAvoidBottomInset: true,
+      appBar: AppBar(
+        leading: IconButton(
+          onPressed: () {
+            setState(() {
+              widget.onBack();
+            });
+          },
+          icon: Icon(Icons.arrow_back_rounded, color: Colors.white),
+        ),
+        backgroundColor: AppColors.headerNavy,
+        centerTitle: true,
+        title: Column(
+          crossAxisAlignment: .start,
+          children: [
+            Text(
+              'Factory Sale / Direct Deduction',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 18,
+                fontWeight: .bold,
+              ),
+            ),
+            SizedBox(height: 4),
+            Text(
+              'Reduce main warehouse quantity',
+              style: TextStyle(
+                color: AppColors.textMuted,
+                fontSize: 12,
+                fontWeight: .w400,
+              ),
+            ),
+          ],
+        ),
+      ),
       body: SingleChildScrollView(
         child: Column(
           children: [
             // header container
-            Container(
-              width: screenWidth,
-              height: 100,
-              decoration: BoxDecoration(color: AppColors.headerNavy),
-              child: Row(
-                children: [
-                  IconButton(
-                    onPressed: () {
-                      setState(() {
-                        widget.onBack();
-                      });
-                    },
-                    icon: Icon(
-                      Icons.arrow_back_rounded,
-                      color: AppColors.textLabels,
-                      size: 22,
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 34),
-                    child: Column(
-                      crossAxisAlignment: .start,
-                      children: [
-                        Text(
-                          'Factory Sale / Direct Deduction',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 18,
-                            fontWeight: .bold,
-                          ),
-                        ),
-                        SizedBox(height: 4),
-                        Text(
-                          'Reduce main warehouse quantity',
-                          style: TextStyle(
-                            color: AppColors.textMuted,
-                            fontSize: 12,
-                            fontWeight: .w400,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
             SizedBox(height: 25),
             // main container
             Container(
@@ -177,25 +165,41 @@ class _FactorySaleScreenState extends State<FactorySaleScreen> {
                         ),
                       ),
                     ),
-                    SizedBox(height: 17,),
+                    SizedBox(height: 17),
                     // text of the factory sale products
-                    Text('DEDUCT QUANTITY (PACKS)',style: TextStyle(fontWeight: .bold,fontSize: 12,color: AppColors.textLabels),),
-                    SizedBox(height: 8,),
+                    Text(
+                      'DEDUCT QUANTITY (PACKS)',
+                      style: TextStyle(
+                        fontWeight: .bold,
+                        fontSize: 12,
+                        color: AppColors.textLabels,
+                      ),
+                    ),
+                    SizedBox(height: 8),
                     // Text Form field of the factory sale
                     CustomTextfield(
-                        controller: saleFromFactoryController,
-                        hintText: 'Add Quantity'),
-                    SizedBox(height: 14,),
+                      controller: saleFromFactoryController,
+                      hintText: 'Add Quantity',
+                    ),
+                    SizedBox(height: 14),
                     // Text of the reasom to sale
-                    Text('REASON / REMARKS (OPTIONAL)',style: TextStyle(fontWeight: .bold,fontSize: 12,color: AppColors.textLabels),),
-                    SizedBox(height: 8,),
+                    Text(
+                      'REASON / REMARKS (OPTIONAL)',
+                      style: TextStyle(
+                        fontWeight: .bold,
+                        fontSize: 12,
+                        color: AppColors.textLabels,
+                      ),
+                    ),
+                    SizedBox(height: 8),
                     // Text form field of the reason to sale
                     CustomTextfield(
-                        controller: reasonToSellController,
-                        hintText: ''),
-                    SizedBox(height: 38,),
+                      controller: reasonToSellController,
+                      hintText: '',
+                    ),
+                    SizedBox(height: 38),
                     // confirm factory sale button
-                    CustomButton(title: 'Confirm Factory Sale', onTap: (){})
+                    CustomButton(title: 'Confirm Factory Sale', onTap: () {}),
                   ],
                 ),
               ),
