@@ -6,6 +6,7 @@ class AppColors{
   static const Color vanAmber = Color(0xFFD97706);
   static const Color productionGreen = Color(0xFF16A34A);
   static const Color backgroundCanvas = Color(0xFFF8FAFC);
+  static const Color whiteColor = Colors.white;
 
   // Borders & Containers
   static const Color cardBorder = Color(0xffF1F5F9);

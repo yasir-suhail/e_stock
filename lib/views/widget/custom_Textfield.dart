@@ -9,6 +9,7 @@ class CustomTextfield extends StatelessWidget {
   final Widget? suffixIcon;
   final String? Function(String?)? validator;
   final TextInputType? keyboardtype;
+  final Color focusedColor;
 
   const CustomTextfield({
     required this.hintText,
@@ -18,6 +19,7 @@ class CustomTextfield extends StatelessWidget {
     this.keyboardtype,
     this.prefixIcon,
     this.suffixIcon,
+    this.focusedColor=AppColors.primaryBlue,
     super.key,
   });
 
@@ -39,7 +41,7 @@ class CustomTextfield extends StatelessWidget {
         ),
         focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10),
-            borderSide: BorderSide(color: AppColors.primaryBlue)
+            borderSide: BorderSide(color: focusedColor)
         ),
 
         // errorBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.red),

@@ -163,55 +163,25 @@ class _OwnerProfileScreenState extends State<OwnerProfileScreen> {
                     Divider(color: AppColors.inputBorder),
                     SizedBox(height: 15),
                     // add salesman button
-                    GestureDetector(
+                    CustomButton(
+                      title: '+ Add Salesman Account',
+                      borderColor: AppColors.inputBorder,
+                      textColor: AppColors.primaryBlue,
+                      backgroundColor: AppColors.backgroundCanvas,
                       onTap: () {
                         Navigator.push(context, MaterialPageRoute(builder: (context)=>AddSalesmanScreen()));
+
                       },
-                      child: Container(
-                        width: screenWidth - 32,
-                        height: 44,
-                        decoration: BoxDecoration(
-                          color: Color(0xffF8FAFC),
-                          borderRadius: BorderRadius.circular(10),
-                          border: Border.all(color: AppColors.inputBorder),
-                        ),
-                        child: Center(
-                          child: Text(
-                            '+ Add Salesman Account',
-                            style: TextStyle(
-                              color: AppColors.primaryBlue,
-                              fontWeight: .bold,
-                              fontSize: 12,
-                            ),
-                          ),
-                        ),
-                      ),
                     ),
-                    SizedBox(height: 30,),
+                    SizedBox(height: 30),
                     // log out Button
-                    GestureDetector(
+                    CustomButton(
+                      title: 'Sign Out',
+                      backgroundColor: AppColors.headerNavy,
                       onTap: () {
                         Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>LoginScreen()));
+
                       },
-                      child: Container(
-                        width: screenWidth - 32,
-                        height: 44,
-                        decoration: BoxDecoration(
-                          color: AppColors.textPrimary,
-                          borderRadius: BorderRadius.circular(10),
-                          border: Border.all(color: AppColors.inputBorder),
-                        ),
-                        child: Center(
-                          child: Text(
-                            'Sign out',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: .bold,
-                              fontSize: 13,
-                            ),
-                          ),
-                        ),
-                      ),
                     ),
                   ],
                 ),
