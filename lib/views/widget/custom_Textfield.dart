@@ -29,6 +29,8 @@ class CustomTextfield extends StatelessWidget {
       validator: validator,
       keyboardType: keyboardtype,
       decoration: InputDecoration(
+        fillColor: AppColors.backgroundCanvas,
+        filled: true,
         hintText: hintText,hintStyle:TextStyle(fontWeight: .w400,fontSize: 13,color: AppColors.textMuted),
         prefixIcon: prefixIcon,prefixIconColor: AppColors.textMuted,
         suffixIcon: suffixIcon,suffixIconColor: AppColors.textMuted,

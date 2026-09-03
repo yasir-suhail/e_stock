@@ -1,23 +1,23 @@
-import 'package:e_stock/core/constants/app_color.dart';
-import 'package:e_stock/views/widget/custom_Textfield.dart';
-import 'package:e_stock/views/widget/custom_button.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 
-class FactorySaleScreen extends StatefulWidget {
+import '../../core/constants/app_color.dart';
+import '../widget/custom_Textfield.dart';
+import '../widget/custom_button.dart';
+
+class AddProducitonScreen extends StatefulWidget {
   final VoidCallback onBack;
-
-  const FactorySaleScreen({required this.onBack, super.key});
+  const AddProducitonScreen({
+    required this.onBack,
+    super.key});
 
   @override
-  State<FactorySaleScreen> createState() => _FactorySaleScreenState();
+  State<AddProducitonScreen> createState() => _AddProducitonScreenState();
 }
 
-class _FactorySaleScreenState extends State<FactorySaleScreen> {
+class _AddProducitonScreenState extends State<AddProducitonScreen> {
   String selectProduct = 'Red Chili Powder 200g';
   var saleFromFactoryController = TextEditingController();
   var reasonToSellController = TextEditingController();
-
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.sizeOf(context).width;
@@ -52,7 +52,7 @@ class _FactorySaleScreenState extends State<FactorySaleScreen> {
                       crossAxisAlignment: .start,
                       children: [
                         Text(
-                          'Factory Sale / Direct Deduction',
+                          'Add Production In',
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 18,
@@ -61,7 +61,7 @@ class _FactorySaleScreenState extends State<FactorySaleScreen> {
                         ),
                         SizedBox(height: 4),
                         Text(
-                          'Reduce main warehouse quantity',
+                          'Record newly packaged spice stock',
                           style: TextStyle(
                             color: AppColors.textMuted,
                             fontSize: 12,
@@ -92,7 +92,7 @@ class _FactorySaleScreenState extends State<FactorySaleScreen> {
                     Padding(
                       padding: const EdgeInsets.only(top: 19),
                       child: Text(
-                        'MANUALLY SELECT PRODUCT',
+                        'MANUALLY SELECT MANUFACTURED PRODUCT',
                         style: TextStyle(
                           color: AppColors.textLabels,
                           fontSize: 12,
@@ -121,18 +121,18 @@ class _FactorySaleScreenState extends State<FactorySaleScreen> {
                             color: AppColors.textPrimary,
                           ),
                           items:
-                              [
-                                    'Red Chili Powder 200g',
-                                    'Coriander Powder 250g',
-                                    'Turmeric Powder 100g',
-                                  ]
-                                  .map(
-                                    (product) => DropdownMenuItem(
-                                      value: product,
-                                      child: Text(product),
-                                    ),
-                                  )
-                                  .toList(),
+                          [
+                            'Red Chili Powder 200g',
+                            'Coriander Powder 250g',
+                            'Turmeric Powder 100g',
+                          ]
+                              .map(
+                                (product) => DropdownMenuItem(
+                              value: product,
+                              child: Text(product),
+                            ),
+                          )
+                              .toList(),
                           onChanged: (value) {
                             setState(() {
                               selectProduct = value!;
@@ -141,61 +141,45 @@ class _FactorySaleScreenState extends State<FactorySaleScreen> {
                         ),
                       ),
                     ),
-                    SizedBox(height: 17),
-                    // available stock in factory container
-                    Container(
-                      width: screenWidth - 20,
-                      height: 100,
-                      decoration: BoxDecoration(
-                        border: Border.all(color: AppColors.inputBorder),
-                        borderRadius: BorderRadius.circular(10),
-                        color: AppColors.backgroundCanvas,
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.only(top: 14, left: 16),
-                        child: Column(
-                          crossAxisAlignment: .start,
-                          children: [
-                            Text(
-                              'AVAILABLE IN FACTORY',
-                              style: TextStyle(
-                                fontSize: 12,
-                                fontWeight: .bold,
-                                color: AppColors.textLabels,
-                              ),
-                            ),
-                            SizedBox(height: 6),
-                            Text(
-                              '850 Packs',
-                              style: TextStyle(
-                                fontSize: 20,
-                                color: AppColors.productionGreen,
-                                fontWeight: .bold,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
                     SizedBox(height: 17,),
-                    // text of the factory sale products
-                    Text('DEDUCT QUANTITY (PACKS)',style: TextStyle(fontWeight: .bold,fontSize: 12,color: AppColors.textLabels),),
+                    // text to Add new product
+                    Text('NEW PACKS PRODUCED  ',style: TextStyle(fontWeight: .bold,fontSize: 12,color: AppColors.textLabels),),
                     SizedBox(height: 8,),
                     // Text Form field of the factory sale
-                    CustomTextfield(
-                        controller: saleFromFactoryController,
-                        hintText: 'Add Quantity'),
+                    TextFormField(
+                      decoration: InputDecoration(
+                        hintText: 'Add Quantity',hintStyle:TextStyle(fontWeight: .w400,fontSize: 13,color: AppColors.textMuted),
+                        filled: true,
+                        fillColor: AppColors.backgroundCanvas,
+                        enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(10),borderSide: BorderSide(color: AppColors.inputBorder)),
+                        focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(10),borderSide: BorderSide(color: AppColors.productionGreen))
+                      ),
+                    ),
                     SizedBox(height: 14,),
-                    // Text of the reasom to sale
-                    Text('REASON / REMARKS (OPTIONAL)',style: TextStyle(fontWeight: .bold,fontSize: 12,color: AppColors.textLabels),),
+                    // Text of the Batch number
+                    Text('BATCH / LOT NUMBER',style: TextStyle(fontWeight: .bold,fontSize: 12,color: AppColors.textLabels),),
                     SizedBox(height: 8,),
                     // Text form field of the reason to sale
-                    CustomTextfield(
-                        controller: reasonToSellController,
-                        hintText: ''),
+                    TextFormField(
+                      decoration: InputDecoration(
+                          hintText: 'LOT-2026-0823',hintStyle:TextStyle(fontWeight: .w400,fontSize: 13,color: AppColors.textMuted),
+                          filled: true,
+                          fillColor: AppColors.backgroundCanvas,
+                          enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(10),borderSide: BorderSide(color: AppColors.inputBorder)),
+                          focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(10),borderSide: BorderSide(color: AppColors.productionGreen))
+                      ),
+                    ),
                     SizedBox(height: 38,),
                     // confirm factory sale button
-                    CustomButton(title: 'Confirm Factory Sale', onTap: (){})
+                    Container(
+                      width: screenWidth,
+                      height: 50,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: AppColors.productionGreen
+                      ),
+                      child: Center(child: Text('Add to Factory Inventory ',style: TextStyle(color: Colors.white,fontWeight: .bold,fontSize: 13))),
+                    )
                   ],
                 ),
               ),

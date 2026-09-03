@@ -10,11 +10,13 @@ class OwnerDashboardScreen extends StatefulWidget {
   final VoidCallback onUnloadVan;
   final VoidCallback onFactorySale;
   final VoidCallback onVanSale;
+  final VoidCallback onAddProduction;
   const OwnerDashboardScreen({
     required this.onLoadVan,
     required this.onUnloadVan,
     required this.onFactorySale,
     required this.onVanSale,
+    required this.onAddProduction,
     super.key});
 
   @override
@@ -22,6 +24,8 @@ class OwnerDashboardScreen extends StatefulWidget {
 }
 
 class _OwnerDashboardScreenState extends State<OwnerDashboardScreen> {
+  String selectProduct = 'Red Chili Powder 200g';
+
 
   // Selects which inventory card is active.
   // 0 = Load Van
@@ -72,85 +76,146 @@ class _OwnerDashboardScreenState extends State<OwnerDashboardScreen> {
             ),
             SizedBox(height: 20),
             // Active products
-            Stack(
-              children: [
-                Center(
-                  child: Container(
-                    width: screenWidth - 20,
-                    height: 100,
+            // Stack(
+            //   children: [
+            //     Center(
+            //       child: Container(
+            //         width: screenWidth - 20,
+            //         height: 100,
+            //         decoration: BoxDecoration(
+            //           border: Border.all(color: AppColors.inputBorder),
+            //           borderRadius: BorderRadius.circular(10),
+            //           color: Colors.white,
+            //         ),
+            //       ),
+            //     ),
+            //     //position the text of active product
+            //     Positioned(
+            //       top: 11,
+            //       left: 18,
+            //       child: Column(
+            //         crossAxisAlignment: .start,
+            //         children: [
+            //           Text(
+            //             'GLOBAL ACTIVE PRODUCT',
+            //             style: TextStyle(
+            //               fontSize: 11,
+            //               fontWeight: .bold,
+            //               color: AppColors.primaryBlue,
+            //             ),
+            //           ),
+            //           SizedBox(height: 7),
+            //           Text(
+            //             'Red Chili Powder 200g',
+            //             style: TextStyle(
+            //               color: AppColors.textPrimary,
+            //               fontWeight: .bold,
+            //               fontSize: 16,
+            //             ),
+            //           ),
+            //         ],
+            //       ),
+            //     ),
+            //     // position the drop down menu
+            //     Positioned(
+            //       top: 16,
+            //       right: 18,
+            //       child: DropdownMenu<String>(
+            //         label: Text(
+            //           'change',
+            //           style: TextStyle(
+            //             fontSize: 14,
+            //             fontWeight: .bold,
+            //             color: AppColors.primaryBlue,
+            //           ),
+            //         ),
+            //         inputDecorationTheme: InputDecorationTheme(
+            //           fillColor: Color(0xffEFF6FF),
+            //           filled: true,
+            //           border: OutlineInputBorder(
+            //             borderRadius: BorderRadius.circular(10),
+            //             borderSide: BorderSide(color: Color(0xffBFDBFE)),
+            //           ),
+            //           enabledBorder: OutlineInputBorder(
+            //             borderSide: BorderSide(color: Color(0xffBFDBFE)),
+            //             borderRadius: BorderRadius.circular(10),
+            //           ),
+            //         ),
+            //         // initialSelection: 'male',
+            //         dropdownMenuEntries: [
+            //           DropdownMenuEntry(value: '', label: ''),
+            //         ],
+            //       ),
+            //     ),
+            //   ],
+            // ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                child: Container(
+                    padding: EdgeInsets.symmetric(horizontal: 10),
+                    width: screenWidth-20,
+                    height: 80,
                     decoration: BoxDecoration(
+                      color: Color(0xffF1F5F9),
                       border: Border.all(color: AppColors.inputBorder),
                       borderRadius: BorderRadius.circular(10),
-                      color: Colors.white,
                     ),
+                    // drop down menu
+                    child: Column(
+                        crossAxisAlignment: .start,
+                        children: [
+
+                          Padding(
+                            padding: const EdgeInsets.only(top:8),
+                            child: Text('GLOBAL ACTIVE PRODUCT',style: TextStyle(
+                              fontSize: 11,
+                              fontWeight: .bold,
+                              color: AppColors.primaryBlue,
+                            ),
+                            ),
+                          ),
+                          DropdownButtonHideUnderline(
+                            child: DropdownButton<String>(
+                              isExpanded: true,
+                              value: selectProduct,
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: .bold,
+                                color: AppColors.textPrimary,
+                              ),
+                              items:
+                              [
+                                'Red Chili Powder 200g',
+                                'Coriander Powder 250g',
+                                'Turmeric Powder 100g',
+                              ]
+                                  .map(
+                                    (product) => DropdownMenuItem(
+                                  value: product,
+                                  child: Text(product),
+                                ),
+                              )
+                                  .toList(),
+                              onChanged: (value) {
+                                setState(() {
+                                  selectProduct = value!;
+                                });
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
                   ),
-                ),
-                //position the text of active product
-                Positioned(
-                  top: 11,
-                  left: 18,
-                  child: Column(
-                    crossAxisAlignment: .start,
-                    children: [
-                      Text(
-                        'GLOBAL ACTIVE PRODUCT',
-                        style: TextStyle(
-                          fontSize: 11,
-                          fontWeight: .bold,
-                          color: AppColors.primaryBlue,
-                        ),
-                      ),
-                      SizedBox(height: 7),
-                      Text(
-                        'Red Chili Powder 200g',
-                        style: TextStyle(
-                          color: AppColors.textPrimary,
-                          fontWeight: .bold,
-                          fontSize: 16,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                // position the drop down menu
-                Positioned(
-                  top: 16,
-                  right: 18,
-                  child: DropdownMenu<String>(
-                    label: Text(
-                      'change',
-                      style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: .bold,
-                        color: AppColors.primaryBlue,
-                      ),
-                    ),
-                    inputDecorationTheme: InputDecorationTheme(
-                      fillColor: Color(0xffEFF6FF),
-                      filled: true,
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide: BorderSide(color: Color(0xffBFDBFE)),
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Color(0xffBFDBFE)),
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                    ),
-                    // initialSelection: 'male',
-                    dropdownMenuEntries: [
-                      DropdownMenuEntry(value: '', label: ''),
-                    ],
-                  ),
-                ),
-              ],
-            ),
+              ),
+
+
             SizedBox(height: 15),
             // factory stock  and the van stock
             Row(
               mainAxisAlignment: .center,
               children: [
                 //left side column
+                // factory stock container
                 Column(
                   children: [
                     Container(
@@ -161,11 +226,30 @@ class _OwnerDashboardScreenState extends State<OwnerDashboardScreen> {
                         border: Border.all(color: AppColors.inputBorder),
                         color: Colors.white,
                       ),
+                      child: Padding(
+                        padding: const EdgeInsets.only(top: 12, left: 10),
+                        child: Column(
+                          crossAxisAlignment: .start,
+                          children: [
+                            Text(
+                              'FACTORY STOCK',
+                              style: TextStyle(
+                                fontWeight: .bold,
+                                fontSize: 12,
+                                color: AppColors.textLabels,
+                              ),
+                            ),
+                            SizedBox(height: 7),
+                            Text('1,400 Packs',style: TextStyle(color: AppColors.productionGreen,fontSize: 18,fontWeight: .bold),),
+                          ],
+                        ),
+                      ),
                     ),
                   ],
                 ),
                 SizedBox(width: 10),
                 //Right side Column
+                // van stock container
                 Column(
                   children: [
                     Container(
@@ -175,6 +259,24 @@ class _OwnerDashboardScreenState extends State<OwnerDashboardScreen> {
                         borderRadius: BorderRadius.circular(10),
                         border: Border.all(color: AppColors.inputBorder),
                         color: Colors.white,
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.only(top: 12, left: 10),
+                        child: Column(
+                          crossAxisAlignment: .start,
+                          children: [
+                            Text(
+                              'VAN STOCK',
+                              style: TextStyle(
+                                fontWeight: .bold,
+                                fontSize: 12,
+                                color: AppColors.textLabels,
+                              ),
+                            ),
+                            SizedBox(height: 7),
+                            Text('50 Packs',style: TextStyle(color: AppColors.vanAmber,fontSize: 18,fontWeight: .bold),),
+                          ],
+                        ),
                       ),
                     ),
                   ],
@@ -340,12 +442,14 @@ class _OwnerDashboardScreenState extends State<OwnerDashboardScreen> {
                   ),
                   SizedBox(height: 12),
                   GestureDetector(
-                    onTap: () {},
+                    onTap: () {
+                      widget.onAddProduction();
+                    },
                     child: Container(
                       width: screenWidth - 20,
                       height: 50,
                       decoration: BoxDecoration(
-                        color: Color(0xffF1F5F9),
+                        color: AppColors.cardBorder,
                         border: Border.all(color: AppColors.inputBorder),
                         borderRadius: BorderRadius.circular(10),
                       ),

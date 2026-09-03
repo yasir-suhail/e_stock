@@ -2,6 +2,7 @@ import 'package:e_stock/core/constants/app_color.dart';
 import 'package:e_stock/views/common/load_van_screen.dart';
 import 'package:e_stock/views/common/unload_van_screen.dart';
 import 'package:e_stock/views/common/van_sale_screen.dart';
+import 'package:e_stock/views/owner/add_Produciton_Screen.dart';
 import 'package:e_stock/views/owner/factory_sale_screen.dart';
 import 'package:e_stock/views/owner/logs_screen.dart';
 import 'package:e_stock/views/owner/owner_dashboard_screen.dart';
@@ -40,7 +41,8 @@ class _NavigationScreenState extends State<NavigationScreen> {
         onLoadVan: openLoadVan,
         onUnloadVan: openUnloadVan,
         onFactorySale: openFactorySale,
-        onVanSale: openVanSale
+        onVanSale: openVanSale,
+        onAddProduction : addProduction,
     );
   }
   // Replace the current screen with LoadVanScreen.
@@ -67,6 +69,11 @@ class _NavigationScreenState extends State<NavigationScreen> {
       currentScreen =VansaleScreen(onBack: openDashboard);
     });
   }
+  void addProduction(){
+    setState(() {
+      currentScreen = AddProducitonScreen(onBack: openDashboard,);
+    });
+  }
 
   // Back to dashboard
   void openDashboard(){
@@ -79,7 +86,8 @@ class _NavigationScreenState extends State<NavigationScreen> {
            onLoadVan: openLoadVan,
            onUnloadVan: openUnloadVan,
            onFactorySale: openFactorySale,
-           onVanSale: openVanSale
+           onVanSale: openVanSale,
+           onAddProduction: addProduction,
        );
     });
   }

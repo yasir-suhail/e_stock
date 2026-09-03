@@ -8,7 +8,7 @@ class AppColors{
   static const Color backgroundCanvas = Color(0xFFF8FAFC);
 
   // Borders & Containers
-  static const Color cardBorder = Color(0xFFCBD5E1);
+  static const Color cardBorder = Color(0xffF1F5F9);
   static const Color inputBorder = Color(0xFFE2E8F0);
 
   // Text Colors
