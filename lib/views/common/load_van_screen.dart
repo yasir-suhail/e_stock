@@ -2,9 +2,10 @@ import 'package:e_stock/core/constants/app_color.dart';
 import 'package:flutter/material.dart';
 
 class LoadVanScreen extends StatelessWidget {
+  final VoidCallback onBack;
   final bool isOwnerView; // true = Owner, false = Salesman
 
-  const LoadVanScreen({super.key, required this.isOwnerView});
+  const LoadVanScreen({super.key, required this.isOwnerView,required this.onBack});
 
   @override
   Widget build(BuildContext context) {

@@ -2,13 +2,32 @@ import 'package:e_stock/core/constants/app_color.dart';
 import 'package:flutter/material.dart';
 
 class OwnerDashboardScreen extends StatefulWidget {
-  const OwnerDashboardScreen({super.key});
+
+  // These callbacks are functions received from the parent NavigationScreen.
+  // When a card is tapped, these functions tell the parent
+  // which screen should be displayed.
+  final VoidCallback onLoadVan;
+  final VoidCallback onUnloadVan;
+  final VoidCallback onFactorySale;
+  final VoidCallback onVanSale;
+  const OwnerDashboardScreen({
+    required this.onLoadVan,
+    required this.onUnloadVan,
+    required this.onFactorySale,
+    required this.onVanSale,
+    super.key});
 
   @override
   State<OwnerDashboardScreen> createState() => _OwnerDashboardScreenState();
 }
 
 class _OwnerDashboardScreenState extends State<OwnerDashboardScreen> {
+
+  // Selects which inventory card is active.
+  // 0 = Load Van
+  // 1 = Unload Van
+  // 2 = Factory Sale
+  // 3 = Van Sale
   int selectCard = 0;
 
   @override
@@ -20,7 +39,7 @@ class _OwnerDashboardScreenState extends State<OwnerDashboardScreen> {
         child: Column(
           crossAxisAlignment: .start,
           children: [
-            //A dashboard container
+            //A dashboard Header
             Container(
               width: screenWidth,
               height: 100,
@@ -52,6 +71,7 @@ class _OwnerDashboardScreenState extends State<OwnerDashboardScreen> {
               ),
             ),
             SizedBox(height: 20),
+            // Active products
             Stack(
               children: [
                 Center(
@@ -126,7 +146,7 @@ class _OwnerDashboardScreenState extends State<OwnerDashboardScreen> {
               ],
             ),
             SizedBox(height: 15),
-            // Row for  factory stock  and the van stock
+            // factory stock  and the van stock
             Row(
               mainAxisAlignment: .center,
               children: [
@@ -187,6 +207,17 @@ class _OwnerDashboardScreenState extends State<OwnerDashboardScreen> {
                           setState(() {
                             selectCard = 0;
                           });
+
+                          // IMPORTANT:
+                          // widget.onLoadVan is the function.
+                          // () actually CALLS the function.
+                          //
+                          // The function was passed from NavigationScreen:
+                          //
+                          // onLoadVan: openLoadVan
+                          //
+                          // So this calls openLoadVan().
+                          widget.onLoadVan();
                         },
                         child: Container(
                           width: screenWidth / 2 - 15,
@@ -211,6 +242,16 @@ class _OwnerDashboardScreenState extends State<OwnerDashboardScreen> {
                           setState(() {
                             selectCard = 1;
                           });
+
+                          // Calls the function received from
+                          // NavigationScreen.
+                          //
+                          // NavigationScreen passes:
+                          // onUnloadVan: openUnloadVan
+                          //
+                          // Therefore this calls:
+                          // openUnloadVan();
+                          widget.onUnloadVan();
                         },
                         child: Container(
                           width: screenWidth / 2 - 15,
@@ -239,6 +280,16 @@ class _OwnerDashboardScreenState extends State<OwnerDashboardScreen> {
                           setState(() {
                             selectCard = 2;
                           });
+
+                          // Calls the function received from
+                          // NavigationScreen.
+                          //
+                          // NavigationScreen passes:
+                          // onFactorySale: openFactorySale
+                          //
+                          // Therefore this calls:
+                          // openFactorySale();
+                          widget.onFactorySale();
                         },
                         child: Container(
                           width: screenWidth / 2 - 15,
@@ -263,6 +314,16 @@ class _OwnerDashboardScreenState extends State<OwnerDashboardScreen> {
                           setState(() {
                             selectCard = 3;
                           });
+
+                          // Calls the function received from
+                          // NavigationScreen.
+                          //
+                          // NavigationScreen passes:
+                          // onVanSale: openVanSale
+                          //
+                          // () is IMPORTANT because it EXECUTES
+                          // the function.
+                          widget.onVanSale();
                         },
                         child: Container(
                           width: screenWidth / 2 - 15,

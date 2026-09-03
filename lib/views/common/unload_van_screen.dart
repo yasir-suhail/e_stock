@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 
 class UnloadVanScreen extends StatefulWidget {
-  const UnloadVanScreen({super.key});
+  final VoidCallback onBack;
+  const UnloadVanScreen({
+    required this.onBack,
+    super.key});
 
   @override
   State<UnloadVanScreen> createState() => _UnloadVanScreenState();

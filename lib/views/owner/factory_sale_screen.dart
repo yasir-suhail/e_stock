@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
 class FactorySaleScreen extends StatefulWidget {
-  const FactorySaleScreen({super.key});
+  final VoidCallback onBack;
+  const FactorySaleScreen({ required this.onBack ,super.key});
 
   @override
   State<FactorySaleScreen> createState() => _FactorySaleScreenState();
