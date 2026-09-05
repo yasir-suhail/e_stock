@@ -1,6 +1,7 @@
 import 'package:e_stock/core/constants/app_color.dart';
 import 'package:e_stock/views/widget/custom_Textfield.dart';
 import 'package:e_stock/views/widget/custom_button.dart';
+import 'package:e_stock/views/widget/custom_dropButton.dart';
 import 'package:flutter/material.dart';
 
 class LoadVanScreen extends StatefulWidget {
@@ -104,35 +105,14 @@ class _LoadVanScreenState extends State<LoadVanScreen> {
                           borderRadius: BorderRadius.circular(8),
                           color: AppColors.cardBorder,
                         ),
-                        child: DropdownButtonHideUnderline(
-                          child: DropdownButton<String>(
-                            isExpanded: true,
-                            value: selectProduct,
-                            style: TextStyle(
-                              fontSize: 14,
-                              fontWeight: .bold,
-                              color: AppColors.textPrimary,
-                            ),
-                            items:
-                                [
-                                      'Red Chili Powder 200g',
-                                      'Coriander Powder 250g',
-                                      'Turmeric Powder 100g',
-                                    ]
-                                    .map(
-                                      (product) => DropdownMenuItem(
-                                        value: product,
-                                        child: Text(product),
-                                      ),
-                                    )
-                                    .toList(),
-                            onChanged: (value) {
-                              setState(() {
-                                selectProduct = value!;
-                              });
-                            },
-                          ),
-                        ),
+                      // custom Drop down menu
+                        child: CustomDropdown(value: selectProduct, items: ['Red Chili Powder 200g',
+                          'Coriander Powder 250g',
+                          'Turmeric Powder 100g'], onChanged: ((value) {
+                            setState(() {
+                              selectProduct=value!;
+                            });
+                          })),
                       ),
                       SizedBox(height: 18),
                       //Card Row

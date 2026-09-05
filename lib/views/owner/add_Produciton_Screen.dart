@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../core/constants/app_color.dart';
 import '../widget/custom_Textfield.dart';
 import '../widget/custom_button.dart';
+import '../widget/custom_dropButton.dart';
 
 class AddProducitonScreen extends StatefulWidget {
   final VoidCallback onBack;
@@ -99,36 +100,18 @@ class _AddProducitonScreenState extends State<AddProducitonScreen> {
                           border: Border.all(color: AppColors.inputBorder),
                           borderRadius: BorderRadius.circular(10),
                         ),
-                        // drop down menu
-                        child: DropdownButtonHideUnderline(
-                          child: DropdownButton<String>(
-                            isExpanded: true,
+                        // custom drop down menu
+                          child: CustomDropdown(
                             value: selectProduct,
-                            style: TextStyle(
-                              fontSize: 14,
-                              fontWeight: .bold,
-                              color: AppColors.textPrimary,
-                            ),
-                            items:
-                                [
-                                      'Red Chili Powder 200g',
-                                      'Coriander Powder 250g',
-                                      'Turmeric Powder 100g',
-                                    ]
-                                    .map(
-                                      (product) => DropdownMenuItem(
-                                        value: product,
-                                        child: Text(product),
-                                      ),
-                                    )
-                                    .toList(),
+                            items: ['Red Chili Powder 200g',
+                              'Coriander Powder 250g',
+                              'Turmeric Powder 100g',],
                             onChanged: (value) {
                               setState(() {
                                 selectProduct = value!;
                               });
                             },
-                          ),
-                        ),
+                          )
                       ),
                       SizedBox(height: 17),
                       // text to Add new product
@@ -142,28 +125,7 @@ class _AddProducitonScreenState extends State<AddProducitonScreen> {
                       ),
                       SizedBox(height: 8),
                       // Text Form field of the factory sale
-                      TextFormField(
-                        decoration: InputDecoration(
-                          hintText: 'Add Quantity',
-                          hintStyle: TextStyle(
-                            fontWeight: .w400,
-                            fontSize: 13,
-                            color: AppColors.textMuted,
-                          ),
-                          filled: true,
-                          fillColor: AppColors.backgroundCanvas,
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide: BorderSide(color: AppColors.inputBorder),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide: BorderSide(
-                              color: AppColors.productionGreen,
-                            ),
-                          ),
-                        ),
-                      ),
+                     CustomTextfield(hintText: 'Add Quantity',focusedColor: AppColors.productionGreen,),
                       SizedBox(height: 14),
                       // Text of the Batch number
                       Text(
@@ -176,28 +138,7 @@ class _AddProducitonScreenState extends State<AddProducitonScreen> {
                       ),
                       SizedBox(height: 8),
                       // Text form field of the reason to sale
-                      TextFormField(
-                        decoration: InputDecoration(
-                          hintText: 'LOT-2026-0823',
-                          hintStyle: TextStyle(
-                            fontWeight: .w400,
-                            fontSize: 13,
-                            color: AppColors.textMuted,
-                          ),
-                          filled: true,
-                          fillColor: AppColors.backgroundCanvas,
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide: BorderSide(color: AppColors.inputBorder),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide: BorderSide(
-                              color: AppColors.productionGreen,
-                            ),
-                          ),
-                        ),
-                      ),
+                      CustomTextfield(hintText: 'LOT-2026-0823',focusedColor: AppColors.productionGreen,),
                       SizedBox(height: 38),
                       // confirm factory sale button
                       CustomButton(title: 'Add Factory Inventory', backgroundColor: AppColors.productionGreen, onTap: (){})

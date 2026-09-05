@@ -1,5 +1,6 @@
 import 'package:e_stock/views/widget/custom_Textfield.dart';
 import 'package:e_stock/views/widget/custom_button.dart';
+import 'package:e_stock/views/widget/custom_dropButton.dart';
 import 'package:flutter/material.dart';
 
 import '../../core/constants/app_color.dart';
@@ -99,36 +100,18 @@ class _VansaleScreenState extends State<VansaleScreen> {
                           border: Border.all(color: AppColors.inputBorder),
                           borderRadius: BorderRadius.circular(10),
                         ),
-                        // drop down menu
-                        child: DropdownButtonHideUnderline(
-                          child: DropdownButton<String>(
-                            isExpanded: true,
-                            value: selectProduct,
-                            style: TextStyle(
-                              fontSize: 14,
-                              fontWeight: .bold,
-                              color: AppColors.textPrimary,
-                            ),
-                            items:
-                                [
-                                      'Red Chili Powder 200g',
-                                      'Coriander Powder 250g',
-                                      'Turmeric Powder 100g',
-                                    ]
-                                    .map(
-                                      (product) => DropdownMenuItem(
-                                        value: product,
-                                        child: Text(product),
-                                      ),
-                                    )
-                                    .toList(),
-                            onChanged: (value) {
-                              setState(() {
-                                selectProduct = value!;
-                              });
-                            },
-                          ),
-                        ),
+                        //  custom drop down menu
+                        child: CustomDropdown(
+                          value: selectProduct,
+                          items: ['Red Chili Powder 200g',
+                          'Coriander Powder 250g',
+                          'Turmeric Powder 100g',],
+                          onChanged: (value) {
+                            setState(() {
+                              selectProduct = value!;
+                            });
+                          },
+                        )
                       ),
                       SizedBox(height: 17),
                       // available stock in factory container

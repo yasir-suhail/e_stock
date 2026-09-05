@@ -71,88 +71,42 @@ class _OwnerDashboardScreenState extends State<OwnerDashboardScreen> {
         ),
       ),
       body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: .start,
-          children: [
-            SizedBox(height: 20),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
-              child: Container(
-                padding: EdgeInsets.symmetric(horizontal: 10),
-                width: screenWidth - 20,
-                height: 80,
-                decoration: BoxDecoration(
-                  color: Color(0xffF1F5F9),
-                  border: Border.all(color: AppColors.inputBorder),
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: CustomDropdown(
-                  title: 'GLOBAL ACTIVE PRODUCT',
-                  value: selectProduct,
-                  items: [ 'Red Chili Powder 200g',
-                    'Coriander Powder 250g',
-                    'Turmeric Powder 100g',
-                  ],
-                  onChanged: ((value) {
-                    setState(() {
-                      selectProduct=value!;
-                    });
-                  }),
-                ),
-                // drop down menu
-                // child: Column(
-                //   crossAxisAlignment: .start,
-                //   children: [
-                //     Padding(
-                //       padding: const EdgeInsets.only(top: 8),
-                //       child: Text(
-                //         'GLOBAL ACTIVE PRODUCT',
-                //         style: TextStyle(
-                //           fontSize: 11,
-                //           fontWeight: .bold,
-                //           color: AppColors.primaryBlue,
-                //         ),
-                //       ),
-                //     ),
-                //     DropdownButtonHideUnderline(
-                //       child: DropdownButton<String>(
-                //         isExpanded: true,
-                //         value: selectProduct,
-                //         style: TextStyle(
-                //           fontSize: 18,
-                //           fontWeight: .bold,
-                //           color: AppColors.textPrimary,
-                //         ),
-                //         items:
-                //             [
-                //                   'Red Chili Powder 200g',
-                //                   'Coriander Powder 250g',
-                //                   'Turmeric Powder 100g',
-                //                 ]
-                //                 .map(
-                //                   (product) => DropdownMenuItem(
-                //                     value: product,
-                //                     child: Text(product),
-                //                   ),
-                //                 )
-                //                 .toList(),
-                //         onChanged: (value) {
-                //           setState(() {
-                //             selectProduct = value!;
-                //           });
-                //         },
-                //       ),
-                //     ),
-                //   ],
-                // ),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 10),
+          child: Column(
+            crossAxisAlignment: .start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(top: 25 ),
+                child: Text('GLOBAL ACTIVE PRODUCT',style: TextStyle(color: AppColors.primaryBlue,fontSize: 12,fontWeight: .bold),),
               ),
-            ),
-
-            SizedBox(height: 15),
-            // factory stock  and the van stock
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
-              child: Row(
+              SizedBox(height: 15),
+          Container(
+                  padding: EdgeInsets.symmetric(horizontal: 10),
+                  width: screenWidth - 20,
+                  height: 65,
+                  decoration: BoxDecoration(
+                    color: AppColors.whiteColor,
+                    border: Border.all(color: AppColors.inputBorder),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  //custom drop Down button
+                  child: CustomDropdown(
+                    value: selectProduct,size: 18,
+                    items: [ 'Red Chili Powder 200g',
+                      'Coriander Powder 250g',
+                      'Turmeric Powder 100g',
+                    ],
+                    onChanged: ((value) {
+                      setState(() {
+                        selectProduct=value!;
+                      });
+                    }),
+                  ),
+          ),
+              SizedBox(height: 15),
+              // factory stock  and the van stock
+              Row(
                 children: [
                   StockCard(
                     title: 'FACTORY STOCK',
@@ -167,11 +121,8 @@ class _OwnerDashboardScreenState extends State<OwnerDashboardScreen> {
                   ),
                 ],
               ),
-            ),
-            SizedBox(height: 16),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
-              child: Column(
+              SizedBox(height: 16),
+              Column(
                 crossAxisAlignment: .start,
                 children: [
                   Text(
@@ -297,8 +248,8 @@ class _OwnerDashboardScreenState extends State<OwnerDashboardScreen> {
                   ),
                 ],
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

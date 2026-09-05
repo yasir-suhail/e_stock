@@ -1,3 +1,4 @@
+import 'package:e_stock/views/widget/custom_dropButton.dart';
 import 'package:flutter/material.dart';
 
 import '../../core/constants/app_color.dart';
@@ -20,7 +21,9 @@ class _UnloadVanScreenState extends State<UnloadVanScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final screenWidth = MediaQuery.sizeOf(context).width;
+    final screenWidth = MediaQuery
+        .sizeOf(context)
+        .width;
     return Scaffold(
       backgroundColor: AppColors.backgroundCanvas,
       resizeToAvoidBottomInset: true,
@@ -81,7 +84,7 @@ class _UnloadVanScreenState extends State<UnloadVanScreen> {
                       Padding(
                         padding: const EdgeInsets.only(top: 19),
                         child: Text(
-                          'SELECT PRODUCT TO LOAD',
+                          'SELECT PRODUCT TO UNLOAD',
                           style: TextStyle(
                             color: AppColors.textLabels,
                             fontSize: 12,
@@ -92,42 +95,23 @@ class _UnloadVanScreenState extends State<UnloadVanScreen> {
                       SizedBox(height: 8),
                       // dropdown menu container
                       Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 12),
-                        height: 50,
-                        decoration: BoxDecoration(
-                          border: Border.all(color: AppColors.inputBorder),
-                          borderRadius: BorderRadius.circular(8),
-                          color: AppColors.cardBorder,
-                        ),
-                        child: DropdownButtonHideUnderline(
-                          child: DropdownButton<String>(
-                            isExpanded: true,
-                            value: selectProduct,
-                            style: TextStyle(
-                              fontSize: 14,
-                              fontWeight: .bold,
-                              color: AppColors.textPrimary,
-                            ),
-                            items:
-                                [
-                                      'Red Chili Powder 200g',
-                                      'Coriander Powder 250g',
-                                      'Turmeric Powder 100g',
-                                    ]
-                                    .map(
-                                      (product) => DropdownMenuItem(
-                                        value: product,
-                                        child: Text(product),
-                                      ),
-                                    )
-                                    .toList(),
+                          padding: const EdgeInsets.symmetric(horizontal: 12),
+                          height: 50,
+                          decoration: BoxDecoration(
+                            border: Border.all(color: AppColors.inputBorder),
+                            borderRadius: BorderRadius.circular(8),
+                            color: AppColors.cardBorder,
+                          ),
+                          // custom Drop down menu
+                          child: CustomDropdown(value: selectProduct,
+                            items: ['Red Chili Powder 200g',
+                              'Coriander Powder 250g',
+                              'Turmeric Powder 100g'],
                             onChanged: (value) {
                               setState(() {
                                 selectProduct = value!;
                               });
-                            },
-                          ),
-                        ),
+                            },)
                       ),
                       SizedBox(height: 18),
                       //Card Row
@@ -243,7 +227,7 @@ class _UnloadVanScreenState extends State<UnloadVanScreen> {
                       // Confirm Unload to Factory
                       CustomButton(title: 'Confirm Unload toFactory',
                           backgroundColor: AppColors.headerNavy,
-                          onTap: (){})
+                          onTap: () {})
                     ],
                   ),
                 ),
