@@ -7,17 +7,21 @@ class StockCard extends StatelessWidget {
   final String title;
   final String value;
   final Color valueColor;
+  final double valueFontSize;
+  final double containerHeight;
   const StockCard({
     required this.title,
     required this.value,
     required this.valueColor,
+    this.valueFontSize=18,
+    this.containerHeight=120,
     super.key});
 
   @override
   Widget build(BuildContext context) {
     return Expanded(
       child: Container(
-        height: 120,
+        height: containerHeight,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
           border: Border.all(
@@ -48,7 +52,7 @@ class StockCard extends StatelessWidget {
                 value,
                 style: TextStyle(
                   color: valueColor,
-                  fontSize: 18,
+                  fontSize: valueFontSize,
                   fontWeight: FontWeight.bold,
                 ),
               ),

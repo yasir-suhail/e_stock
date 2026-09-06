@@ -1,5 +1,6 @@
 import 'package:e_stock/core/constants/app_color.dart';
 import 'package:e_stock/views/widget/action_card.dart';
+import 'package:e_stock/views/widget/custom_button.dart';
 import 'package:e_stock/views/widget/custom_dropButton.dart';
 import 'package:flutter/material.dart';
 
@@ -30,7 +31,11 @@ class OwnerDashboardScreen extends StatefulWidget {
 
 class _OwnerDashboardScreenState extends State<OwnerDashboardScreen> {
   String selectProduct = 'Red Chili Powder 200g';
-
+  final List<String> products = [
+    'Red Chili Powder 200g',
+    'Coriander Powder 250g',
+    'Turmeric Powder 100g',
+  ];
   // Selects which inventory card is active.
   // 0 = Load Van
   // 1 = Unload Van
@@ -93,10 +98,7 @@ class _OwnerDashboardScreenState extends State<OwnerDashboardScreen> {
                   //custom drop Down button
                   child: CustomDropdown(
                     value: selectProduct,size: 18,
-                    items: [ 'Red Chili Powder 200g',
-                      'Coriander Powder 250g',
-                      'Turmeric Powder 100g',
-                    ],
+                    items: products,
                     onChanged: ((value) {
                       setState(() {
                         selectProduct=value!;
@@ -139,7 +141,7 @@ class _OwnerDashboardScreenState extends State<OwnerDashboardScreen> {
                     children: [
                       ActionCard(
                         title: ' 🚚 Load Van',
-                        onTap: () {
+                        onTap: () async {
                           setState(() {
                             selectCard = 0;
                           });
@@ -152,6 +154,7 @@ class _OwnerDashboardScreenState extends State<OwnerDashboardScreen> {
                           // onLoadVan: openLoadVan
                           //
                           // So this calls openLoadVan().
+                          await Future.delayed(Duration(milliseconds: 200));
                           widget.onLoadVan();
                         },
                         selected: selectCard == 0,
@@ -160,7 +163,7 @@ class _OwnerDashboardScreenState extends State<OwnerDashboardScreen> {
                       ActionCard(
                         title: '🔄 Unload Van',
                         selected: selectCard == 1,
-                        onTap: () {
+                        onTap: () async{
                           setState(() {
                             selectCard = 1;
                           });
@@ -172,6 +175,7 @@ class _OwnerDashboardScreenState extends State<OwnerDashboardScreen> {
                           //
                           // Therefore this calls:
                           // openUnloadVan();
+                          await Future.delayed(Duration(milliseconds: 200));
                           widget.onUnloadVan();
                         },
                       ),
@@ -183,7 +187,7 @@ class _OwnerDashboardScreenState extends State<OwnerDashboardScreen> {
                       ActionCard(
                         title: '🏭 Factory Sale',
                         selected: selectCard == 2,
-                        onTap: () {
+                        onTap: () async {
                           setState(() {
                             selectCard = 2;
                           });
@@ -195,6 +199,7 @@ class _OwnerDashboardScreenState extends State<OwnerDashboardScreen> {
                           //
                           // Therefore this calls:
                           // openFactorySale();
+                          await Future.delayed(Duration(milliseconds: 200));
                           widget.onFactorySale();
                         },
                       ),
@@ -204,7 +209,7 @@ class _OwnerDashboardScreenState extends State<OwnerDashboardScreen> {
                       ActionCard(
                         title: '🛒 Van Sale',
                         selected: selectCard == 3,
-                        onTap: () {
+                        onTap: () async {
                           setState(() {
                             selectCard = 3;
                           });
@@ -216,6 +221,7 @@ class _OwnerDashboardScreenState extends State<OwnerDashboardScreen> {
                           //
                           // () is IMPORTANT because it EXECUTES
                           // the function.
+                          await Future.delayed(Duration(milliseconds: 200));
                           widget.onVanSale();
                         },
                       ),
@@ -226,6 +232,7 @@ class _OwnerDashboardScreenState extends State<OwnerDashboardScreen> {
                     onTap: () {
                       widget.onAddProduction();
                     },
+
                     child: Container(
                       width: screenWidth - 20,
                       height: 50,

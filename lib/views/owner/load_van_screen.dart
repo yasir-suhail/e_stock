@@ -2,15 +2,13 @@ import 'package:e_stock/core/constants/app_color.dart';
 import 'package:e_stock/views/widget/custom_Textfield.dart';
 import 'package:e_stock/views/widget/custom_button.dart';
 import 'package:e_stock/views/widget/custom_dropButton.dart';
+import 'package:e_stock/views/widget/stock_card.dart';
 import 'package:flutter/material.dart';
 
 class LoadVanScreen extends StatefulWidget {
   final VoidCallback onBack;
-  final bool isOwnerView; // true = Owner, false = Salesman
-
   const LoadVanScreen({
     super.key,
-    required this.isOwnerView,
     required this.onBack,
   });
 
@@ -22,6 +20,11 @@ class _LoadVanScreenState extends State<LoadVanScreen> {
   var factoryToVanController = TextEditingController();
   var selectVanController = TextEditingController();
   String selectProduct = 'Red Chili Powder 200g';
+  final List<String> products = [
+    'Red Chili Powder 200g',
+    'Coriander Powder 250g',
+    'Turmeric Powder 100g',
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -105,90 +108,34 @@ class _LoadVanScreenState extends State<LoadVanScreen> {
                           borderRadius: BorderRadius.circular(8),
                           color: AppColors.cardBorder,
                         ),
-                      // custom Drop down menu
-                        child: CustomDropdown(value: selectProduct, items: ['Red Chili Powder 200g',
-                          'Coriander Powder 250g',
-                          'Turmeric Powder 100g'], onChanged: ((value) {
+                        // custom Drop down menu
+                        child: CustomDropdown(
+                          value: selectProduct,
+                          items: products,
+                          onChanged: ((value) {
                             setState(() {
-                              selectProduct=value!;
+                              selectProduct = value!;
                             });
-                          })),
+                          }),
+                        ),
                       ),
                       SizedBox(height: 18),
-                      //Card Row
+                      //Stock card
                       Row(
                         crossAxisAlignment: .center,
                         children: [
-                          // Factory stock container
-                          Container(
-                            width: screenWidth / 2 - 26,
-                            height: 100,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              border: Border.all(color: AppColors.inputBorder),
-                              color: AppColors.backgroundCanvas,
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.only(top: 12, left: 10),
-                              child: Column(
-                                crossAxisAlignment: .start,
-                                children: [
-                                  Text(
-                                    'FACTORY (SOURCE)',
-                                    style: TextStyle(
-                                      fontWeight: .bold,
-                                      fontSize: 12,
-                                      color: AppColors.textLabels,
-                                    ),
-                                  ),
-                                  SizedBox(height: 7),
-                                  Text(
-                                    '1,400 Packs',
-                                    style: TextStyle(
-                                      color: AppColors.productionGreen,
-                                      fontSize: 16,
-                                      fontWeight: .bold,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
+                          StockCard(
+                            containerHeight: 100,
+                            title: 'Factory(SOURCE)',
+                            value: '1,400 Packs',
+                            valueColor: AppColors.productionGreen,
                           ),
                           SizedBox(width: 10),
-                          // van stock container
-                          Container(
-                            width: screenWidth / 2 - 26,
-                            height: 100,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              border: Border.all(color: AppColors.inputBorder),
-                              color: AppColors.backgroundCanvas,
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.only(top: 12, left: 10),
-                              child: Column(
-                                crossAxisAlignment: .start,
-                                children: [
-                                  Text(
-                                    'VAN (TARGET)',
-                                    style: TextStyle(
-                                      fontWeight: .bold,
-                                      fontSize: 12,
-                                      color: AppColors.textLabels,
-                                    ),
-                                  ),
-                                  SizedBox(height: 7),
-                                  Text(
-                                    '50 Packs',
-                                    style: TextStyle(
-                                      color: AppColors.vanAmber,
-                                      fontSize: 16,
-                                      fontWeight: .bold,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
+                          StockCard(
+                            containerHeight: 100,
+                            title: 'Van(TARGET)',
+                            value: '50 Packs',
+                            valueColor: AppColors.vanAmber,
                           ),
                         ],
                       ),
@@ -226,8 +173,7 @@ class _LoadVanScreenState extends State<LoadVanScreen> {
                       ),
                       SizedBox(height: 50),
                       // the execute transfer button
-                      CustomButton(title: 'Execute Transfer',
-                          onTap: () {}),
+                      CustomButton(title: 'Execute Transfer', onTap: () {}),
                     ],
                   ),
                 ),

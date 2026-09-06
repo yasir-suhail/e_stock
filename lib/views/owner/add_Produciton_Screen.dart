@@ -16,6 +16,11 @@ class AddProducitonScreen extends StatefulWidget {
 
 class _AddProducitonScreenState extends State<AddProducitonScreen> {
   String selectProduct = 'Red Chili Powder 200g';
+  final List<String> products = [
+    'Red Chili Powder 200g',
+    'Coriander Powder 250g',
+    'Turmeric Powder 100g',
+  ];
   var addProductFactoryController = TextEditingController();
   var batchNoController = TextEditingController();
 
@@ -103,9 +108,7 @@ class _AddProducitonScreenState extends State<AddProducitonScreen> {
                         // custom drop down menu
                           child: CustomDropdown(
                             value: selectProduct,
-                            items: ['Red Chili Powder 200g',
-                              'Coriander Powder 250g',
-                              'Turmeric Powder 100g',],
+                            items: products,
                             onChanged: (value) {
                               setState(() {
                                 selectProduct = value!;

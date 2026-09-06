@@ -1,4 +1,4 @@
-import 'package:e_stock/views/common/load_van_screen.dart';
+import 'package:e_stock/views/owner/load_van_screen.dart';
 import 'package:e_stock/views/login_screen/login_screen.dart';
 import 'package:e_stock/views/owner/navigation_screen.dart';
 import 'package:e_stock/views/owner/owner_dashboard_screen.dart';

@@ -8,7 +8,7 @@ class ActionCard extends StatelessWidget {
   final VoidCallback onTap;
   const ActionCard({
     required this.title,
-    required this.selected,
+     required this.selected,
     required this.onTap,
     super.key,
   });
