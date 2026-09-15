@@ -2,13 +2,13 @@ import 'package:e_stock/core/constants/app_color.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-class LogsContainner extends StatelessWidget {
+class LogsContainer extends StatelessWidget {
   final String type;
   final String product;
   final String quantity;
   final String time;
 
-  const LogsContainner({
+  const LogsContainer({
     super.key,
     required this.type,
     required this.product,

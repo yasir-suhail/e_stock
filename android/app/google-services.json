@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1030578583072",
+    "project_id": "e-stock-45b4a",
+    "storage_bucket": "e-stock-45b4a.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1030578583072:android:11b74c4ddb085e59beee45",
+        "android_client_info": {
+          "package_name": "com.example.e_stock"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDzDg-5vMbkWHQYn4F67_oR_kDzMr7VFOM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

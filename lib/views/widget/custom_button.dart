@@ -9,6 +9,7 @@ class CustomButton extends StatelessWidget {
   final Color backgroundColor;
   final Color textColor;
   final Color? borderColor;
+  // final double?  buttonWidth;
 
   const CustomButton({
     required this.title,
@@ -17,8 +18,11 @@ class CustomButton extends StatelessWidget {
     this.backgroundColor=AppColors.primaryBlue,
     this.textColor= AppColors.whiteColor,
     this.borderColor,
+    // this.buttonWidth =44,
     super.key,
   });
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +30,7 @@ class CustomButton extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        width: screenWidth-32,
+        width: screenWidth-20,
         height: 44,
         decoration: BoxDecoration(
           color: backgroundColor,

@@ -1,0 +1,423 @@
+import 'package:e_stock/core/constants/app_color.dart';
+import 'package:e_stock/view_Model/auth_viewmodel.dart';
+import 'package:e_stock/views/widget/custom_Textfield.dart';
+import 'package:e_stock/views/widget/custom_button.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_database/firebase_database.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+import 'package:provider/provider.dart';
+import 'login_screen.dart';
+
+class SignupScreen extends StatefulWidget {
+  const SignupScreen({super.key});
+
+  @override
+  State<SignupScreen> createState() => _SignupScreenState();
+}
+
+class _SignupScreenState extends State<SignupScreen> {
+  // /Form
+  final formKey = GlobalKey<FormState>();
+
+  // controllers
+  var fullNameController = TextEditingController();
+  var factoryNameController = TextEditingController();
+  var emailController = TextEditingController();
+  var phoneController = TextEditingController();
+  var passwordController = TextEditingController();
+
+  // boolean operation for show and hide password
+  bool showPassword = false;
+
+  //  boolean for the circular progress indicator
+  bool loading = false;
+  // instead of this we use the provider
+  // FirebaseAuth auth = FirebaseAuth.instance;
+  // DatabaseReference ownerUser = FirebaseDatabase.instance.ref('ownerUsers');
+
+  // save userData
+  // Future<void> saveOwnerData() async {
+  //   final User? user = FirebaseAuth.instance.currentUser;
+  //
+  //   if (user == null) {
+  //     throw Exception('User is not logged in after registration.');
+  //   }
+  //
+  //   final String uid = user.uid;
+  //   await ownerUser.child(uid).set({
+  //     'uid': uid,
+  //     'email': emailController.text.trim(),
+  //     'fullName': fullNameController.text.trim(),
+  //     'factoryName': factoryNameController.text.trim(),
+  //     'phoneNo': phoneController.text.trim(),
+  //   });
+  // }
+
+  @override
+  Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.sizeOf(context).width;
+    final authViewModel = context.watch<AuthViewModel>();
+    return Scaffold(
+      resizeToAvoidBottomInset: true,
+      backgroundColor: AppColors.backgroundCanvas,
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        backgroundColor: AppColors.headerNavy,
+        title: Column(
+          crossAxisAlignment: .start,
+          children: [
+            Text(
+              'Owner Registration',
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: .bold,
+                color: Colors.white,
+              ),
+            ),
+            SizedBox(height: 6),
+            Text(
+              'Register main warehouse & factory account',
+              style: TextStyle(
+                color: AppColors.textMuted,
+                fontSize: 12,
+                fontWeight: .w400,
+              ),
+            ),
+          ],
+        ),
+      ),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          child: Column(
+            children: [
+              SizedBox(height: 20),
+              // the whole big containner
+              Container(
+                width: screenWidth - 32,
+                height: 650,
+                decoration: BoxDecoration(
+                  border: Border.all(color: AppColors.inputBorder),
+                  borderRadius: BorderRadius.circular(10),
+                  color: Colors.white,
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  //inside the whole containner
+                  child: Column(
+                    crossAxisAlignment: .start,
+                    children: [
+                      SizedBox(height: 15),
+                      // create owner account text
+                      Container(
+                        height: 22,
+                        // width: screenWidth-300,
+                        width: 150,
+                        decoration: BoxDecoration(
+                          color: Color(0xffEFF6FF),
+                          borderRadius: BorderRadius.circular(5),
+                        ),
+                        child: Center(
+                          child: Text(
+                            'CREATE OWNER ACCOUNT',
+                            style: TextStyle(
+                              fontSize: 10,
+                              fontWeight: .bold,
+                              color: AppColors.primaryBlue,
+                            ),
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 20),
+                      // the form of the text form field
+                      Form(
+                        key: formKey,
+                        child: Column(
+                          crossAxisAlignment: .start,
+                          spacing: 8,
+                          children: [
+                            // full name
+                            Text(
+                              'FULL NAME',
+                              style: TextStyle(
+                                fontWeight: .bold,
+                                fontSize: 11,
+                                color: AppColors.textLabels,
+                              ),
+                            ),
+                            // Full name text form field
+                            CustomTextfield(
+                              controller: fullNameController,
+                              hintText: ' Full name',
+                              validator: (value) {
+                                if (value!.isEmpty) {
+                                  return ' please Enter a full name ';
+                                }
+                              },
+                            ),
+                            // Factory name
+                            Text(
+                              'FACTORY / MILL NAME',
+                              style: TextStyle(
+                                fontWeight: .bold,
+                                fontSize: 11,
+                                color: AppColors.textLabels,
+                              ),
+                            ),
+                            // Factory  text form field
+                            CustomTextfield(
+                              controller: factoryNameController,
+                              hintText: 'Factory name ',
+                              validator: (value) {
+                                if (value!.isEmpty) {
+                                  return ' please Enter a factory name ';
+                                }
+                              },
+                            ),
+                            // Email name
+                            Text(
+                              'OWNER EMAIL ADDRESS',
+                              style: TextStyle(
+                                fontWeight: .bold,
+                                fontSize: 11,
+                                color: AppColors.textLabels,
+                              ),
+                            ),
+                            // Email text form field
+                            CustomTextfield(
+                              controller: emailController,
+                              keyboardtype: .emailAddress,
+                              prefixIcon: Icon(Icons.email_outlined),
+                              hintText: 'Enter a valid email',
+                              validator: (value) {
+                                if (value!.isEmpty) {
+                                  return 'please Enter email';
+                                } else if (!value.contains('@')) {
+                                  return 'Enter a valid email';
+                                }
+                              },
+                            ),
+                            // Phone number
+                            Text(
+                              'PHONE NUMBER',
+                              style: TextStyle(
+                                fontWeight: .bold,
+                                fontSize: 11,
+                                color: AppColors.textLabels,
+                              ),
+                            ),
+                            // phone number text form field
+                            CustomTextfield(
+                              keyboardtype: .phone,
+                              controller: phoneController,
+                              hintText: 'Phone number',
+                              validator: (value) {
+                                if (value!.isEmpty) {
+                                  return ' Enter a phone number';
+                                }
+                              },
+                            ),
+                            // password
+                            Text(
+                              'CREATE PASSWORD',
+                              style: TextStyle(
+                                fontWeight: .bold,
+                                fontSize: 11,
+                                color: AppColors.textLabels,
+                              ),
+                            ),
+                            // password text form field
+                            CustomTextfield(
+                              obscureText: showPassword,
+                              controller: passwordController,
+                              prefixIcon: Icon(Icons.lock_outline_rounded),
+                              suffixIcon: IconButton(
+                                onPressed: () {
+                                  setState(() {
+                                    showPassword = !showPassword;
+                                  });
+                                },
+                                icon: Icon(
+                                  showPassword
+                                      ? Icons.visibility_outlined
+                                      : Icons.visibility_off_outlined,
+                                ),
+                              ),
+                              hintText: 'Create a strong password ',
+                              validator: (value) {
+                                if (value!.isEmpty) {
+                                  return 'please Enter password';
+                                }
+                              },
+                            ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(height: 15),
+                      // CustomButton(
+                      //   title: 'Register Owner Account',
+                      //   loading: loading,
+                      //   onTap: () async {
+                      //     // loading  = true
+                      //     setState(() {
+                      //       loading = true;
+                      //     });
+                      //     // check the validation
+                      //     if (!formKey.currentState!.validate()) {
+                      //       setState(() {
+                      //         loading = false;
+                      //       });
+                      //       return;
+                      //     }
+                      //     try {
+                      //       final success= await context.read<AuthViewModel>().
+                      //       signupOwner(
+                      //           name: fullNameController.text.trim(),
+                      //           email: emailController.text.trim(),
+                      //           password: passwordController.text.trim(),
+                      //           phone: phoneController.text.trim(),
+                      //           factoryName: factoryNameController.text.trim()
+                      //       );
+                      //       //create the account
+                      //       // await auth.createUserWithEmailAndPassword(
+                      //       //   email: emailController.text,
+                      //       //   password: passwordController.text,
+                      //       // );
+                      //       // // save user data
+                      //       // await saveOwnerData();
+                      //       // ----------------------------------------------
+                      //       // await FirebaseServices().signupOwner(
+                      //       //   name:  fullNameController.text.trim(),
+                      //       //   factoryName: factoryNameController.text.trim(),
+                      //       //   phone: phoneController.text.trim(),
+                      //       //   email: emailController.text.trim(),
+                      //       //   password: passwordController.text.trim()
+                      //       // );
+                      //
+                      //       if (!context.mounted) return;
+                      //       // show successfully message
+                      //       ScaffoldMessenger.of(context).showSnackBar(
+                      //         SnackBar(
+                      //           content: Text('Accounted created successfully'),
+                      //         ),
+                      //       );
+                      //       setState(() {
+                      //         loading = false;
+                      //       });
+                      //       // go to login page
+                      //       Navigator.pushReplacement(
+                      //         context,
+                      //         MaterialPageRoute(
+                      //           builder: (context) => LoginScreen(),
+                      //         ),
+                      //       );
+                      //     } catch (e) {
+                      //       // show error message
+                      //       ScaffoldMessenger.of(context).showSnackBar(
+                      //         SnackBar(content: Text(e.toString())),
+                      //       );
+                      //       setState(() {
+                      //         loading = false;
+                      //       });
+                      //     }
+                      //
+                      //     // await Future.delayed(Duration(seconds: 2));
+                      //     // ScaffoldMessenger.of(context).showSnackBar(
+                      //     //   SnackBar(content: Text('Register Successfully')),
+                      //     // );
+                      //     // Navigator.pushReplacement(
+                      //     //   context,
+                      //     //   MaterialPageRoute(
+                      //     //     builder: (context) => LoginScreen(),
+                      //     //   ),
+                      //     // );
+                      //   },
+                      // ),
+                      CustomButton(
+                        title: 'Register Owner Account',
+                        loading: authViewModel.isLoading,
+                        onTap: () async {
+                          // Check form validation first
+                          if (!formKey.currentState!.validate()) {
+                            return;
+                          }
+
+                          final success = await context.read<AuthViewModel>().signupOwner(
+                            name: fullNameController.text.trim(),
+                            email: emailController.text.trim(),
+                            password: passwordController.text.trim(),
+                            phone: phoneController.text.trim(),
+                            factoryName: factoryNameController.text.trim(),
+                          );
+
+                          if (!context.mounted) return;
+
+                          if (success) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text('Account created successfully'),
+                              ),
+                            );
+
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => LoginScreen(),
+                              ),
+                            );
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(
+                                  authViewModel.errorMessage ?? 'Something went wrong',
+                                ),
+                              ),
+                            );
+                          }
+                        },
+                      ),
+                      SizedBox(height: 10),
+                      Row(
+                        mainAxisAlignment: .center,
+                        children: [
+                          Text(
+                            'Already registered?',
+                            style: TextStyle(
+                              color: AppColors.textMuted,
+                              fontSize: 14,
+                              fontWeight: .w400,
+                            ),
+                          ),
+                          TextButton(
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => LoginScreen(),
+                                ),
+                              );
+                            },
+                            child: Text(
+                              'Sign In',
+                              style: TextStyle(
+                                color: AppColors.primaryBlue,
+                                fontWeight: .bold,
+                                fontSize: 14,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}

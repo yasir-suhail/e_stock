@@ -1,13 +1,19 @@
-import 'package:e_stock/views/owner/load_van_screen.dart';
-import 'package:e_stock/views/login_screen/login_screen.dart';
-import 'package:e_stock/views/owner/navigation_screen.dart';
-import 'package:e_stock/views/owner/owner_dashboard_screen.dart';
+import 'package:e_stock/splash_screen.dart';
+import 'package:e_stock/view_Model/auth_viewmodel.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:provider/provider.dart';
+import 'firebase_options.dart';
 
-
-void main() {
-  runApp(const MyApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  runApp(
+    ChangeNotifierProvider(
+      create: (_) => AuthViewModel(),
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -20,11 +26,10 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       theme: ThemeData(
         // colorScheme: .fromSeed(seedColor: Colors.deepPurple),
-        fontFamily: 'Inter'
+        fontFamily: 'Inter',
       ),
       // home:LoadVanScreen(isOwnerView: true)
-      home: NavigationScreen(),
+      home: SplashScreen(),
     );
   }
 }
-
