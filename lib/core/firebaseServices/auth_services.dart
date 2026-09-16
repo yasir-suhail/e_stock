@@ -4,21 +4,19 @@ import 'package:firebase_database/firebase_database.dart';
 
 import '../../firebase_options.dart';
 
-class FirebaseServices {
+class AuthServices {
   // Main Firebase Auth
   final FirebaseAuth auth = FirebaseAuth.instance;
 
   // Owner database
-  final DatabaseReference ownerUsers =
-  FirebaseDatabase.instance.ref('owner');
+  final DatabaseReference ownerUsers = FirebaseDatabase.instance.ref('owner');
 
   // Salesman database
-  final DatabaseReference salesmanUsers =
-  FirebaseDatabase.instance.ref('salesman');
+  final DatabaseReference salesmanUsers = FirebaseDatabase.instance.ref(
+    'salesman',
+  );
 
-  // ============================
-  // OWNER SIGNUP
-  // ============================
+  // -----------------OWNER SIGNUP------------
 
   Future<void> signupOwner({
     required String name,
@@ -27,8 +25,7 @@ class FirebaseServices {
     required String phone,
     required String factoryName,
   }) async {
-    final UserCredential credential =
-    await auth.createUserWithEmailAndPassword(
+    final UserCredential credential = await auth.createUserWithEmailAndPassword(
       email: email,
       password: password,
     );
@@ -38,9 +35,9 @@ class FirebaseServices {
     if (user == null) {
       throw Exception('User account was not created');
     }
-
+    // owner uid
     final String uid = user.uid;
-
+    // save the owner information
     await ownerUsers.child(uid).set({
       'name': name,
       'email': email,
@@ -50,19 +47,14 @@ class FirebaseServices {
     });
   }
 
-  // ============================
-// OWNER LOGIN
-// ============================
+  // ---------------------OWNER LOGIN-----------------
 
   Future<void> loginOwner({
     required String email,
     required String password,
   }) async {
     // Login with Firebase Authentication
-    await auth.signInWithEmailAndPassword(
-      email: email,
-      password: password,
-    );
+    await auth.signInWithEmailAndPassword(email: email, password: password);
 
     final User? user = auth.currentUser;
 
@@ -71,8 +63,7 @@ class FirebaseServices {
     }
 
     // Check whether this UID exists under owner
-    final DataSnapshot snapshot =
-    await ownerUsers.child(user.uid).get();
+    final DataSnapshot snapshot = await ownerUsers.child(user.uid).get();
 
     if (!snapshot.exists) {
       await auth.signOut();
@@ -83,9 +74,8 @@ class FirebaseServices {
     }
   }
 
-  // ============================
-  // CREATE SALESMAN
-  // ============================
+
+  // ------------------CREATE SALESMAN----------------
 
   Future<void> createSalesman({
     required String name,
@@ -107,18 +97,14 @@ class FirebaseServices {
     );
 
     // Auth belonging to the secondary app
-    final FirebaseAuth secondaryAuth =
-    FirebaseAuth.instanceFor(
+    final FirebaseAuth secondaryAuth = FirebaseAuth.instanceFor(
       app: secondaryApp,
     );
 
     try {
       // Create Salesman Firebase Authentication account
-      final UserCredential credential =
-      await secondaryAuth.createUserWithEmailAndPassword(
-        email: email,
-        password: password,
-      );
+      final UserCredential credential = await secondaryAuth
+          .createUserWithEmailAndPassword(email: email, password: password);
 
       final User? salesman = credential.user;
 
@@ -129,7 +115,7 @@ class FirebaseServices {
       // Salesman's UID
       final String salesmanUid = salesman.uid;
 
-      // Save Salesman information
+      // Save Salesman information to the database
       await salesmanUsers.child(salesmanUid).set({
         'uid': salesmanUid,
         'name': name,
@@ -144,18 +130,13 @@ class FirebaseServices {
     }
   }
 
-// ============================
-// SALESMAN LOGIN
-// ============================
+  // ---------------SALESMAN LOGIN---------------
 
   Future<void> loginSalesman({
     required String email,
     required String password,
   }) async {
-    await auth.signInWithEmailAndPassword(
-      email: email,
-      password: password,
-    );
+    await auth.signInWithEmailAndPassword(email: email, password: password);
 
     final User? user = auth.currentUser;
 
@@ -164,8 +145,7 @@ class FirebaseServices {
     }
 
     // Check whether this UID exists under salesman
-    final DataSnapshot snapshot =
-    await salesmanUsers.child(user.uid).get();
+    final DataSnapshot snapshot = await salesmanUsers.child(user.uid).get();
 
     if (!snapshot.exists) {
       await auth.signOut();
@@ -175,9 +155,9 @@ class FirebaseServices {
       );
     }
   }
-// ---------- sign out----------
+
+  // ---------- sign out----------
   Future<void> signOut() async {
     await auth.signOut();
   }
-
 }

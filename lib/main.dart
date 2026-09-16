@@ -1,5 +1,6 @@
 import 'package:e_stock/splash_screen.dart';
 import 'package:e_stock/view_Model/auth_viewmodel.dart';
+import 'package:e_stock/view_Model/profile_viewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
@@ -9,10 +10,18 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   runApp(
-    ChangeNotifierProvider(
-      create: (_) => AuthViewModel(),
-      child: const MyApp(),
-    ),
+      MultiProvider(
+        providers: [
+          ChangeNotifierProvider(
+            create: (_) => AuthViewModel(),
+          ),
+
+          ChangeNotifierProvider(
+            create: (_) => ProfileViewmodel(),
+          ),
+        ],
+        child: const MyApp(),
+      )
   );
 }
 

@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 
-import '../core/firebaseServices/firebase_services.dart';
+import '../core/firebaseServices/auth_services.dart';
 
 class AuthViewModel extends ChangeNotifier {
-  final FirebaseServices _firebaseServices = FirebaseServices();
+  final AuthServices authServices = AuthServices();
 
   bool isLoading = false;
   String? errorMessage;
+  Map<String, dynamic>? currentUser;
+
 
   // ---------------- SIGNUP OWNER ----------------
 
@@ -23,7 +25,7 @@ class AuthViewModel extends ChangeNotifier {
     notifyListeners();
 
     try {
-      await _firebaseServices.signupOwner(
+      await authServices.signupOwner(
         name: name,
         email: email,
         password: password,
@@ -54,7 +56,7 @@ class AuthViewModel extends ChangeNotifier {
     notifyListeners();
 
     try {
-      await _firebaseServices.loginOwner(
+      await authServices.loginOwner(
         email: email,
         password: password,
       );
@@ -68,6 +70,7 @@ class AuthViewModel extends ChangeNotifier {
       notifyListeners();
     }
   }
+
   // ---------------- CREATE SALESMAN ----------------
 
   Future<bool> createSalesman({
@@ -82,7 +85,7 @@ class AuthViewModel extends ChangeNotifier {
     notifyListeners();
 
     try {
-      await _firebaseServices.createSalesman(
+      await authServices.createSalesman(
         name: name,
         email: email,
         password: password,
@@ -113,7 +116,7 @@ class AuthViewModel extends ChangeNotifier {
     notifyListeners();
 
     try {
-      await _firebaseServices.loginSalesman(
+      await authServices.loginSalesman(
         email: email,
         password: password,
       );
@@ -135,7 +138,7 @@ class AuthViewModel extends ChangeNotifier {
     notifyListeners();
 
     try {
-      await _firebaseServices.signOut();
+      await authServices.signOut();
 
       await Future.delayed(
         const Duration(milliseconds: 500),
