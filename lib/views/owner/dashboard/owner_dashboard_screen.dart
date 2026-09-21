@@ -9,26 +9,29 @@ import 'package:e_stock/views/widget/custom_button.dart';
 import 'package:e_stock/views/widget/custom_dropButton.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
+import '../../../model/product_model.dart';
+import '../../../model/stock_model.dart';
+import '../../../view_Model/product_viewModel.dart';
+import '../../../view_Model/stock_viewModel.dart';
 import '../../widget/stock_card.dart';
 
 class OwnerDashboardScreen extends StatefulWidget {
-
-  const OwnerDashboardScreen({
-    super.key,
-  });
+  const OwnerDashboardScreen({super.key});
 
   @override
   State<OwnerDashboardScreen> createState() => _OwnerDashboardScreenState();
 }
 
 class _OwnerDashboardScreenState extends State<OwnerDashboardScreen> {
-  String selectProduct = 'Red Chili Powder 200g';
-  final List<String> products = [
-    'Red Chili Powder 200g',
-    'Coriander Powder 250g',
-    'Turmeric Powder 100g',
-  ];
+  // String selectProduct = 'Red Chili Powder 200g';
+  // final List<String> products = [
+  //   'Red Chili Powder 200g',
+  //   'Coriander Powder 250g',
+  //   'Turmeric Powder 100g',
+  // ];
+  String? selectedProductId;
 
   // Selects which inventory card is active.
   // 0 = Load Van
@@ -38,8 +41,45 @@ class _OwnerDashboardScreenState extends State<OwnerDashboardScreen> {
   int selectCard = 0;
 
   @override
+  @override
+  void initState() {
+    super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final productViewModel = Provider.of<ProductViewmodel>(
+        context,
+        listen: false,
+      );
+
+      final stockViewModel = Provider.of<StockViewmodel>(
+        context,
+        listen: false,
+      );
+
+      productViewModel.getProducts();
+      stockViewModel.getStock();
+    });
+  }
+  @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.sizeOf(context).width;
+    final productViewModel = Provider.of<ProductViewmodel>(context);
+    ProductModel? selectedProduct;
+    for (final product in productViewModel.allProducts) {
+      if (product.id == selectedProductId) {
+        selectedProduct = product;
+        break;
+      }
+    }
+    final stockViewModel = Provider.of<StockViewmodel>(context);
+    StockModel? selectedStock;
+
+    for (final stock in stockViewModel.allStock) {
+      if (stock.productId == selectedProductId) {
+        selectedStock = stock;
+        break;
+      }
+    }
     return Scaffold(
       backgroundColor: AppColors.backgroundCanvas,
       resizeToAvoidBottomInset: false,
@@ -97,33 +137,59 @@ class _OwnerDashboardScreenState extends State<OwnerDashboardScreen> {
                   borderRadius: BorderRadius.circular(10),
                 ),
                 //custom drop Down button
-                child: CustomDropdown(
-                  value: selectProduct,
-                  size: 18,
-                  items: products,
-                  onChanged: ((value) {
+                // child: CustomDropdown(
+                //   value: selectProduct,
+                //   size: 18,
+                //   items: products,
+                //   onChanged: ((value) {
+                //     setState(() {
+                //       selectProduct = value!;
+                //     });
+                //   }),
+                // ),
+                child: DropdownButton<ProductModel>(
+                  value: selectedProduct,
+                  hint: const Text('Select Product'),
+                  isExpanded: true,
+                  style: TextStyle(fontSize: 18,color: AppColors.textPrimary,fontWeight: .w500),
+                  underline: const SizedBox(),
+                  items: productViewModel.allProducts.map((product) {
+                    return DropdownMenuItem<ProductModel>(
+                      value: product,
+                      child: Text(
+                        '${product.productName} ${product.packaging}',
+                      ),
+                    );
+                  }).toList(),
+
+                  onChanged: (ProductModel? value) {
                     setState(() {
-                      selectProduct = value!;
+                      selectedProductId = value?.id;
                     });
-                  }),
+                  },
                 ),
               ),
               SizedBox(height: 15),
               // factory stock  and the van stock
               Row(
                 children: [
+                  // factory stock
                   StockCard(
                     title: 'FACTORY STOCK',
-                    value: '1,400 Packs',
+                    value: selectedStock == null
+                        ? '0 Packs'
+                        : '${selectedStock.factoryStock} Packs',
                     valueColor: AppColors.productionGreen,
                   ),
                   const SizedBox(width: 10),
+                  //van stock
                   StockCard(
                     title: 'VAN STOCK',
-                    value: '50 Packs',
+                    value: selectedStock == null
+                        ? '0 Packs'
+                        : '${selectedStock.vanStock} Packs',
                     valueColor: AppColors.vanAmber,
-                  ),
-                ],
+                  ),                ],
               ),
               SizedBox(height: 16),
               Column(
@@ -147,10 +213,14 @@ class _OwnerDashboardScreenState extends State<OwnerDashboardScreen> {
                         onTap: () async {
                           setState(() {
                             selectCard = 0;
-                            Navigator.push(context, MaterialPageRoute(builder: (context)=>LoadVanScreen()));
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => LoadVanScreen(),
+                              ),
+                            );
                           });
                         },
-
                       ),
                       SizedBox(width: 10),
                       ActionCard(
@@ -159,7 +229,12 @@ class _OwnerDashboardScreenState extends State<OwnerDashboardScreen> {
                         onTap: () async {
                           setState(() {
                             selectCard = 1;
-                            Navigator.push(context, MaterialPageRoute(builder: ((context) => UnloadVanScreen())));
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: ((context) => UnloadVanScreen()),
+                              ),
+                            );
                           });
                         },
                       ),
@@ -174,8 +249,12 @@ class _OwnerDashboardScreenState extends State<OwnerDashboardScreen> {
                         onTap: () async {
                           setState(() {
                             selectCard = 2;
-                            Navigator.push(context, MaterialPageRoute(builder: ((context) => FactorySaleScreen())));
-
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: ((context) => FactorySaleScreen()),
+                              ),
+                            );
                           });
                         },
                       ),
@@ -188,8 +267,12 @@ class _OwnerDashboardScreenState extends State<OwnerDashboardScreen> {
                         onTap: () async {
                           setState(() {
                             selectCard = 3;
-                            Navigator.push(context, MaterialPageRoute(builder: ((context) => VansaleScreen())));
-
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: ((context) => VansaleScreen()),
+                              ),
+                            );
                           });
                         },
                       ),
@@ -198,7 +281,12 @@ class _OwnerDashboardScreenState extends State<OwnerDashboardScreen> {
                   SizedBox(height: 12),
                   GestureDetector(
                     onTap: () {
-                      Navigator.push(context, MaterialPageRoute(builder: ((context) => AddProductionProductScreen())));
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: ((context) => AddProductionProductScreen()),
+                        ),
+                      );
                     },
 
                     child: Container(

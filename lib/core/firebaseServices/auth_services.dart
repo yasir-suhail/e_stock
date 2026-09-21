@@ -69,7 +69,7 @@ class AuthServices {
       await auth.signOut();
 
       throw Exception(
-        'This account belongs to a salesman. Please use the Salesman login.',
+        'user not found ',
       );
     }
   }
@@ -151,7 +151,7 @@ class AuthServices {
       await auth.signOut();
 
       throw Exception(
-        'This account belongs to an owner. Please use the Owner login.',
+        'user not found ',
       );
     }
   }

@@ -295,14 +295,14 @@ class OwnerProfileScreen extends StatefulWidget {
 
 class _OwnerProfileScreenState extends State<OwnerProfileScreen> {
   @override
-  void initState() {
-    super.initState();
-
-    // Load owner data after the screen is created
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      context.read<ProfileViewmodel>().loadOwnerData();
-    });
-  }
+  // void initState() {
+  //   super.initState();
+  //
+  //   // Load owner data after the screen is created
+  //   WidgetsBinding.instance.addPostFrameCallback((_) {
+  //     context.read<ProfileViewmodel>().loadOwnerData();
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {

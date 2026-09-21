@@ -1,3 +1,122 @@
+// import 'package:firebase_auth/firebase_auth.dart';
+// import 'package:firebase_database/firebase_database.dart';
+//
+// import 'package:e_stock/model/owner_model.dart';
+// import 'package:e_stock/model/salesman_model.dart';
+//
+// class ProfileServices {
+//   // Firebase Authentication
+//   final FirebaseAuth auth = FirebaseAuth.instance;
+//
+//   // Owner database reference
+//   final DatabaseReference ownerUsers =
+//   FirebaseDatabase.instance.ref('owner');
+//
+//   // Salesman database reference
+//   final DatabaseReference salesmanUsers =
+//   FirebaseDatabase.instance.ref('salesman');
+//
+//   // GET CURRENT OWNER DATA
+//
+//   Future<OwnerModel?> getOwnerData() async {
+//     // Get the currently logged-in Firebase user
+//     final User? user = auth.currentUser;
+//
+//     // If nobody is logged in, return null
+//     if (user == null) {
+//       return null;
+//     }
+//
+//     // Get owner data using the current user's UID
+//     final DataSnapshot snapshot =
+//     await ownerUsers.child(user.uid).get();
+//
+//     // If owner data does not exist
+//     if (!snapshot.exists) {
+//       return null;
+//     }
+//
+//     // Convert Firebase data into a Dart Map
+//     final Map<String, dynamic> data =
+//     Map<String, dynamic>.from(snapshot.value as Map);
+//
+//     // Convert Map into OwnerModel
+//     return OwnerModel.fromMap(data);
+//   }
+//
+//   // GET CURRENT SALESMAN DATA
+//
+//   Future<SalesmanModel?> getSalesmanData() async {
+//     // Get the currently logged-in Firebase user
+//     final User? user = auth.currentUser;
+//
+//     // If nobody is logged in, return null
+//     if (user == null) {
+//       return null;
+//     }
+//
+//     // Get salesman data using the current user's UID
+//     final DataSnapshot salesmanSnapshot =
+//     await salesmanUsers.child(user.uid).get();
+//
+//     // If salesman data does not exist
+//     if (!salesmanSnapshot.exists) {
+//       return null;
+//     }
+//
+//     // Convert Firebase salesman data into a Map
+//     final Map<String, dynamic> salesmanData =
+//     Map<String, dynamic>.from(
+//       salesmanSnapshot.value as Map,
+//     );
+//
+//     // Convert the Map into SalesmanModel
+//     final SalesmanModel salesman =
+//     SalesmanModel.fromMap(salesmanData);
+//
+//     // Get the owner ID stored inside salesman data
+//     final String? ownerId = salesman.ownerId;
+//
+//     // This will contain the factory name
+//     String? factoryName;
+//
+//     // If salesman has an owner ID
+//     if (ownerId != null) {
+//
+//       // Get the owner data using ownerId
+//       final DataSnapshot ownerSnapshot =
+//       await ownerUsers.child(ownerId).get();
+//
+//       // Check if owner data exists
+//       if (ownerSnapshot.exists) {
+//
+//         // Convert owner Firebase data into Map
+//         final Map<String, dynamic> ownerData =
+//         Map<String, dynamic>.from(
+//           ownerSnapshot.value as Map,
+//         );
+//
+//         // Get factory name from owner data
+//         factoryName = ownerData['factoryName'];
+//       }
+//     }
+//
+//     // Return a new SalesmanModel
+//     //
+//     // The salesman information comes from salesman database.
+//     // The factory name comes from owner database.
+//     return SalesmanModel(
+//       uid: salesman.uid,
+//       name: salesman.name,
+//       email: salesman.email,
+//       phone: salesman.phone,
+//       ownerId: salesman.ownerId,
+//       factoryName: factoryName,
+//     );
+//   }
+// }
+
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 
@@ -17,101 +136,113 @@ class ProfileServices {
   FirebaseDatabase.instance.ref('salesman');
 
   // GET CURRENT OWNER DATA
+  //
+  // This listens to the owner data in Firebase.
+  // It does not get the data only once.
+  // If the owner data changes in Firebase,
+  // the new data will automatically be sent through the stream.
 
-  Future<OwnerModel?> getOwnerData() async {
+  Stream<OwnerModel?> ownerDataStream() {
     // Get the currently logged-in Firebase user
     final User? user = auth.currentUser;
 
-    // If nobody is logged in, return null
+    // If nobody is logged in, return an empty stream
     if (user == null) {
-      return null;
+      return const Stream.empty();
     }
 
-    // Get owner data using the current user's UID
-    final DataSnapshot snapshot =
-    await ownerUsers.child(user.uid).get();
+    // Listen to owner data using the current user's UID
+    return ownerUsers.child(user.uid).onValue.map((event) {
+      // If owner data does not exist
+      if (!event.snapshot.exists) {
+        return null;
+      }
 
-    // If owner data does not exist
-    if (!snapshot.exists) {
-      return null;
-    }
+      // Convert Firebase data into a Dart Map
+      final Map<String, dynamic> data =
+      Map<String, dynamic>.from(
+        event.snapshot.value as Map,
+      );
 
-    // Convert Firebase data into a Dart Map
-    final Map<String, dynamic> data =
-    Map<String, dynamic>.from(snapshot.value as Map);
-
-    // Convert Map into OwnerModel
-    return OwnerModel.fromMap(data);
+      // Convert Map into OwnerModel
+      return OwnerModel.fromMap(data);
+    });
   }
 
   // GET CURRENT SALESMAN DATA
+  //
+  // This listens to salesman data in Firebase.
+  // The salesman data comes from the salesman node.
+  // The factory name comes from the owner node.
+  //
+  // If salesman or owner data changes,
+  // the updated data can be received through the stream.
 
-  Future<SalesmanModel?> getSalesmanData() async {
+  Stream<SalesmanModel?> salesmanDataStream() {
     // Get the currently logged-in Firebase user
     final User? user = auth.currentUser;
 
-    // If nobody is logged in, return null
+    // If nobody is logged in, return an empty stream
     if (user == null) {
-      return null;
+      return const Stream.empty();
     }
 
-    // Get salesman data using the current user's UID
-    final DataSnapshot salesmanSnapshot =
-    await salesmanUsers.child(user.uid).get();
+    // Listen to salesman data using the current user's UID
+    return salesmanUsers.child(user.uid).onValue.asyncMap(
+          (event) async {
+        // If salesman data does not exist
+        if (!event.snapshot.exists) {
+          return null;
+        }
 
-    // If salesman data does not exist
-    if (!salesmanSnapshot.exists) {
-      return null;
-    }
-
-    // Convert Firebase salesman data into a Map
-    final Map<String, dynamic> salesmanData =
-    Map<String, dynamic>.from(
-      salesmanSnapshot.value as Map,
-    );
-
-    // Convert the Map into SalesmanModel
-    final SalesmanModel salesman =
-    SalesmanModel.fromMap(salesmanData);
-
-    // Get the owner ID stored inside salesman data
-    final String? ownerId = salesman.ownerId;
-
-    // This will contain the factory name
-    String? factoryName;
-
-    // If salesman has an owner ID
-    if (ownerId != null) {
-
-      // Get the owner data using ownerId
-      final DataSnapshot ownerSnapshot =
-      await ownerUsers.child(ownerId).get();
-
-      // Check if owner data exists
-      if (ownerSnapshot.exists) {
-
-        // Convert owner Firebase data into Map
-        final Map<String, dynamic> ownerData =
+        // Convert Firebase salesman data into a Map
+        final Map<String, dynamic> salesmanData =
         Map<String, dynamic>.from(
-          ownerSnapshot.value as Map,
+          event.snapshot.value as Map,
         );
 
-        // Get factory name from owner data
-        factoryName = ownerData['factoryName'];
-      }
-    }
+        // Convert the Map into SalesmanModel
+        final SalesmanModel salesman =
+        SalesmanModel.fromMap(salesmanData);
 
-    // Return a new SalesmanModel
-    //
-    // The salesman information comes from salesman database.
-    // The factory name comes from owner database.
-    return SalesmanModel(
-      uid: salesman.uid,
-      name: salesman.name,
-      email: salesman.email,
-      phone: salesman.phone,
-      ownerId: salesman.ownerId,
-      factoryName: factoryName,
+        // Get the owner ID stored inside salesman data
+        final String? ownerId = salesman.ownerId;
+
+        // This will contain the factory name
+        String? factoryName;
+
+        // If salesman has an owner ID
+        if (ownerId != null) {
+          // Get owner data using ownerId
+          final DataSnapshot ownerSnapshot =
+          await ownerUsers.child(ownerId).get();
+
+          // Check if owner data exists
+          if (ownerSnapshot.exists) {
+            // Convert owner Firebase data into Map
+            final Map<String, dynamic> ownerData =
+            Map<String, dynamic>.from(
+              ownerSnapshot.value as Map,
+            );
+
+            // Get factory name from owner data
+            factoryName = ownerData['factoryName'];
+          }
+        }
+
+        // Return a new SalesmanModel
+        //
+        // The salesman information comes from salesman database.
+        // The factory name comes from owner database.
+        return SalesmanModel(
+          uid: salesman.uid,
+          name: salesman.name,
+          email: salesman.email,
+          phone: salesman.phone,
+          ownerId: salesman.ownerId,
+          factoryName: factoryName,
+        );
+      },
     );
   }
 }

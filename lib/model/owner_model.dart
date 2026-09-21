@@ -1,26 +1,10 @@
-// This class is the blueprint for Owner data.
-//
-// It defines what information an Owner object will contain.
 class OwnerModel {
-
-  // These are the properties/fields of the Owner.
-  //
-  // 'final' means their value cannot be reassigned
-  // after the object has been created.
   final String uid;
   final String name;
   final String email;
   final String phone;
-
-  // '?' means this value can also be null.
-  // An Owner may not have a factoryName in some cases.
   final String? factoryName;
-
-
   // Constructor
-  //
-  // The constructor is used to create an actual OwnerModel object
-  // and put values into its fields.
   OwnerModel({
     required this.uid,
     required this.name,
@@ -31,15 +15,12 @@ class OwnerModel {
 
 
   // Factory constructor
-  //
   // Firebase gives us data in Map format.
-  //
   // This method converts:
-  //
   // Map<String, dynamic>
   //          ↓
   //     OwnerModel
-  //
+
   factory OwnerModel.fromMap(Map<String, dynamic> data) {
     return OwnerModel(
       // Get the uid from the Firebase Map.
@@ -63,15 +44,10 @@ class OwnerModel {
 
 
   // toMap()
-  //
   // This does the opposite of fromMap().
-  //
   // It converts:
-  //
   // OwnerModel
-  //     ↓
   // Map<String, dynamic>
-  //
   // The Map can then be saved to Firebase.
   Map<String, dynamic> toMap() {
     return {

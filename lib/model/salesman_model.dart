@@ -1,26 +1,14 @@
-// This class is the blueprint for Salesman data.
-//
-// It defines what information a Salesman object will contain.
 class SalesmanModel {
 
-  // These are the properties/fields of the Salesman.
-  //
-  // 'final' means their value cannot be reassigned
-  // after the object has been created.
   final String uid;
   final String name;
   final String email;
   final String phone;
 
-  // '?' means ownerId can contain a String
-  // or it can be null.
   final String? ownerId;
   final String? factoryName;
 
   // Constructor
-  //
-  // The constructor creates an actual SalesmanModel object
-  // and assigns values to its fields.
   SalesmanModel({
     required this.uid,
     required this.name,
@@ -33,15 +21,11 @@ class SalesmanModel {
 
 
   // Factory constructor
-  //
   // Firebase gives us the salesman data as a Map.
-  //
   // This converts:
-  //
   // Map<String, dynamic>
   //          ↓
   //    SalesmanModel
-  //
   factory SalesmanModel.fromMap(Map<String, dynamic> data) {
     return SalesmanModel(
       // Get the salesman UID from Firebase.

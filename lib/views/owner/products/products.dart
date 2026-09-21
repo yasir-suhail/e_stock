@@ -3,6 +3,9 @@ import 'package:e_stock/views/owner/products/add_products.dart';
 import 'package:e_stock/views/widget/custom_Textfield.dart';
 import 'package:e_stock/views/widget/product_item_containner.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../../../view_Model/product_viewModel.dart';
 
 class ProductsScreen extends StatefulWidget {
   const ProductsScreen({super.key});
@@ -14,8 +17,22 @@ class ProductsScreen extends StatefulWidget {
 class _ProductsScreenState extends State<ProductsScreen> {
   var productSearchController=TextEditingController();
   @override
+  // void initState() {
+  //   super.initState();
+  //
+  //   WidgetsBinding.instance.addPostFrameCallback((_) {
+  //     final productViewmodel =
+  //     Provider.of<ProductViewmodel>(context, listen: false);
+  //
+  //     productViewmodel.getProducts();
+  //   });
+  // }
+
+  @override
   Widget build(BuildContext context) {
     final screenWidth=MediaQuery.sizeOf(context).width;
+    final productViewmodel =
+    Provider.of<ProductViewmodel>(context);
     return Scaffold(
       backgroundColor: AppColors.backgroundCanvas,
       resizeToAvoidBottomInset: false,
@@ -36,7 +53,9 @@ class _ProductsScreenState extends State<ProductsScreen> {
         onPressed: () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => AddProducts()),
+            MaterialPageRoute(
+              builder: (context) => AddProducts()
+            ),
           );
         },
         label: SizedBox(
@@ -55,23 +74,116 @@ class _ProductsScreenState extends State<ProductsScreen> {
                 controller: productSearchController,
                   suffixIcon: Icon(Icons.search),
                   focusedColor: AppColors.inputBorder,
-                  hintText: 'Search by product name'),
+                  hintText: 'Search by product name',
+                onChanged: (value){
+                  productViewmodel.searchProducts(value);
+                },
+
+              ),
               SizedBox(height: 20,),
-              Expanded(child: ListView(children: [
-                ProductItemContainer(
-                  productName: 'Coriander Powder 250g',
-                  unit: '250g Pack',
-                  // factoryStock: 850,
-                  // vanStock: 20,
-                  onEdit: () {
-                    print('Edit Coriander');
-                  },
-                  onDelete: () {
-                    print('Delete Coriander');
+              // Expanded(child: ListView(children: [
+              //   ProductItemContainer(
+              //     productName: 'Coriander Powder 250g',
+              //     unit: '250g Pack',
+              //     // factoryStock: 850,
+              //     // vanStock: 20,
+              //     onEdit: () {
+              //       print('Edit Coriander');
+              //     },
+              //     onDelete: () {
+              //       print('Delete Coriander');
+              //     },
+              //   ),
+              // ],))
+              Expanded(
+                child: Consumer<ProductViewmodel>(
+                  builder: (context, productViewModel, child) {
+
+                    if (productViewModel.isLoadingProducts) {
+                      return const Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    }
+
+                    if (productViewModel.displayProducts.isEmpty) {
+                      return const Center(
+                        child: Text('No products found'),
+                      );
+                    }
+
+                    return ListView.builder(
+                      itemCount: productViewModel.displayProducts.length,
+                      itemBuilder: (context, index) {
+
+                        final product =
+                        productViewModel.displayProducts[index];
+
+                        return ProductItemContainer(
+                          productName: product.productName,
+                          unit: product.packaging,
+
+                          onEdit: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => AddProducts(
+                                  product: product,
+                                ),
+                              ),
+                            );
+                          },
+
+                          onDelete: () async {
+                            final shouldDelete = await showDialog<bool>(
+                              context: context,
+                              builder: (context) {
+                                return AlertDialog(
+                                  title: const Text('Delete Product'),
+                                  content: Text(
+                                    'Are you sure you want to delete ${product.productName}?',
+                                  ),
+                                  actions: [
+                                    TextButton(
+                                      onPressed: () {
+                                        Navigator.pop(context, false);
+                                      },
+                                      child: const Text('Cancel'),
+                                    ),
+                                    TextButton(
+                                      onPressed: () {
+                                        Navigator.pop(context, true);
+                                      },
+                                      child: const Text('Delete'),
+                                    ),
+                                  ],
+                                );
+                              },
+                            );
+
+                            if (shouldDelete != true) {
+                              return;
+                            }
+
+                            final success = await productViewModel.deleteProduct(
+                              product.id,
+                            );
+
+                            if (!context.mounted) return;
+
+                            if (success) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text('Product deleted successfully'),
+                                ),
+                              );
+                            }
+                          },
+                        );
+                      },
+                    );
                   },
                 ),
-              ],))
-
+              )
             ],
           ),
         ),

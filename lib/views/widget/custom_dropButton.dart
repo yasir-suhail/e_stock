@@ -3,7 +3,7 @@ import 'package:e_stock/core/constants/app_color.dart';
 
 class CustomDropdown extends StatelessWidget {
   // final String? title;
-  final String value;
+  final String? value;
   final List<String> items;
   final ValueChanged<String?> onChanged;
   final Colors? titleColor;

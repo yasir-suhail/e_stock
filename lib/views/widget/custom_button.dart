@@ -37,10 +37,29 @@ class CustomButton extends StatelessWidget {
           borderRadius: BorderRadius.circular(10),
           border: borderColor!=null? Border.all(color: borderColor!): null
         ),
+        // child: Center(
+        //   child: loading
+        //       ? CircularProgressIndicator(strokeAlign: 0, color: Colors.white)
+        //       : Text(title, style: TextStyle(fontWeight: FontWeight.bold,fontSize: 13,color: textColor)),
+        // ),
         child: Center(
           child: loading
-              ? CircularProgressIndicator(strokeAlign: 0, color: Colors.white)
-              : Text(title, style: TextStyle(fontWeight: FontWeight.bold,fontSize: 13,color: textColor)),
+              ? SizedBox(
+            width: 18,
+            height: 18,
+            child: CircularProgressIndicator(
+              strokeWidth: 2,
+              color: Colors.white,
+            ),
+          )
+              : Text(
+            title,
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 13,
+              color: textColor,
+            ),
+          ),
         ),
       ),
     );

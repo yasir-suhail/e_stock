@@ -1,6 +1,8 @@
 import 'package:e_stock/splash_screen.dart';
 import 'package:e_stock/view_Model/auth_viewmodel.dart';
+import 'package:e_stock/view_Model/product_viewModel.dart';
 import 'package:e_stock/view_Model/profile_viewmodel.dart';
+import 'package:e_stock/view_Model/stock_viewModel.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
@@ -16,8 +18,22 @@ void main() async {
             create: (_) => AuthViewModel(),
           ),
 
+          // ChangeNotifierProvider(
+          //   create: (_) => ProfileViewmodel(),
+          // ),
           ChangeNotifierProvider(
-            create: (_) => ProfileViewmodel(),
+              create: (_) => ProfileViewmodel()..loadOwnerData(),
+
+          ),
+
+          // ChangeNotifierProvider(
+          //   create: (_) => ProductViewmodel(),
+          // ),
+          ChangeNotifierProvider(
+            create: (_) => ProductViewmodel()..getProducts(),
+          ),
+          ChangeNotifierProvider(
+            create: (_) => StockViewmodel(),
           ),
         ],
         child: const MyApp(),

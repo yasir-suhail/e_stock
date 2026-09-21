@@ -10,6 +10,7 @@ class CustomTextfield extends StatelessWidget {
   final String? Function(String?)? validator;
   final TextInputType? keyboardtype;
   final Color focusedColor;
+  final void Function(String)? onChanged;
 
   const CustomTextfield({
     required this.hintText,
@@ -20,6 +21,8 @@ class CustomTextfield extends StatelessWidget {
     this.prefixIcon,
     this.suffixIcon,
     this.focusedColor=AppColors.primaryBlue,
+    this.onChanged,
+
     super.key,
   });
 
@@ -29,6 +32,7 @@ class CustomTextfield extends StatelessWidget {
       controller: controller,
       obscureText: obscureText,
       validator: validator,
+      onChanged: onChanged,
       keyboardType: keyboardtype,
       decoration: InputDecoration(
         fillColor: AppColors.backgroundCanvas,
