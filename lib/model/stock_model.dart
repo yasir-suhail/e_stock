@@ -25,8 +25,8 @@ class StockModel {
   {
     return StockModel(
         productId: map['productId']?? '',
-        factoryStock: map['factoryStock']??'',
-        vanStock: map['vanStock']??'');
+        factoryStock: map['factoryStock']??0,
+        vanStock: map['vanStock']??0);
 
   }
 }

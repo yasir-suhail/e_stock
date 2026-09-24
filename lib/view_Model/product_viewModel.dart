@@ -5,6 +5,8 @@ import 'package:e_stock/core/firebaseServices/stock_services.dart';
 import 'package:e_stock/model/product_model.dart';
 import 'package:flutter/cupertino.dart';
 
+import '../model/stock_model.dart';
+
 class ProductViewmodel extends ChangeNotifier {
   //service object
   final ProductServices productServices = ProductServices();
@@ -26,13 +28,46 @@ class ProductViewmodel extends ChangeNotifier {
 
   // create a method addProducts that receive one productModel  and perform the async operation
   // add products
-  Future<bool> addProduct(ProductModel product) async {
+  // Future<bool> addProduct(ProductModel product) async {
+  //   isAddingProduct = true;
+  //   errorMessage = null;
+  //   notifyListeners();
+  //
+  //   try {
+  //     await productServices.addProduct(product);
+  //
+  //     return true;
+  //   } catch (e) {
+  //     errorMessage = e.toString();
+  //     return false;
+  //   } finally {
+  //     isAddingProduct = false;
+  //     notifyListeners();
+  //   }
+  // }
+
+  Future<bool> addProduct(
+      ProductModel product,
+      int initialStock,
+      ) async {
     isAddingProduct = true;
     errorMessage = null;
     notifyListeners();
 
     try {
+      // Save the product
       await productServices.addProduct(product);
+
+      // Add initial quantity to factory stock
+      if (initialStock > 0) {
+        final stock = StockModel(
+          productId: product.id,
+          factoryStock: initialStock,
+          vanStock: 0,
+        );
+
+        await stockServices.addStock(stock);
+      }
 
       return true;
     } catch (e) {

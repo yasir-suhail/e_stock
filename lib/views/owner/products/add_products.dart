@@ -145,6 +145,7 @@ class _AddProductsState extends State<AddProducts> {
                     SizedBox(height: 9),
                     // initial factory stock text form field
                     CustomTextfield(
+                      keyboardtype: .number,
                       controller: productInitialStockController,
                       focusedColor: AppColors.inputBorder,
                       hintText: '',
@@ -173,6 +174,7 @@ class _AddProductsState extends State<AddProducts> {
                     SizedBox(height: 9),
                     // minimum stock alert text field
                     CustomTextfield(
+                      keyboardtype: .number,
                       controller: productMinimumAlertController,
                       focusedColor: AppColors.inputBorder,
                       hintText: 'Minimum stock alert',
@@ -256,12 +258,12 @@ class _AddProductsState extends State<AddProducts> {
                               if (!_formKey.currentState!.validate()) {
                                 return;
                               }
-                              // final initialStock =
-                              //           // productInitialStockController.text.trim().isEmpty
-                              //           //     ? 0
-                              //           //     : int.parse(
-                              //           //   productInitialStockController.text.trim(),
-                              //           // );
+                              final initialStock =
+                                        productInitialStockController.text.trim().isEmpty
+                                            ? 0
+                                            : int.parse(
+                                          productInitialStockController.text.trim(),
+                                        );
                               final product = ProductModel(
                                 id:
                                     widget.product?.id ??
@@ -280,7 +282,7 @@ class _AddProductsState extends State<AddProducts> {
                               if (widget.product == null) {
                                 // ADD PRODUCT
                                 success = await productViewModel.addProduct(
-                                  product,
+                                  product,initialStock,
                                 );
                               } else {
                                 // UPDATE PRODUCT

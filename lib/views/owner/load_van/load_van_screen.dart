@@ -4,13 +4,16 @@ import 'package:e_stock/views/widget/custom_button.dart';
 import 'package:e_stock/views/widget/custom_dropButton.dart';
 import 'package:e_stock/views/widget/stock_card.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../../../model/product_model.dart';
+import '../../../model/stock_model.dart';
+import '../../../view_Model/product_viewModel.dart';
+import '../../../view_Model/stock_viewModel.dart';
+import '../../../view_Model/transaction/load_van_viewmodel.dart';
 
 class LoadVanScreen extends StatefulWidget {
-  // final VoidCallback onBack;
-  const LoadVanScreen({
-    super.key,
-    // required this.onBack,
-  });
+  const LoadVanScreen({super.key});
 
   @override
   State<LoadVanScreen> createState() => _LoadVanScreenState();
@@ -19,16 +22,38 @@ class LoadVanScreen extends StatefulWidget {
 class _LoadVanScreenState extends State<LoadVanScreen> {
   var factoryToVanController = TextEditingController();
   var selectVanController = TextEditingController();
-  String selectProduct = 'Red Chili Powder 200g';
-  final List<String> products = [
-    'Red Chili Powder 200g',
-    'Coriander Powder 250g',
-    'Turmeric Powder 100g',
-  ];
+  String? selectedProductId;
+
+  // String selectProduct = 'Red Chili Powder 200g';
+  // final List<String> products = [
+  //   'Red Chili Powder 200g',
+  //   'Coriander Powder 250g',
+  //   'Turmeric Powder 100g',
+  // ];
 
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.sizeOf(context).width;
+
+    final loadVanViewModel = Provider.of<LoadVanViewmodel>(context);
+
+    final stockViewModel = Provider.of<StockViewmodel>(context);
+    StockModel? selectedStock;
+    for (final stock in stockViewModel.allStock) {
+      if (stock.productId == selectedProductId) {
+        selectedStock = stock;
+        break;
+      }
+    }
+
+    final productViewModel = Provider.of<ProductViewmodel>(context);
+    ProductModel? selectedProduct;
+    for (final product in productViewModel.allProducts) {
+      if (product.id == selectedProductId) {
+        selectedProduct = product;
+        break;
+      }
+    }
     return Scaffold(
       backgroundColor: AppColors.backgroundCanvas,
       resizeToAvoidBottomInset: true,
@@ -101,14 +126,35 @@ class _LoadVanScreenState extends State<LoadVanScreen> {
                           color: AppColors.backgroundCanvas,
                         ),
                         // custom Drop down menu
-                        child: CustomDropdown(
-                          value: selectProduct,
-                          items: products,
-                          onChanged: ((value) {
+                        // child: CustomDropdown(
+                        //   value: selectProduct,
+                        //   items: products,
+                        //   onChanged: ((value) {
+                        //     setState(() {
+                        //       selectProduct = value!;
+                        //     });
+                        //   }),
+                        // ),
+                        child: DropdownButton<ProductModel>(
+                          value: selectedProduct,
+                          hint: const Text('Select Product'),
+                          isExpanded: true,
+                          underline: const SizedBox(),
+
+                          items: productViewModel.allProducts.map((product) {
+                            return DropdownMenuItem<ProductModel>(
+                              value: product,
+                              child: Text(
+                                '${product.productName} ${product.packaging}',
+                              ),
+                            );
+                          }).toList(),
+
+                          onChanged: (ProductModel? value) {
                             setState(() {
-                              selectProduct = value!;
+                              selectedProductId = value?.id;
                             });
-                          }),
+                          },
                         ),
                       ),
                       SizedBox(height: 18),
@@ -116,17 +162,23 @@ class _LoadVanScreenState extends State<LoadVanScreen> {
                       Row(
                         crossAxisAlignment: .center,
                         children: [
+                          // factory stock card
                           StockCard(
                             containerHeight: 100,
                             title: 'Factory(SOURCE)',
-                            value: '1,400 Packs',
+                            value: selectedStock == null
+                                ? '0 Packs'
+                                : '${selectedStock.factoryStock} Packs',
                             valueColor: AppColors.productionGreen,
                           ),
                           SizedBox(width: 10),
+                          // van stock card
                           StockCard(
                             containerHeight: 100,
                             title: 'Van(TARGET)',
-                            value: '50 Packs',
+                            value: selectedStock == null
+                                ? '0 Packs'
+                                : '${selectedStock.vanStock} Packs',
                             valueColor: AppColors.vanAmber,
                           ),
                         ],
@@ -165,7 +217,67 @@ class _LoadVanScreenState extends State<LoadVanScreen> {
                       ),
                       SizedBox(height: 50),
                       // the execute transfer button
-                      CustomButton(title: 'Execute Transfer', onTap: () {}),
+                      CustomButton(
+                        title: loadVanViewModel.isLoading
+                            ? 'Transferring...'
+                            : 'Execute Transfer',
+
+                        onTap: () async {
+                          if (selectedProductId == null) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text('Please select a product'),
+                              ),
+                            );
+                            return;
+                          }
+
+                          final quantity = int.tryParse(
+                            factoryToVanController.text,
+                          );
+
+                          if (quantity == null || quantity <= 0) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text('Please enter a valid quantity'),
+                              ),
+                            );
+                            return;
+                          }
+
+                          final success = await loadVanViewModel.loadVan(
+                            productId: selectedProductId!,
+                            quantity: quantity,
+                          );
+
+                          if (!mounted) return;
+
+                          if (success) {
+                            await stockViewModel.getStock();
+
+                            if (!mounted) return;
+
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text(
+                                  'Stock successfully transferred to van',
+                                ),
+                              ),
+                            );
+
+                            factoryToVanController.clear();
+                          }else {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(
+                                  loadVanViewModel.errorMessage ??
+                                      'Transfer failed',
+                                ),
+                              ),
+                            );
+                          }
+                        },
+                      ),
                     ],
                   ),
                 ),

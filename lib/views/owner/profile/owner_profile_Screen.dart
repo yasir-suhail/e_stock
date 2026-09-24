@@ -294,7 +294,7 @@ class OwnerProfileScreen extends StatefulWidget {
 }
 
 class _OwnerProfileScreenState extends State<OwnerProfileScreen> {
-  @override
+  // @override
   // void initState() {
   //   super.initState();
   //
@@ -408,7 +408,14 @@ class _OwnerProfileScreenState extends State<OwnerProfileScreen> {
                                 backgroundColor: const Color(0xffEFF6FF),
 
                                 child: Text(
-                                  owner.name,
+                                  owner.name.isNotEmpty
+                                      ? owner.name
+                                            .substring(
+                                              0,
+                                              owner.name.length >= 2 ? 2 : 1,
+                                            )
+                                            .toUpperCase()
+                                      : 'O',
 
                                   style: TextStyle(
                                     color: AppColors.primaryBlue,

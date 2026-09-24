@@ -93,30 +93,5 @@ Future<bool>deleteStock(String productId)async{
       return false;
     }
 }
-// --------- add  production
-  Future<bool> addProduction({
-    required String productId,
-    required int quantity,
-  }) async {
-    try {
-      isLoading = true;
-      errorMessage = null;
-      notifyListeners();
 
-      await stockServices.addProduction(
-        productId: productId,
-        quantity: quantity,
-      );
-
-      // Get the latest stock from Firebase
-      await getStock();
-return  true;
-    } catch (e) {
-      errorMessage = e.toString();
-      return false;
-    } finally {
-      isLoading = false;
-      notifyListeners();
-    }
-  }
 }

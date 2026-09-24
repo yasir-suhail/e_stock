@@ -52,6 +52,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '1030578583072',
     projectId: 'e-stock-45b4a',
     storageBucket: 'e-stock-45b4a.firebasestorage.app',
+    // databaseURL: 'https://e-stock-45b4a-default-rtdb.firebaseio.com',
+
   );
 
   static const FirebaseOptions ios = FirebaseOptions(

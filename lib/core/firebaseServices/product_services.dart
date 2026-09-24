@@ -1,11 +1,23 @@
 import 'package:firebase_database/firebase_database.dart';
 import 'package:e_stock/model/product_model.dart';
 
+import 'auth_services.dart';
+
 class ProductServices {
   // Reference to the products node in Firebase
   final DatabaseReference productReference = FirebaseDatabase.instance.ref(
     'products',
   );
+  // final AuthServices authServices = AuthServices();
+  // DatabaseReference get productReference {
+  //   final String? uid = authServices.currentUserId;
+  //
+  //   if (uid == null) {
+  //     throw Exception('User is not logged in');
+  //   }
+  //
+  //   return productsReference.child(uid);
+  // }
 
   // -------------ADD PRODUCT
   Future<void> addProduct(ProductModel product) async {

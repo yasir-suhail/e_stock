@@ -5,6 +5,7 @@ import '../../../core/constants/app_color.dart';
 import '../../../model/product_model.dart';
 import '../../../view_Model/product_viewModel.dart';
 import '../../../view_Model/stock_viewModel.dart';
+import '../../../view_Model/transaction/production_viewmodel.dart';
 import '../../widget/custom_Textfield.dart';
 import '../../widget/custom_button.dart';
 import '../../widget/custom_dropButton.dart';
@@ -43,8 +44,8 @@ class _AddProductionProductScreenState extends State<AddProductionProductScreen>
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.sizeOf(context).width;
-    final stockViewModel =
-    Provider.of<StockViewmodel>(context);
+    final productionViewModel =
+    Provider.of<ProductionViewModel>(context);
     final productViewModel = Provider.of<ProductViewmodel>(context);
     ProductModel? selectedProduct;
 
@@ -171,6 +172,7 @@ class _AddProductionProductScreenState extends State<AddProductionProductScreen>
                       SizedBox(height: 8),
                       // Text Form field of the factory sale
                      CustomTextfield(
+                       keyboardtype: .number,
                        controller: addProductFactoryController,
                        hintText: 'Add Quantity',focusedColor: AppColors.productionGreen,),
                       SizedBox(height: 14),
@@ -197,7 +199,7 @@ class _AddProductionProductScreenState extends State<AddProductionProductScreen>
                       // })
                       CustomButton(
                         title: 'Add Factory Inventory',
-                        loading: stockViewModel.isLoading,
+                        loading: productionViewModel.isLoading,
                         backgroundColor: AppColors.productionGreen,
                         // onTap: () async {
                         //
@@ -245,13 +247,13 @@ class _AddProductionProductScreenState extends State<AddProductionProductScreen>
                             return;
                           }
 
-                          final stockViewModel =
-                          Provider.of<StockViewmodel>(
+                          final productionViewModel =
+                          Provider.of<ProductionViewModel>(
                             context,
                             listen: false,
                           );
 
-                          final success = await stockViewModel.addProduction(
+                          final success = await productionViewModel.addProduction(
                             productId: selectedProductId!,
                             quantity: quantity,
                           );
@@ -275,7 +277,8 @@ class _AddProductionProductScreenState extends State<AddProductionProductScreen>
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
                                 content: Text(
-                                  stockViewModel.errorMessage ?? 'Something went wrong',
+                                  productionViewModel.errorMessage ??
+                                      'Something went wrong',
                                 ),
                               ),
                             );

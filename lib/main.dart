@@ -10,7 +10,9 @@ import 'firebase_options.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  await Firebase.initializeApp(
+  options: DefaultFirebaseOptions.currentPlatform
+  );
   runApp(
       MultiProvider(
         providers: [
@@ -23,7 +25,6 @@ void main() async {
           // ),
           ChangeNotifierProvider(
               create: (_) => ProfileViewmodel()..loadOwnerData(),
-
           ),
 
           // ChangeNotifierProvider(
@@ -40,7 +41,38 @@ void main() async {
       )
   );
 }
-
+// void main() async {
+//   WidgetsFlutterBinding.ensureInitialized();
+//
+//   print('1. Before Firebase');
+//
+//   await Firebase.initializeApp(
+//   );
+//
+//   print('2. Firebase initialized');
+//
+//   runApp(
+//     MultiProvider(
+//       providers: [
+//         ChangeNotifierProvider(
+//           create: (_) => AuthViewModel(),
+//         ),
+//         ChangeNotifierProvider(
+//           create: (_) => ProfileViewmodel(),
+//         ),
+//         ChangeNotifierProvider(
+//           create: (_) => ProductViewmodel(),
+//         ),
+//         ChangeNotifierProvider(
+//           create: (_) => StockViewmodel(),
+//         ),
+//       ],
+//       child: const MyApp(),
+//     ),
+//   );
+//
+//   print('3. runApp called');
+// }
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 

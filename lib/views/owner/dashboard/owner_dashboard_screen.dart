@@ -5,9 +5,6 @@ import 'package:e_stock/views/owner/load_van/load_van_screen.dart';
 import 'package:e_stock/views/owner/unload_van/unload_van_screen.dart';
 import 'package:e_stock/views/owner/van_sale/van_sale_screen.dart';
 import 'package:e_stock/views/widget/action_card.dart';
-import 'package:e_stock/views/widget/custom_button.dart';
-import 'package:e_stock/views/widget/custom_dropButton.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -15,6 +12,8 @@ import '../../../model/product_model.dart';
 import '../../../model/stock_model.dart';
 import '../../../view_Model/product_viewModel.dart';
 import '../../../view_Model/stock_viewModel.dart';
+import '../../../view_Model/transaction/load_van_viewmodel.dart';
+import '../../../view_Model/transaction/production_viewmodel.dart';
 import '../../widget/stock_card.dart';
 
 class OwnerDashboardScreen extends StatefulWidget {
@@ -208,7 +207,7 @@ class _OwnerDashboardScreenState extends State<OwnerDashboardScreen> {
                   Row(
                     children: [
                       ActionCard(
-                        title: ' 🚚 Load Van',
+                        title: '  Load Van',
                         selected: selectCard == 0,
                         onTap: () async {
                           setState(() {
@@ -216,7 +215,10 @@ class _OwnerDashboardScreenState extends State<OwnerDashboardScreen> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => LoadVanScreen(),
+                                builder: (context) => ChangeNotifierProvider(
+                                  create: (_) => LoadVanViewmodel(),
+                                  child: const LoadVanScreen(),
+                                ),
                               ),
                             );
                           });
@@ -224,7 +226,7 @@ class _OwnerDashboardScreenState extends State<OwnerDashboardScreen> {
                       ),
                       SizedBox(width: 10),
                       ActionCard(
-                        title: '🔄 Unload Van',
+                        title: ' Unload Van',
                         selected: selectCard == 1,
                         onTap: () async {
                           setState(() {
@@ -244,7 +246,7 @@ class _OwnerDashboardScreenState extends State<OwnerDashboardScreen> {
                   Row(
                     children: [
                       ActionCard(
-                        title: '🏭 Factory Sale',
+                        title: ' Factory Sale',
                         selected: selectCard == 2,
                         onTap: () async {
                           setState(() {
@@ -262,7 +264,7 @@ class _OwnerDashboardScreenState extends State<OwnerDashboardScreen> {
                       const SizedBox(width: 10),
 
                       ActionCard(
-                        title: '🛒 Van Sale',
+                        title: ' Van Sale',
                         selected: selectCard == 3,
                         onTap: () async {
                           setState(() {
@@ -280,15 +282,24 @@ class _OwnerDashboardScreenState extends State<OwnerDashboardScreen> {
                   ),
                   SizedBox(height: 12),
                   GestureDetector(
-                    onTap: () {
-                      Navigator.push(
+                    onTap: () async {
+                      await Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: ((context) => AddProductionProductScreen()),
+                          builder: (context) => ChangeNotifierProvider(
+                            create: (_) => ProductionViewModel(),
+                            child: const AddProductionProductScreen(),
+                          ),
                         ),
                       );
-                    },
 
+                      if (!mounted) return;
+
+                      await Provider.of<StockViewmodel>(
+                        context,
+                        listen: false,
+                      ).getStock();
+                    },
                     child: Container(
                       width: screenWidth - 20,
                       height: 50,
