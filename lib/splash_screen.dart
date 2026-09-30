@@ -1,12 +1,15 @@
 import 'dart:async';
 
 import 'package:e_stock/core/constants/app_color.dart';
+import 'package:e_stock/view_Model/product_viewModel.dart';
+import 'package:e_stock/view_Model/profile_viewmodel.dart';
 import 'package:e_stock/views/login/login_screen.dart';
 import 'package:e_stock/views/owner/navigation/navigation_screen.dart';
 import 'package:e_stock/views/saleman/navigation/salesman_navigation_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -57,6 +60,13 @@ class _SplashScreenState extends State<SplashScreen> {
     await ownerUsers.child(uid).get();
 
     if (ownerSnapshot.exists) {
+
+      // Start owner profile listener
+      context.read<ProfileViewmodel>().loadOwnerData();
+
+      // Start product listener
+      context.read<ProductViewmodel>().getProducts();
+
       if (!mounted) return;
 
       Navigator.pushReplacement(
@@ -73,6 +83,13 @@ class _SplashScreenState extends State<SplashScreen> {
     await salesmanUsers.child(uid).get();
 
     if (salesmanSnapshot.exists) {
+
+      // Start salesman profile listener
+      context.read<ProfileViewmodel>().loadSalesmanData();
+
+      // Start product listener
+      context.read<ProductViewmodel>().getProducts();
+
       if (!mounted) return;
 
       Navigator.pushReplacement(

@@ -5,6 +5,8 @@ import 'package'
 import 'package:e_stock/model/stock_model.dart';
 import 'package:flutter/cupertino.dart';
 
+import '../model/product_model.dart';
+
 class StockViewmodel extends ChangeNotifier {
   // stock service object
   final StockServices stockServices = StockServices();
@@ -19,6 +21,13 @@ class StockViewmodel extends ChangeNotifier {
   bool isLoadingStock = false;
   bool isLoading = false;
   String? errorMessage;
+
+  ProductModel? selectedProduct;
+
+  void selectProduct(ProductModel? product) {
+    selectedProduct = product;
+    notifyListeners();
+  }
 
   // add the stock
   Future<bool> addStock(StockModel stock) async {

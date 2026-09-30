@@ -1,9 +1,19 @@
+import 'package:e_stock/view_Model/product_viewModel.dart';
+import 'package:e_stock/view_Model/profile_viewmodel.dart';
 import 'package:flutter/material.dart';
 
 import '../core/firebaseServices/auth_services.dart';
 
 class AuthViewModel extends ChangeNotifier {
   final AuthServices authServices = AuthServices();
+
+  final ProfileViewmodel profileViewmodel;
+  final ProductViewmodel productViewmodel;
+
+  AuthViewModel({
+    required this.profileViewmodel,
+    required this.productViewmodel,
+  });
 
   bool isLoading = false;
   String? errorMessage;
@@ -60,6 +70,9 @@ class AuthViewModel extends ChangeNotifier {
         email: email,
         password: password,
       );
+      profileViewmodel.loadOwnerData();
+      print('OWNER PROFILE LISTENER STARTED');
+      productViewmodel.getProducts();
 
       return true;
     } catch (e) {
@@ -120,7 +133,8 @@ class AuthViewModel extends ChangeNotifier {
         email: email,
         password: password,
       );
-
+      profileViewmodel.loadSalesmanData();
+      productViewmodel.getProducts();
       return true;
     } catch (e) {
       errorMessage = e.toString();
@@ -138,6 +152,12 @@ class AuthViewModel extends ChangeNotifier {
     notifyListeners();
 
     try {
+
+      // Stop Firebase listeners first
+      await profileViewmodel.stopProfileListeners();
+      await productViewmodel.stopProductListener();
+
+      // Then sign out from Firebase
       await authServices.signOut();
 
       await Future.delayed(

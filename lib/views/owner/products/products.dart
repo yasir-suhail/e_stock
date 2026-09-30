@@ -16,7 +16,7 @@ class ProductsScreen extends StatefulWidget {
 
 class _ProductsScreenState extends State<ProductsScreen> {
   var productSearchController=TextEditingController();
-  // @override
+  @override
   // void initState() {
   //   super.initState();
   //
@@ -46,25 +46,45 @@ class _ProductsScreenState extends State<ProductsScreen> {
             Text('Catalog Overview & Inventory Items',style: TextStyle(color: AppColors.textMuted,fontSize: 12,fontWeight: FontWeight.w400),)
           ],
         ),
-      ),
-      floatingActionButton: FloatingActionButton.extended(
-        backgroundColor: Color(0xffDCFCE7),
-        foregroundColor: AppColors.productionGreen,
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => AddProducts()
+        // ADD BUTTON
+        actions: [
+          IconButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => AddProducts(),
+                ),
+              );
+            },
+            icon: Icon(
+              Icons.add,
+              color: AppColors.whiteColor,
             ),
-          );
-        },
-        label: SizedBox(
-            width: 90,
-            height: 30,
-            child: Row(children: [Icon(Icons.add), Text('Add items',)])),
+            tooltip: 'Add Product',
+          ),
+
+          SizedBox(width: 5),
+        ],
       ),
+      // floatingActionButton: FloatingActionButton.extended(
+      //   backgroundColor: Color(0xffDCFCE7),
+      //   foregroundColor: AppColors.productionGreen,
+      //   onPressed: () {
+      //     Navigator.push(
+      //       context,
+      //       MaterialPageRoute(
+      //         builder: (context) => AddProducts()
+      //       ),
+      //     );
+      //   },
+      //   label: SizedBox(
+      //       width: 90,
+      //       height: 30,
+      //       child: Row(children: [Icon(Icons.add), Text('Add items',)])),
+      // ),
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 10,vertical: 10),
+        padding: const EdgeInsets.symmetric(vertical: 10),
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10,vertical: 10),
           child: Column(
@@ -72,15 +92,28 @@ class _ProductsScreenState extends State<ProductsScreen> {
             children: [
               CustomTextfield(
                 controller: productSearchController,
-                  suffixIcon: Icon(Icons.search),
+                prefixIcon: Icon(Icons.search, color: AppColors.textMuted),
                   focusedColor: AppColors.inputBorder,
-                  hintText: 'Search by product name',
+                  hintText: 'Search product...',
                 onChanged: (value){
                   productViewmodel.searchProducts(value);
                 },
 
               ),
               SizedBox(height: 20,),
+              // CUSTOMER LIST TITLE
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  'PRODUCT LIST',
+                  style: TextStyle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.bold,
+                    color: AppColors.textLabels,
+                  ),
+                ),
+              ),
+              SizedBox(height: 10,),
               // Expanded(child: ListView(children: [
               //   ProductItemContainer(
               //     productName: 'Coriander Powder 250g',

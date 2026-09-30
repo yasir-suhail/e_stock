@@ -1,4 +1,5 @@
 import 'package:e_stock/core/constants/app_color.dart';
+import 'package:e_stock/view_Model/transaction/factory_sale_viewmodel.dart';
 import 'package:e_stock/views/owner/production/add_Production_Product_Screen.dart';
 import 'package:e_stock/views/owner/factory_sale/factory_sale_screen.dart';
 import 'package:e_stock/views/owner/load_van/load_van_screen.dart';
@@ -14,6 +15,7 @@ import '../../../view_Model/product_viewModel.dart';
 import '../../../view_Model/stock_viewModel.dart';
 import '../../../view_Model/transaction/load_van_viewmodel.dart';
 import '../../../view_Model/transaction/production_viewmodel.dart';
+import '../../widget/searchable_Product_dropdown.dart';
 import '../../widget/stock_card.dart';
 
 class OwnerDashboardScreen extends StatefulWidget {
@@ -24,19 +26,7 @@ class OwnerDashboardScreen extends StatefulWidget {
 }
 
 class _OwnerDashboardScreenState extends State<OwnerDashboardScreen> {
-  // String selectProduct = 'Red Chili Powder 200g';
-  // final List<String> products = [
-  //   'Red Chili Powder 200g',
-  //   'Coriander Powder 250g',
-  //   'Turmeric Powder 100g',
-  // ];
-  String? selectedProductId;
 
-  // Selects which inventory card is active.
-  // 0 = Load Van
-  // 1 = Unload Van
-  // 2 = Factory Sale
-  // 3 = Van Sale
   int selectCard = 0;
 
   @override
@@ -63,18 +53,12 @@ class _OwnerDashboardScreenState extends State<OwnerDashboardScreen> {
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.sizeOf(context).width;
     final productViewModel = Provider.of<ProductViewmodel>(context);
-    ProductModel? selectedProduct;
-    for (final product in productViewModel.allProducts) {
-      if (product.id == selectedProductId) {
-        selectedProduct = product;
-        break;
-      }
-    }
+
     final stockViewModel = Provider.of<StockViewmodel>(context);
     StockModel? selectedStock;
 
     for (final stock in stockViewModel.allStock) {
-      if (stock.productId == selectedProductId) {
+      if (stock.productId == stockViewModel.selectedProduct?.id) {
         selectedStock = stock;
         break;
       }
@@ -127,44 +111,42 @@ class _OwnerDashboardScreenState extends State<OwnerDashboardScreen> {
               ),
               SizedBox(height: 15),
               Container(
-                padding: EdgeInsets.symmetric(horizontal: 10),
-                width: screenWidth - 20,
-                height: 65,
+                // padding: EdgeInsets.symmetric(horizontal: 10),
+                // width: screenWidth - 10,
+                // height: 65,
                 decoration: BoxDecoration(
                   color: AppColors.whiteColor,
                   border: Border.all(color: AppColors.inputBorder),
                   borderRadius: BorderRadius.circular(10),
                 ),
                 //custom drop Down button
-                // child: CustomDropdown(
-                //   value: selectProduct,
-                //   size: 18,
-                //   items: products,
-                //   onChanged: ((value) {
+                // child: DropdownButton<ProductModel>(
+                //   value: selectedProduct,
+                //   hint: const Text('Select Product'),
+                //   isExpanded: true,
+                //   style: TextStyle(fontSize: 18,color: AppColors.textPrimary,fontWeight: .w500),
+                //   underline: const SizedBox(),
+                //   items: productViewModel.allProducts.map((product) {
+                //     return DropdownMenuItem<ProductModel>(
+                //       value: product,
+                //       child: Text(
+                //         '${product.productName} ${product.packaging}',
+                //       ),
+                //     );
+                //   }).toList(),
+                //
+                //   onChanged: (ProductModel? value) {
                 //     setState(() {
-                //       selectProduct = value!;
+                //       selectedProductId = value?.id;
                 //     });
-                //   }),
+                //   },
                 // ),
-                child: DropdownButton<ProductModel>(
-                  value: selectedProduct,
-                  hint: const Text('Select Product'),
-                  isExpanded: true,
-                  style: TextStyle(fontSize: 18,color: AppColors.textPrimary,fontWeight: .w500),
-                  underline: const SizedBox(),
-                  items: productViewModel.allProducts.map((product) {
-                    return DropdownMenuItem<ProductModel>(
-                      value: product,
-                      child: Text(
-                        '${product.productName} ${product.packaging}',
-                      ),
-                    );
-                  }).toList(),
-
-                  onChanged: (ProductModel? value) {
-                    setState(() {
-                      selectedProductId = value?.id;
-                    });
+                child: SearchableProductDropdown(
+                  hintText: 'Search or select product',
+                  products: productViewModel.allProducts,
+                  focusedColor: AppColors.primaryBlue,
+                  onChanged: (product) {
+                    stockViewModel.selectProduct(product);
                   },
                 ),
               ),
@@ -254,7 +236,10 @@ class _OwnerDashboardScreenState extends State<OwnerDashboardScreen> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: ((context) => FactorySaleScreen()),
+                                builder: (context) => ChangeNotifierProvider(
+                                  create: (_) => FactorySaleViewmodel(),
+                                  child: const FactorySaleScreen(),
+                                ),
                               ),
                             );
                           });

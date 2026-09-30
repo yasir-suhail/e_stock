@@ -111,6 +111,29 @@ class CustomBottomNavigation extends StatelessWidget {
               children: [
                 IconButton(
                   onPressed: () {
+                    onItemSelected(4);
+                  },
+                  icon: Icon(
+                    Icons.person_add_alt,
+                    color: selectedIndex == 4
+                        ? AppColors.primaryBlue
+                        : AppColors.textMuted,
+                  ),
+                ),
+                Text(
+                  'Customer',
+                  style: TextStyle(
+                    color: selectedIndex == 4
+                        ? AppColors.primaryBlue
+                        : AppColors.textMuted,
+                  ),
+                ),
+              ],
+            ),
+            Column(
+              children: [
+                IconButton(
+                  onPressed: () {
                     onItemSelected(3);
                   },
                   icon: Icon(

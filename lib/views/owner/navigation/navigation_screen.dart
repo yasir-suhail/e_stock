@@ -1,4 +1,5 @@
 import 'package:e_stock/core/constants/app_color.dart';
+import 'package:e_stock/views/owner/customer/customer_screen.dart';
 import 'package:e_stock/views/owner/load_van/load_van_screen.dart';
 import 'package:e_stock/views/owner/products/products.dart';
 import 'package:e_stock/views/owner/unload_van/unload_van_screen.dart';
@@ -27,6 +28,7 @@ class _NavigationScreenState extends State<NavigationScreen> {
     LogsScreen(),
     ProductsScreen(),
     OwnerProfileScreen(),
+    CustomerScreen(),
 
   ];
 

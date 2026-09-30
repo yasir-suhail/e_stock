@@ -3,6 +3,7 @@ import 'package:e_stock/core/firebaseServices/stock_services.dart';
 import 'package:e_stock/core/firebaseServices/transaction_services.dart';
 import 'package:e_stock/model/stock_model.dart';
 
+import '../../model/product_model.dart';
 import '../../model/transaction_model.dart';
 
 class ProductionViewModel extends ChangeNotifier {
@@ -11,7 +12,13 @@ class ProductionViewModel extends ChangeNotifier {
 
   bool isLoading = false;
   String? errorMessage;
-
+//select product for production
+  ProductModel? selectedProduct;
+//select product
+  void selectProduct(ProductModel? product) {
+    selectedProduct = product;
+    notifyListeners();
+  }
   // --------- add production
   Future<bool> addProduction({
     required String productId,
@@ -30,6 +37,7 @@ class ProductionViewModel extends ChangeNotifier {
       if (currentStock == null) {
         final newStock = StockModel(
           productId: productId,
+          productName: selectedProduct!.productName,
           factoryStock: quantity,
           vanStock: 0,
         );
@@ -39,6 +47,7 @@ class ProductionViewModel extends ChangeNotifier {
         // If stock already exists, increase factory stock
         final updatedStock = StockModel(
           productId: currentStock.productId,
+          productName: selectedProduct!.productName,
           factoryStock: currentStock.factoryStock + quantity,
           vanStock: currentStock.vanStock,
         );
@@ -49,6 +58,7 @@ class ProductionViewModel extends ChangeNotifier {
       final transaction = TransactionModel(
         id: DateTime.now().millisecondsSinceEpoch.toString(),
         productId: productId,
+        productName: selectedProduct!.productName,
         type: 'Production',
         quantity: quantity,
         date: DateTime.now().toString(),

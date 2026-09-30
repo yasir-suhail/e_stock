@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:e_stock/model/customer_model.dart';
 
@@ -8,131 +10,247 @@ class CustomerViewModel extends ChangeNotifier {
   final CustomerServices customerServices =
   CustomerServices();
 
+  // All customers loaded from Firebase
   List<CustomerModel> allCustomers = [];
+
+  // Customers currently shown on screen
+  List<CustomerModel> displayCustomers = [];
 
   bool isLoading = false;
   String? errorMessage;
 
-  // Add customer
-  Future<bool> addCustomer(CustomerModel customer) async {
+  // Firebase customer stream subscription
+  StreamSubscription<List<CustomerModel>>?
+  _customerSubscription;
+
+  // LISTEN TO CUSTOMERS
+
+  void listenToCustomers() {
+
+    // Prevent creating multiple listeners
+    if (_customerSubscription != null) {
+      return;
+    }
+
+    isLoading = true;
+    errorMessage = null;
+    notifyListeners();
+
+    _customerSubscription =
+        customerServices.getCustomersStream().listen(
+
+              (customers) {
+
+            // Update all customers
+            allCustomers = customers;
+
+            // Update displayed customers
+            displayCustomers =
+                List.from(allCustomers);
+
+            // Stop loading
+            isLoading = false;
+
+            // Update UI
+            notifyListeners();
+          },
+
+          onError: (error) {
+
+            errorMessage = error.toString();
+
+            isLoading = false;
+
+            notifyListeners();
+          },
+        );
+  }
+
+  // ADD CUSTOMER
+
+  Future<bool> addCustomer(
+      CustomerModel customer) async {
+
+    // Clear previous error
+    errorMessage = null;
 
     try {
+
+      // Start loading
       isLoading = true;
-      errorMessage = null;
       notifyListeners();
 
-      await customerServices.addCustomer(customer);
+      // Save customer to Firebase
+      await customerServices.addCustomer(
+        customer,
+      );
 
-      allCustomers.add(customer);
+      // The Firebase stream will automatically
+      // update allCustomers and displayCustomers.
 
       return true;
 
     } catch (e) {
+
       errorMessage = e.toString();
+
       return false;
 
     } finally {
+
+      // Stop loading
       isLoading = false;
+
       notifyListeners();
     }
   }
 
-  // Get all customers
-  Future<void> getCustomers() async {
+  // SEARCH CUSTOMERS
 
-    try {
-      isLoading = true;
-      errorMessage = null;
-      notifyListeners();
+  void searchCustomers(String query) {
 
-      allCustomers =
-      await customerServices.getCustomers();
+    // If search box is empty,
+    // show all customers
+    if (query.isEmpty) {
 
-    } catch (e) {
-      errorMessage = e.toString();
+      displayCustomers =
+          List.from(allCustomers);
 
-    } finally {
-      isLoading = false;
-      notifyListeners();
+    } else {
+
+      // Search by name, phone or address
+      displayCustomers =
+          allCustomers.where((customer) {
+
+            return customer.name
+                .toLowerCase()
+                .contains(query.toLowerCase()) ||
+
+                customer.phone
+                    .toLowerCase()
+                    .contains(query.toLowerCase()) ||
+
+                customer.address
+                    .toLowerCase()
+                    .contains(query.toLowerCase());
+
+          }).toList();
     }
+
+    // Tell UI that displayCustomers changed
+    notifyListeners();
   }
 
-  // Get one customer by ID
+  // GET ONE CUSTOMER BY ID
+
   Future<CustomerModel?> getCustomerById(
       String customerId,
       ) async {
 
     try {
-      return await customerServices.getCustomerById(
+
+      return await customerServices
+          .getCustomerById(
         customerId,
       );
 
     } catch (e) {
-      errorMessage = e.toString();
+
+      errorMessage =
+          e.toString();
+
       notifyListeners();
+
       return null;
     }
   }
 
-  // Update customer
+  // UPDATE CUSTOMER
+
   Future<bool> updateCustomer(
-      CustomerModel customer,
-      ) async {
+      CustomerModel customer) async {
 
     try {
+
+      // Start loading
       isLoading = true;
       errorMessage = null;
       notifyListeners();
 
-      await customerServices.updateCustomer(customer);
-
-      final index = allCustomers.indexWhere(
-            (item) => item.id == customer.id,
+      // Update Firebase
+      await customerServices
+          .updateCustomer(
+        customer,
       );
 
-      if (index != -1) {
-        allCustomers[index] = customer;
-      }
+      // Firebase stream will automatically
+      // update the local lists.
 
       return true;
 
     } catch (e) {
-      errorMessage = e.toString();
+
+      errorMessage =
+          e.toString();
+
       return false;
 
     } finally {
+
+      // Stop loading
       isLoading = false;
+
       notifyListeners();
     }
   }
 
-  // Delete customer
+  // DELETE CUSTOMER
+
   Future<bool> deleteCustomer(
-      String customerId,
-      ) async {
+      String customerId) async {
 
     try {
+
+      // Start loading
       isLoading = true;
       errorMessage = null;
       notifyListeners();
 
-      await customerServices.deleteCustomer(
+      // Delete from Firebase
+      await customerServices
+          .deleteCustomer(
         customerId,
       );
 
-      allCustomers.removeWhere(
-            (item) => item.id == customerId,
-      );
+      // Firebase stream will automatically
+      // update the local lists.
 
       return true;
 
     } catch (e) {
-      errorMessage = e.toString();
+
+      errorMessage =
+          e.toString();
+
       return false;
 
     } finally {
+
+      // Stop loading
       isLoading = false;
+
       notifyListeners();
     }
+  }
+
+  // DISPOSE
+
+  @override
+  void dispose() {
+
+    // Stop listening to Firebase
+    _customerSubscription?.cancel();
+
+    super.dispose();
   }
 }

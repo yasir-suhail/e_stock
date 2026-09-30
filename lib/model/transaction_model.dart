@@ -3,6 +3,7 @@ class TransactionModel {
   final String productId;
   final String type;
   final int quantity;
+  final String productName;
 
   //used for sale
   final String? customerId;
@@ -20,6 +21,7 @@ class TransactionModel {
     required this.quantity,
     required this.type,
     required this.date,
+    required this.productName,
     this.customerId,
     this.sellerId,
     this.sellerName,
@@ -30,6 +32,7 @@ class TransactionModel {
     return {
       'id': id,
       'productId': productId,
+      'productName': productName,
       'quantity': quantity,
       'type': type,
       'date': date,
@@ -46,6 +49,7 @@ class TransactionModel {
     return TransactionModel(
       id: map['id']??'',
       productId: map['productId']??'',
+      productName: map['productName']??'',
       quantity: map['quantity']??0,
       type: map['type'] ?? '',
       date: map['date'] ?? '',

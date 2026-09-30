@@ -5,12 +5,15 @@ import 'package:e_stock/core/firebaseServices/stock_services.dart';
 import 'package:e_stock/model/product_model.dart';
 import 'package:flutter/cupertino.dart';
 
+import '../core/firebaseServices/transaction_services.dart';
 import '../model/stock_model.dart';
+import '../model/transaction_model.dart';
 
 class ProductViewmodel extends ChangeNotifier {
   //service object
   final ProductServices productServices = ProductServices();
   final StockServices stockServices = StockServices();
+  final TransactionServices transactionServices = TransactionServices();
 
   // product listener
   StreamSubscription<List<ProductModel>>? _productSubscription;
@@ -55,18 +58,31 @@ class ProductViewmodel extends ChangeNotifier {
     notifyListeners();
 
     try {
-      // Save the product
+      // 1. Add product
       await productServices.addProduct(product);
 
-      // Add initial quantity to factory stock
+      // 2. Add initial factory stock
       if (initialStock > 0) {
         final stock = StockModel(
+          productName: product.productName,
           productId: product.id,
           factoryStock: initialStock,
           vanStock: 0,
         );
 
         await stockServices.addStock(stock);
+
+        // 3. Record initial stock as a transaction
+        final transaction = TransactionModel(
+          id: DateTime.now().millisecondsSinceEpoch.toString(),
+          productId: product.id,
+          productName: product.productName,
+          type: 'Opening Stock',
+          quantity: initialStock,
+          date: DateTime.now().toString(),
+        );
+
+        await transactionServices.addTransaction(transaction);
       }
 
       return true;
@@ -145,6 +161,18 @@ class ProductViewmodel extends ChangeNotifier {
 
       return false;
     }
+  }
+  // STOP PRODUCT LISTENER
+  Future<void> stopProductListener() async {
+    await _productSubscription?.cancel();
+
+    _productSubscription = null;
+
+    // Clear old owner data
+    allProducts = [];
+    displayProducts = [];
+
+    isLoadingProducts = false;
   }
   @override
   void dispose() {

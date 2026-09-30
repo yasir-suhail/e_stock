@@ -9,33 +9,29 @@ import '../../../view_Model/transaction/production_viewmodel.dart';
 import '../../widget/custom_Textfield.dart';
 import '../../widget/custom_button.dart';
 import '../../widget/custom_dropButton.dart';
+import '../../widget/searchable_Product_dropdown.dart';
 
 class AddProductionProductScreen extends StatefulWidget {
-
-  const AddProductionProductScreen({ super.key});
+  const AddProductionProductScreen({super.key});
 
   @override
-  State<AddProductionProductScreen> createState() => _AddProductionProductScreenState();
+  State<AddProductionProductScreen> createState() =>
+      _AddProductionProductScreenState();
 }
 
-class _AddProductionProductScreenState extends State<AddProductionProductScreen> {
-  // String selectProduct = 'Red Chili Powder 200g';
-  // final List<String> products = [
-  //   'Red Chili Powder 200g',
-  //   'Coriander Powder 250g',
-  //   'Turmeric Powder 100g',
-  // ];
-  String? selectedProductId;
+class _AddProductionProductScreenState
+    extends State<AddProductionProductScreen> {
   var addProductFactoryController = TextEditingController();
   var batchNoController = TextEditingController();
-
 
   void initState() {
     super.initState();
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      final productViewModel =
-      Provider.of<ProductViewmodel>(context, listen: false);
+      final productViewModel = Provider.of<ProductViewmodel>(
+        context,
+        listen: false,
+      );
 
       productViewModel.getProducts();
     });
@@ -44,17 +40,9 @@ class _AddProductionProductScreenState extends State<AddProductionProductScreen>
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.sizeOf(context).width;
-    final productionViewModel =
-    Provider.of<ProductionViewModel>(context);
+    final productionViewModel = Provider.of<ProductionViewModel>(context);
     final productViewModel = Provider.of<ProductViewmodel>(context);
-    ProductModel? selectedProduct;
 
-    for (final product in productViewModel.allProducts) {
-      if (product.id == selectedProductId) {
-        selectedProduct = product;
-        break;
-      }
-    }
     return Scaffold(
       backgroundColor: AppColors.backgroundCanvas,
       resizeToAvoidBottomInset: true,
@@ -93,7 +81,7 @@ class _AddProductionProductScreenState extends State<AddProductionProductScreen>
               // main container
               Container(
                 width: screenWidth - 20,
-                height: 550,
+                // height: 550,
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(10),
@@ -118,44 +106,43 @@ class _AddProductionProductScreenState extends State<AddProductionProductScreen>
                       SizedBox(height: 8),
                       // Drop down menu container
                       Container(
-                        padding: EdgeInsets.symmetric(horizontal: 10),
-                        height: 50,
+                        // padding: EdgeInsets.symmetric(horizontal: 10),
+                        // height: 56,
                         decoration: BoxDecoration(
                           color: AppColors.cardBorder,
                           border: Border.all(color: AppColors.inputBorder),
                           borderRadius: BorderRadius.circular(10),
                         ),
-                        // custom drop down menu
-                        //   child: CustomDropdown(
-                        //     value: selectProduct,
-                        //     items: products,
-                        //     onChanged: (value) {
-                        //       setState(() {
-                        //         selectProduct = value!;
-                        //       });
-                        //     },
-                        //   )
-                        child: DropdownButton<ProductModel>(
-                          value: selectedProduct,
-                          hint: const Text('Select Product'),
-                          style: TextStyle(fontSize: 18,color: AppColors.textPrimary,fontWeight: .w400),
 
-                          isExpanded: true,
-                          underline: const SizedBox(),
-
-                          items: productViewModel.allProducts.map((product) {
-                            return DropdownMenuItem<ProductModel>(
-                              value: product,
-                              child: Text(
-                                '${product.productName} ${product.packaging}',
-                              ),
-                            );
-                          }).toList(),
-
-                          onChanged: (ProductModel? value) {
-                            setState(() {
-                              selectedProductId = value?.id;
-                            });
+                        // child: DropdownButton<ProductModel>(
+                        //   value: selectedProduct,
+                        //   hint: const Text('Select Product'),
+                        //   style: TextStyle(fontSize: 18,color: AppColors.textPrimary,fontWeight: .w400),
+                        //
+                        //   isExpanded: true,
+                        //   underline: const SizedBox(),
+                        //
+                        //   items: productViewModel.allProducts.map((product) {
+                        //     return DropdownMenuItem<ProductModel>(
+                        //       value: product,
+                        //       child: Text(
+                        //         '${product.productName} ${product.packaging}',
+                        //       ),
+                        //     );
+                        //   }).toList(),
+                        //
+                        //   onChanged: (ProductModel? value) {
+                        //     setState(() {
+                        //       selectedProductId = value?.id;
+                        //     });
+                        //   },
+                        // ),
+                        child: SearchableProductDropdown(
+                          focusedColor: AppColors.productionGreen,
+                          hintText: 'Search or select product',
+                          products: productViewModel.allProducts,
+                          onChanged: (product) {
+                            productionViewModel.selectProduct(product);
                           },
                         ),
                       ),
@@ -171,10 +158,12 @@ class _AddProductionProductScreenState extends State<AddProductionProductScreen>
                       ),
                       SizedBox(height: 8),
                       // Text Form field of the factory sale
-                     CustomTextfield(
-                       keyboardtype: .number,
-                       controller: addProductFactoryController,
-                       hintText: 'Add Quantity',focusedColor: AppColors.productionGreen,),
+                      CustomTextfield(
+                        keyboardtype: .number,
+                        controller: addProductFactoryController,
+                        hintText: 'Add Quantity',
+                        focusedColor: AppColors.productionGreen,
+                      ),
                       SizedBox(height: 14),
                       // Text of the Batch number
                       Text(
@@ -189,7 +178,9 @@ class _AddProductionProductScreenState extends State<AddProductionProductScreen>
                       // Text form field of the reason to sale
                       CustomTextfield(
                         controller: batchNoController,
-                        hintText: 'LOT-2026-0823',focusedColor: AppColors.productionGreen,),
+                        hintText: 'LOT-2026-0823',
+                        focusedColor: AppColors.productionGreen,
+                      ),
                       SizedBox(height: 38),
                       // confirm factory sale button
                       // CustomButton(
@@ -226,7 +217,8 @@ class _AddProductionProductScreenState extends State<AddProductionProductScreen>
                         //   );
                         // },
                         onTap: () async {
-                          if (selectedProductId == null) {
+                          // Check selected product
+                          if (productionViewModel.selectedProduct == null) {
                             ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(
                                 content: Text('Please select a product'),
@@ -235,9 +227,12 @@ class _AddProductionProductScreenState extends State<AddProductionProductScreen>
                             return;
                           }
 
-                          final quantity =
-                          int.tryParse(addProductFactoryController.text);
+                          // Convert quantity
+                          final quantity = int.tryParse(
+                            addProductFactoryController.text,
+                          );
 
+                          // Check quantity
                           if (quantity == null || quantity <= 0) {
                             ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(
@@ -247,16 +242,13 @@ class _AddProductionProductScreenState extends State<AddProductionProductScreen>
                             return;
                           }
 
-                          final productionViewModel =
-                          Provider.of<ProductionViewModel>(
-                            context,
-                            listen: false,
-                          );
-
-                          final success = await productionViewModel.addProduction(
-                            productId: selectedProductId!,
-                            quantity: quantity,
-                          );
+                          // Add production
+                          final success = await productionViewModel
+                              .addProduction(
+                                productId:
+                                    productionViewModel.selectedProduct!.id,
+                                quantity: quantity,
+                              );
 
                           if (!mounted) return;
 
@@ -264,9 +256,8 @@ class _AddProductionProductScreenState extends State<AddProductionProductScreen>
                             addProductFactoryController.clear();
                             batchNoController.clear();
 
-                            setState(() {
-                              selectedProductId = null;
-                            });
+                            // Clear selected product
+                            productionViewModel.selectProduct(null);
 
                             ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(

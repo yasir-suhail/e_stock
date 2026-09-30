@@ -6,23 +6,23 @@ import 'auth_services.dart';
 class TransactionServices {
 
   // Auth services
-  // final AuthServices authServices = AuthServices();
+  final AuthServices authServices = AuthServices();
 
 // instance of  the transaction
-  final  DatabaseReference transactionReference= FirebaseDatabase.instance.ref('transactions');
+  final  DatabaseReference transactionsReference= FirebaseDatabase.instance.ref('transactions');
 
 
   // Current owner's transactions reference
-  // DatabaseReference get transactionReference {
-  //
-  //   final String? uid = authServices.currentUserId;
-  //
-  //   if (uid == null) {
-  //     throw Exception('User is not logged in');
-  //   }
-  //
-  //   return transactionsReference.child(uid);
-  // }
+  DatabaseReference get transactionReference {
+
+    final String? uid = authServices.currentUserId;
+
+    if (uid == null) {
+      throw Exception('User is not logged in');
+    }
+
+    return transactionsReference.child(uid);
+  }
 // add the transaction
   Future<void> addTransaction(TransactionModel transaction)async{
     await transactionReference.child(transaction.id).set(transaction.toMap());

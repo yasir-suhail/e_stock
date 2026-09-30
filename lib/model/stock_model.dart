@@ -5,10 +5,11 @@ class StockModel {
   final int factoryStock;
   // quantity available in van
   final int vanStock;
+  final String productName;
 
   // constructor
   StockModel({
-    required this.productId,required this.factoryStock,required this.vanStock
+    required this.productId,required this.factoryStock,required this.vanStock,required this.productName
 });
 
   // convert stockmodel into map , used when saving/updating data in firebase
@@ -16,7 +17,8 @@ class StockModel {
     return{
       'productId':productId,
       'factoryStock':factoryStock,
-      'vanStock':vanStock
+      'vanStock':vanStock,
+      'productName':productName
     };
   }
 
@@ -25,6 +27,7 @@ class StockModel {
   {
     return StockModel(
         productId: map['productId']?? '',
+        productName: map['productName']?? '',
         factoryStock: map['factoryStock']??0,
         vanStock: map['vanStock']??0);
 

@@ -9,9 +9,9 @@
     final FirebaseAuth auth = FirebaseAuth.instance;
 
     // Get the UID of the currently logged-in user
-    // String? get currentUserId {
-    //   return auth.currentUser?.uid;
-    // }
+    String? get currentUserId {
+      return auth.currentUser?.uid;
+    }
 
     // Owner database
     final DatabaseReference ownerUsers = FirebaseDatabase.instance.ref('owner');
@@ -164,5 +164,7 @@
     // ---------- sign out----------
     Future<void> signOut() async {
       await auth.signOut();
+      print('After logout UID: ${auth.currentUser?.uid}');
+
     }
   }

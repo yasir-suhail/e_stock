@@ -6,22 +6,22 @@ import 'auth_services.dart';
 
 class StockServices {
   //auth services
-  // final AuthServices authServices = AuthServices();
+  final AuthServices authServices = AuthServices();
 
   // Reference to the main stock node in Firebase
-  final DatabaseReference stockReference = FirebaseDatabase.instance.ref(
+  final DatabaseReference stocksReference = FirebaseDatabase.instance.ref(
     'stock',);
 
   // Current owner's stock reference
-  // DatabaseReference get stockReference {
-  //   final String? uid = authServices.currentUserId;
-  //
-  //   if (uid == null) {
-  //     throw Exception('User is not logged in');
-  //   }
-  //
-  //   return stocksReference.child(uid);
-  // }
+  DatabaseReference get stockReference {
+    final String? uid = authServices.currentUserId;
+
+    if (uid == null) {
+      throw Exception('User is not logged in');
+    }
+
+    return stocksReference.child(uid);
+  }
   //Add stock
   Future<void> addStock(StockModel stock) async {
     await stockReference.child(stock.productId).set(stock.toMap());

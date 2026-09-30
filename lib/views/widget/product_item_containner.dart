@@ -38,15 +38,13 @@ class ProductItemContainer extends StatelessWidget {
             width: 45,
             height: 45,
             decoration: BoxDecoration(
-              color: AppColors.headerNavy,
-              borderRadius: BorderRadius.circular(10),
-              border: Border.all(
-                color: AppColors.inputBorder,
-              ),
+              color: AppColors.primaryBlue.withOpacity(0.1),
+              borderRadius: BorderRadius.circular(8),
+
             ),
             child:  Icon(
               Icons.inventory_2_outlined,
-              color: Colors.white,
+              color: AppColors.primaryBlue,
               size: 25,
             ),
           ),

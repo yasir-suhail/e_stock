@@ -127,7 +127,8 @@ class ProfileViewmodel extends ChangeNotifier {
     _ownerSubscription =
         profileServices.ownerDataStream().listen(
               (data) {
-            // Store owner data
+                print('OWNER DATA RECEIVED: $data');
+                // Store owner data
             owner = data;
 
             // Stop loading
@@ -137,7 +138,9 @@ class ProfileViewmodel extends ChangeNotifier {
             notifyListeners();
           },
           onError: (e) {
-            // Store error message
+                   print('OWNER PROFILE ERROR: $e');
+
+                // Store error message
             errorMessage = e.toString().replaceFirst(
               'Exception: ',
               '',
@@ -195,7 +198,20 @@ class ProfileViewmodel extends ChangeNotifier {
           },
         );
   }
+// STOP PROFILE LISTENERS
+  Future<void> stopProfileListeners() async {
+    await _ownerSubscription?.cancel();
+    await _salesmanSubscription?.cancel();
 
+    _ownerSubscription = null;
+    _salesmanSubscription = null;
+
+    // Clear old user data
+    owner = null;
+    salesman = null;
+
+    isLoading = false;
+  }
   // DISPOSE
 
   @override
