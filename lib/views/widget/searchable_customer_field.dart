@@ -60,49 +60,38 @@ class _SearchableCustomerFieldState extends State<SearchableCustomerField> {
           // CUSTOMER SEARCH FIELD
           TextField(
             controller: customerController,
-
             onTap: () {
               customerViewModel.searchCustomers(customerController.text);
-
               setState(() {
                 showCustomers = true;
               });
             },
-
             onChanged: (value) {
               customerViewModel.searchCustomers(value);
-
               setState(() {
                 showCustomers = true;
               });
             },
-
             decoration: InputDecoration(
               hintText: 'Search customer...',
-
               prefixIcon: Icon(
                 Icons.person_outline,
                 color: AppColors.textMuted,
               ),
-
               suffixIcon: IconButton(
                 onPressed: widget.onAddCustomer,
                 icon: Icon(Icons.add, color: AppColors.primaryBlue),
               ),
-
               filled: true,
               fillColor: Colors.white,
-
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10),
                 borderSide: BorderSide(color: AppColors.inputBorder),
               ),
-
               enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10),
                 borderSide: BorderSide(color: AppColors.inputBorder),
               ),
-
               focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10),
                 borderSide: BorderSide(color: AppColors.primaryBlue),

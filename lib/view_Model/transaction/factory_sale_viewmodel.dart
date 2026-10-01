@@ -35,6 +35,7 @@ class FactorySaleViewmodel extends ChangeNotifier {
     required String productId,
     required int quantity,
     required String customerId,
+    required String customerName
   }) async {
     try {
       isLoading = true;
@@ -93,6 +94,7 @@ class FactorySaleViewmodel extends ChangeNotifier {
           productId: productId,
         productName: selectedProduct!.productName,
         customerId: customerId,
+        customerName: customerName,
         quantity: quantity,
           type: 'Factory Sale',
           date: DateTime.now().toString(),

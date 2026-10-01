@@ -312,28 +312,25 @@ class _FactorySaleScreenState extends State<FactorySaleScreen> {
       context.read<CustomerViewModel>().listenToCustomers();
     });
   }
+
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.sizeOf(context).width;
 
-    final factorySaleViewmodel =
-    Provider.of<FactorySaleViewmodel>(context);
+    final factorySaleViewmodel = Provider.of<FactorySaleViewmodel>(context);
 
-    final stockViewModel =
-    Provider.of<StockViewmodel>(context);
+    final stockViewModel = Provider.of<StockViewmodel>(context);
 
     StockModel? selectedStock;
 
     for (final stock in stockViewModel.allStock) {
-      if (stock.productId ==
-          factorySaleViewmodel.selectedProduct?.id) {
+      if (stock.productId == factorySaleViewmodel.selectedProduct?.id) {
         selectedStock = stock;
         break;
       }
     }
 
-    final productViewModel =
-    Provider.of<ProductViewmodel>(context);
+    final productViewModel = Provider.of<ProductViewmodel>(context);
 
     return Scaffold(
       backgroundColor: AppColors.backgroundCanvas,
@@ -378,20 +375,15 @@ class _FactorySaleScreenState extends State<FactorySaleScreen> {
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(10),
-                  border: Border.all(
-                    color: AppColors.inputBorder,
-                  ),
+                  border: Border.all(color: AppColors.inputBorder),
                 ),
 
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 10,
-                  ),
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
 
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-
                       Padding(
                         padding: const EdgeInsets.only(top: 19),
                         child: Text(
@@ -410,8 +402,7 @@ class _FactorySaleScreenState extends State<FactorySaleScreen> {
                       SearchableProductDropdown(
                         products: productViewModel.allProducts,
                         onChanged: (product) {
-                          factorySaleViewmodel
-                              .selectProduct(product);
+                          factorySaleViewmodel.selectProduct(product);
                         },
                       ),
 
@@ -422,33 +413,23 @@ class _FactorySaleScreenState extends State<FactorySaleScreen> {
                         width: screenWidth - 20,
                         height: 100,
                         decoration: BoxDecoration(
-                          border: Border.all(
-                            color: AppColors.inputBorder,
-                          ),
-                          borderRadius:
-                          BorderRadius.circular(10),
-                          color:
-                          AppColors.backgroundCanvas,
+                          border: Border.all(color: AppColors.inputBorder),
+                          borderRadius: BorderRadius.circular(10),
+                          color: AppColors.backgroundCanvas,
                         ),
 
                         child: Padding(
-                          padding: const EdgeInsets.only(
-                            top: 14,
-                            left: 16,
-                          ),
+                          padding: const EdgeInsets.only(top: 14, left: 16),
 
                           child: Column(
-                            crossAxisAlignment:
-                            CrossAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
                                 'AVAILABLE IN FACTORY',
                                 style: TextStyle(
                                   fontSize: 12,
-                                  fontWeight:
-                                  FontWeight.bold,
-                                  color:
-                                  AppColors.textLabels,
+                                  fontWeight: FontWeight.bold,
+                                  color: AppColors.textLabels,
                                 ),
                               ),
 
@@ -460,10 +441,8 @@ class _FactorySaleScreenState extends State<FactorySaleScreen> {
                                     : '${selectedStock.factoryStock} Packs',
                                 style: TextStyle(
                                   fontSize: 20,
-                                  color:
-                                  AppColors.productionGreen,
-                                  fontWeight:
-                                  FontWeight.bold,
+                                  color: AppColors.productionGreen,
+                                  fontWeight: FontWeight.bold,
                                 ),
                               ),
                             ],
@@ -486,8 +465,7 @@ class _FactorySaleScreenState extends State<FactorySaleScreen> {
                       SizedBox(height: 8),
 
                       CustomTextfield(
-                        controller:
-                        saleFactoryQuantityController,
+                        controller: saleFactoryQuantityController,
                         hintText: 'Add Quantity',
                       ),
 
@@ -524,8 +502,8 @@ class _FactorySaleScreenState extends State<FactorySaleScreen> {
                           if (!mounted) return;
 
                           if (result == 'added') {
-                            final customerViewModel =
-                            context.read<CustomerViewModel>();
+                            final customerViewModel = context
+                                .read<CustomerViewModel>();
 
                             final customers = customerViewModel.allCustomers;
 
@@ -553,8 +531,7 @@ class _FactorySaleScreenState extends State<FactorySaleScreen> {
                       SizedBox(height: 8),
 
                       CustomTextfield(
-                        controller:
-                        reasonToSellController,
+                        controller: reasonToSellController,
                         hintText: '',
                       ),
 
@@ -562,68 +539,50 @@ class _FactorySaleScreenState extends State<FactorySaleScreen> {
 
                       // CONFIRM SALE
                       CustomButton(
-                        title:
-                        factorySaleViewmodel.isLoading
+                        title: factorySaleViewmodel.isLoading
                             ? 'Processing...'
                             : 'Confirm Factory Sale',
 
                         onTap: () async {
                           final quantity = int.tryParse(
-                            saleFactoryQuantityController
-                                .text
-                                .trim(),
+                            saleFactoryQuantityController.text.trim(),
                           );
 
-                          if (quantity == null ||
-                              quantity <= 0) {
-                            ScaffoldMessenger.of(context)
-                                .showSnackBar(
+                          if (quantity == null || quantity <= 0) {
+                            ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(
-                                content: Text(
-                                  'Please enter a valid quantity',
-                                ),
+                                content: Text('Please enter a valid quantity'),
                               ),
                             );
                             return;
                           }
 
-                          if (factorySaleViewmodel
-                              .selectedProduct ==
-                              null) {
-                            ScaffoldMessenger.of(context)
-                                .showSnackBar(
+                          if (factorySaleViewmodel.selectedProduct == null) {
+                            ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(
-                                content: Text(
-                                  'Please select a product',
-                                ),
+                                content: Text('Please select a product'),
                               ),
                             );
                             return;
                           }
 
                           if (selectedCustomer == null) {
-                            ScaffoldMessenger.of(context)
-                                .showSnackBar(
+                            ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(
-                                content: Text(
-                                  'Please select a customer',
-                                ),
+                                content: Text('Please select a customer'),
                               ),
                             );
                             return;
                           }
 
-                          final success =
-                          await factorySaleViewmodel
+                          final success = await factorySaleViewmodel
                               .factorySale(
-                            productId:
-                            factorySaleViewmodel
-                                .selectedProduct!
-                                .id,
-                            quantity: quantity,
-                            customerId:
-                            selectedCustomer!.id,
-                          );
+                                productId:
+                                    factorySaleViewmodel.selectedProduct!.id,
+                                quantity: quantity,
+                                customerId: selectedCustomer!.id,
+                            customerName: selectedCustomer!.name,
+                              );
 
                           if (!mounted) return;
 
@@ -632,8 +591,7 @@ class _FactorySaleScreenState extends State<FactorySaleScreen> {
 
                             if (!mounted) return;
 
-                            ScaffoldMessenger.of(context)
-                                .showSnackBar(
+                            ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(
                                 content: Text(
                                   'Factory sale completed successfully',
@@ -641,8 +599,7 @@ class _FactorySaleScreenState extends State<FactorySaleScreen> {
                               ),
                             );
 
-                            saleFactoryQuantityController
-                                .clear();
+                            saleFactoryQuantityController.clear();
 
                             reasonToSellController.clear();
 
@@ -650,12 +607,10 @@ class _FactorySaleScreenState extends State<FactorySaleScreen> {
                               selectedCustomer = null;
                             });
                           } else {
-                            ScaffoldMessenger.of(context)
-                                .showSnackBar(
+                            ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
                                 content: Text(
-                                  factorySaleViewmodel
-                                      .errorMessage ??
+                                  factorySaleViewmodel.errorMessage ??
                                       'Factory sale failed',
                                 ),
                               ),

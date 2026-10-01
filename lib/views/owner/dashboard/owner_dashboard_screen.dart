@@ -15,6 +15,7 @@ import '../../../view_Model/product_viewModel.dart';
 import '../../../view_Model/stock_viewModel.dart';
 import '../../../view_Model/transaction/load_van_viewmodel.dart';
 import '../../../view_Model/transaction/production_viewmodel.dart';
+import '../../../view_Model/transaction/van_sale_viewmodel.dart';
 import '../../widget/searchable_Product_dropdown.dart';
 import '../../widget/stock_card.dart';
 
@@ -257,7 +258,10 @@ class _OwnerDashboardScreenState extends State<OwnerDashboardScreen> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: ((context) => VansaleScreen()),
+                                builder: (context) => ChangeNotifierProvider(
+                                  create: (_) => VanSaleViewmodel(),
+                                  child: const VansaleScreen(),
+                                ),
                               ),
                             );
                           });

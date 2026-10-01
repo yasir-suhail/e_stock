@@ -7,6 +7,7 @@ class TransactionModel {
 
   //used for sale
   final String? customerId;
+  final String? customerName;
 
   //used when a seller perform the transaction
   final String? sellerId;
@@ -23,6 +24,7 @@ class TransactionModel {
     required this.date,
     required this.productName,
     this.customerId,
+    this.customerName,
     this.sellerId,
     this.sellerName,
     this.sellerType,
@@ -38,6 +40,7 @@ class TransactionModel {
       'date': date,
 
       'customerId': customerId,
+      'customerName': customerName,
 
       'sellerId': sellerId,
       'sellerName': sellerName,
@@ -55,6 +58,7 @@ class TransactionModel {
       date: map['date'] ?? '',
 
       customerId: map['customerId'],
+      customerName: map['customerName'],
 
       sellerId: map['sellerId'] ,
       sellerName: map['sellerName'] ,
